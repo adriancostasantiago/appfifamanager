@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
-import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 
 // ─── DATA MODELS ─────────────────────────────────────────────────────────────
 
@@ -83,16 +82,8 @@ final _trophyGroups = [
     imageTrophy: Image.asset('assets/trophy-CUP.png', width: 48, height: 48),
     accentColor: const Color(0xFFE0A86B),
     trophies: [
-      TrophyData(
-        year: 'Copa Ouro 2023',
-        competitionLabel: 'COPA',
-        tier: TrophyTier.copa,
-      ),
-      TrophyData(
-        year: 'Copa Inter 2022',
-        competitionLabel: 'COPA',
-        tier: TrophyTier.copa,
-      ),
+      TrophyData(year: '2023', competitionLabel: 'COPA', tier: TrophyTier.copa),
+      TrophyData(year: '2022', competitionLabel: 'COPA', tier: TrophyTier.copa),
     ],
   ),
   TrophyGroupData(
@@ -102,7 +93,7 @@ final _trophyGroups = [
     imageTrophy: Image.asset('assets/trophy-B.png', width: 48, height: 48),
     trophies: [
       TrophyData(
-        year: 'Temporada de Acesso 2020',
+        year: '2020',
         competitionLabel: 'SÉRIE B',
         tier: TrophyTier.serieb,
       ),
@@ -124,18 +115,9 @@ class TrophyRoomPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pushNamed(AppRoutes.home),
         ),
-        centerTitle: true,
-        title: const Text(
-          'SALA DE TROFÉUS',
-          style: TextStyle(
-            color: Color(0xFF00FF41),
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.4,
-            fontSize: 18,
-          ),
-        ),
+
         actions: [
           IconButton(
             icon: const Icon(Icons.share_outlined, color: Color(0xFF7C8579)),
@@ -172,7 +154,6 @@ class TrophyRoomPage extends StatelessWidget {
                 ),
               ),
             ),
-            const AppBottomNavigation(activeRoute: '/trophies'),
           ],
         ),
       ),
@@ -206,7 +187,7 @@ class _HallOfFameHeader extends StatelessWidget {
                 Icon(Icons.military_tech, color: Color(0xFF00FF41), size: 18),
                 SizedBox(width: 8),
                 Text(
-                  'HALL DA FAMA',
+                  'SALA DE TROFÉUS',
                   style: TextStyle(
                     color: Color(0xFF00FF41),
                     fontSize: 11,
@@ -235,7 +216,7 @@ class _HallOfFameHeader extends StatelessWidget {
         const SizedBox(height: 12),
         const Center(
           child: Text(
-            'A história gloriosa do Apex SC escrita em\nouro e prata nos gramados virtuais.',
+            'A história gloriosa do Apex SC escrita\nnos gramados virtuais.',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFF7C8579),
@@ -301,46 +282,25 @@ class _TrophyGroup extends StatelessWidget {
   }
 
   Widget _buildGrid(TrophyGroupData group) {
-    if (group.trophies.length == 1) {
-      return Center(
-        child: SizedBox(
-          width: 200,
-          child: _TrophyCard(
-            trophy: group.trophies.first,
-            accentColor: group.accentColor,
-          ),
-        ),
-      );
-    }
-    if (group.trophies.length == 2) {
-      return Row(
-        children: group.trophies
-            .map(
-              (t) => Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: group.trophies.indexOf(t) == 0 ? 0 : 8,
-                  ),
-                  child: _TrophyCard(trophy: t, accentColor: group.accentColor),
+    return SizedBox(
+      height: 290,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: group.trophies.map((trophy) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: SizedBox(
+                width: 120,
+                child: _TrophyCard(
+                  trophy: trophy,
+                  accentColor: group.accentColor,
                 ),
               ),
-            )
-            .toList(),
-      );
-    }
-    // 3-column grid
-    return Row(
-      children: group.trophies.asMap().entries.map((entry) {
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: entry.key == 0 ? 0 : 6),
-            child: _TrophyCard(
-              trophy: entry.value,
-              accentColor: group.accentColor,
-            ),
-          ),
-        );
-      }).toList(),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }
