@@ -75,57 +75,57 @@ class _ClubOverviewCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: const Color(0xFF171A1D),
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: const Color(0xFF1F2327)),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0B180A),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(
-                  Icons.account_balance_wallet,
-                  color: Color(0xFF00FF41),
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'SALDO ATUAL',
-                      style: TextStyle(
-                        color: Color(0xFF7C8579),
-                        fontSize: 12,
-                        letterSpacing: 1.5,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '€420.5M',
-                      style: TextStyle(
-                        color: Color(0xFF00FF41),
-                        fontSize: 26,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Container(
+        //   width: double.infinity,
+        //   padding: const EdgeInsets.all(20),
+        //   decoration: BoxDecoration(
+        //     color: const Color(0xFF171A1D),
+        //     borderRadius: BorderRadius.circular(22),
+        //     border: Border.all(color: const Color(0xFF1F2327)),
+        //   ),
+        //   child: Row(
+        //     children: [
+        //       Container(
+        //         width: 54,
+        //         height: 54,
+        //         decoration: BoxDecoration(
+        //           color: const Color(0xFF0B180A),
+        //           borderRadius: BorderRadius.circular(16),
+        //         ),
+        //         child: const Icon(
+        //           Icons.account_balance_wallet,
+        //           color: Color(0xFF00FF41),
+        //         ),
+        //       ),
+        //       const SizedBox(width: 14),
+        //       Expanded(
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: const [
+        //             Text(
+        //               'SALDO ATUAL',
+        //               style: TextStyle(
+        //                 color: Color(0xFF7C8579),
+        //                 fontSize: 12,
+        //                 letterSpacing: 1.5,
+        //                 fontWeight: FontWeight.w700,
+        //               ),
+        //             ),
+        //             SizedBox(height: 8),
+        //             Text(
+        //               '€420.5M',
+        //               style: TextStyle(
+        //                 color: Color(0xFF00FF41),
+        //                 fontSize: 26,
+        //                 fontWeight: FontWeight.w900,
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }

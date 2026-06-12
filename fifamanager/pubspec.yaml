@@ -63,7 +63,9 @@ flutter:
     - assets/splash_bg_new.png
     - assets/login_bg.png
     - assets/splash_bg.png
-    - assets/trophy.png
+    - assets/trophy-A.png
+    - assets/trophy-B.png
+    - assets/trophy-CUP.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

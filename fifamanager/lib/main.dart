@@ -5,7 +5,8 @@ import 'pages/leagues_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_match_page.dart';
 import 'pages/splash_page.dart';
-import 'pages/champion_screen.dart';
+import 'pages/champion_page.dart';
+import 'pages/trophy_room_page.dart';
 import 'routes/app_routes.dart';
 import 'theme/app_theme.dart';
 
@@ -42,12 +43,22 @@ class MyApp extends StatelessWidget {
             page = const RegisterMatchPage();
             break;
           case AppRoutes.squad:
-            page = const ChampionScreen(
+            page = const ChampionPage(
               teamName: 'APEX SC',
               jogos: 38,
               vitorias: 29,
               gols: 84,
             );
+          case AppRoutes.champion:
+            page = const ChampionPage(
+              teamName: 'APEX SC',
+              jogos: 38,
+              vitorias: 29,
+              gols: 84,
+            );
+          case AppRoutes.trophies:
+            page = const TrophyRoomPage();
+            break;
           default:
             page = const SplashPage();
         }

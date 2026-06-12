@@ -72,7 +72,7 @@ class AppDrawer extends StatelessWidget {
                 route: AppRoutes.leagues,
                 active: activeRoute == AppRoutes.leagues,
               ),
-              _DrawerLink(icon: Icons.group, label: 'ELENCO', route: null),
+              _DrawerLink(icon: Icons.group, label: 'ELENCO', route: null), //TR
               _DrawerLink(
                 icon: Icons.attach_money,
                 label: 'FINANCEIRO',
@@ -82,6 +82,12 @@ class AppDrawer extends StatelessWidget {
                 icon: Icons.card_giftcard,
                 label: 'PATROCÍNIOS',
                 route: null,
+              ),
+              _DrawerLink(
+                icon: Icons.military_tech,
+                label: 'SALA DE TROFÉUS',
+                route: AppRoutes.trophies,
+                active: activeRoute == AppRoutes.trophies,
               ),
               const Divider(color: Color(0xFF1F2327), height: 38, thickness: 1),
               _DrawerLink(icon: Icons.settings, label: 'SETTINGS', route: null),

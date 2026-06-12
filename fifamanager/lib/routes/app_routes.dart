@@ -5,4 +5,6 @@ abstract class AppRoutes {
   static const leagues = '/leagues';
   static const registerMatch = '/register-match';
   static const squad = '/squad';
+  static const champion = '/champion';
+  static const trophies = '/trophies';
 }
