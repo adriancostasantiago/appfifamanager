@@ -14,6 +14,7 @@ final List<PlayerData> goalkeepers = [
     ovr: 89,
     marketValue: '€12M',
     salary: '€350K/sem',
+    contractUntil: '2028',
   ),
   PlayerData(
     name: 'Iñaki Peña',
@@ -23,6 +24,7 @@ final List<PlayerData> goalkeepers = [
     ovr: 67,
     marketValue: '€5M',
     salary: '€80K/sem',
+    contractUntil: '2026',
   ),
   PlayerData(
     name: 'Ander Astralaga',
@@ -32,6 +34,7 @@ final List<PlayerData> goalkeepers = [
     ovr: 59,
     marketValue: '€1M',
     salary: '€15K/sem',
+    contractUntil: '2027',
   ),
 ];
 
@@ -44,6 +47,7 @@ final List<PlayerData> defenders = [
     ovr: 49,
     marketValue: '€35M',
     salary: '€220K/sem',
+    contractUntil: '2026',
   ),
   PlayerData(
     name: 'Jules Koundé',
@@ -53,6 +57,7 @@ final List<PlayerData> defenders = [
     ovr: 85,
     marketValue: '€55M',
     salary: '€260K/sem',
+    contractUntil: '2029',
   ),
   PlayerData(
     name: 'Alejandro Balde',
@@ -62,6 +67,7 @@ final List<PlayerData> defenders = [
     ovr: 83,
     marketValue: '€60M',
     salary: '€240K/sem',
+    contractUntil: '2028',
   ),
   PlayerData(
     name: 'Andreas Christensen',
@@ -71,6 +77,7 @@ final List<PlayerData> defenders = [
     ovr: 83,
     marketValue: '€18M',
     salary: '€190K/sem',
+    contractUntil: '2026',
   ),
   PlayerData(
     name: 'Eric García',
@@ -80,6 +87,7 @@ final List<PlayerData> defenders = [
     ovr: 80,
     marketValue: '€15M',
     salary: '€110K/sem',
+    contractUntil: '2027',
   ),
   PlayerData(
     name: 'Pau Cubarsí',
@@ -89,6 +97,7 @@ final List<PlayerData> defenders = [
     ovr: 81,
     marketValue: '€70M',
     salary: '€90K/sem',
+    contractUntil: '2030',
   ),
   PlayerData(
     name: 'Héctor Fort',
@@ -98,6 +107,7 @@ final List<PlayerData> defenders = [
     ovr: 73,
     marketValue: '€10M',
     salary: '€40K/sem',
+    contractUntil: '2029',
   ),
   PlayerData(
     name: 'Gerard Martín',
@@ -107,6 +117,7 @@ final List<PlayerData> defenders = [
     ovr: 71,
     marketValue: '€8M',
     salary: '€35K/sem',
+    contractUntil: '2027',
   ),
 ];
 
@@ -119,6 +130,7 @@ final List<PlayerData> midfielders = [
     ovr: 87,
     marketValue: '€90M',
     salary: '€280K/sem',
+    contractUntil: '2028',
   ),
   PlayerData(
     name: 'Frenkie de Jong',
@@ -128,6 +140,7 @@ final List<PlayerData> midfielders = [
     ovr: 88,
     marketValue: '€65M',
     salary: '€300K/sem',
+    contractUntil: '2026',
   ),
   PlayerData(
     name: 'Gavi',
@@ -137,6 +150,7 @@ final List<PlayerData> midfielders = [
     ovr: 85,
     marketValue: '€80M',
     salary: '€220K/sem',
+    contractUntil: '2030',
   ),
   PlayerData(
     name: 'Dani Olmo',
@@ -146,6 +160,7 @@ final List<PlayerData> midfielders = [
     ovr: 85,
     marketValue: '€50M',
     salary: '€200K/sem',
+    contractUntil: '2029',
   ),
   PlayerData(
     name: 'Fermín López',
@@ -155,6 +170,7 @@ final List<PlayerData> midfielders = [
     ovr: 80,
     marketValue: '€40M',
     salary: '€95K/sem',
+    contractUntil: '2029',
   ),
   PlayerData(
     name: 'Marc Casadó',
@@ -164,6 +180,7 @@ final List<PlayerData> midfielders = [
     ovr: 78,
     marketValue: '€25M',
     salary: '€60K/sem',
+    contractUntil: '2028',
   ),
   PlayerData(
     name: 'Pablo Torre',
@@ -173,6 +190,7 @@ final List<PlayerData> midfielders = [
     ovr: 76,
     marketValue: '€12M',
     salary: '€45K/sem',
+    contractUntil: '2027',
   ),
   PlayerData(
     name: 'Oriol Romeu',
@@ -182,6 +200,7 @@ final List<PlayerData> midfielders = [
     ovr: 77,
     marketValue: '€4M',
     salary: '€85K/sem',
+    contractUntil: '2026',
   ),
   PlayerData(
     name: 'Noah Darvich',
@@ -191,6 +210,7 @@ final List<PlayerData> midfielders = [
     ovr: 70,
     marketValue: '€6M',
     salary: '€20K/sem',
+    contractUntil: '2027',
   ),
   PlayerData(
     name: 'Unai Hernández',
@@ -200,6 +220,7 @@ final List<PlayerData> midfielders = [
     ovr: 68,
     marketValue: '€3M',
     salary: '€12K/sem',
+    contractUntil: '2026',
   ),
 ];
 
@@ -212,6 +233,7 @@ final List<PlayerData> forwards = [
     ovr: 89,
     marketValue: '€15M',
     salary: '€340K/sem',
+    contractUntil: '2026',
   ),
   PlayerData(
     name: 'Raphinha',
@@ -221,6 +243,7 @@ final List<PlayerData> forwards = [
     ovr: 87,
     marketValue: '€70M',
     salary: '€230K/sem',
+    contractUntil: '2027',
   ),
   PlayerData(
     name: 'Lamine Yamal',
@@ -230,6 +253,7 @@ final List<PlayerData> forwards = [
     ovr: 81,
     marketValue: '€150M',
     salary: '€150K/sem',
+    contractUntil: '2030',
   ),
   PlayerData(
     name: 'Ferran Torres',
@@ -239,6 +263,7 @@ final List<PlayerData> forwards = [
     ovr: 82,
     marketValue: '€30M',
     salary: '€180K/sem',
+    contractUntil: '2027',
   ),
   PlayerData(
     name: 'Ansu Fati',
@@ -248,6 +273,7 @@ final List<PlayerData> forwards = [
     ovr: 78,
     marketValue: '€20M',
     salary: '€140K/sem',
+    contractUntil: '2027',
   ),
   PlayerData(
     name: 'Pau Víctor',
@@ -257,6 +283,7 @@ final List<PlayerData> forwards = [
     ovr: 73,
     marketValue: '€8M',
     salary: '€30K/sem',
+    contractUntil: '2028',
   ),
   PlayerData(
     name: 'Vitor Roque',
@@ -266,6 +293,7 @@ final List<PlayerData> forwards = [
     ovr: 79,
     marketValue: '€25M',
     salary: '€55K/sem',
+    contractUntil: '2029',
   ),
 ];
 
@@ -278,9 +306,34 @@ class SquadPage extends StatefulWidget {
 
 class _SquadPageState extends State<SquadPage> {
   SquadViewMode _viewMode = SquadViewMode.resumo;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<PlayerData> _filter(List<PlayerData> players) {
+    if (_searchQuery.trim().isEmpty) return players;
+    final query = _searchQuery.trim().toLowerCase();
+    return players.where((p) => p.name.toLowerCase().contains(query)).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final filteredGoalkeepers = _filter(goalkeepers);
+    final filteredDefenders = _filter(defenders);
+    final filteredMidfielders = _filter(midfielders);
+    final filteredForwards = _filter(forwards);
+
+    final hasResults =
+        filteredGoalkeepers.isNotEmpty ||
+        filteredDefenders.isNotEmpty ||
+        filteredMidfielders.isNotEmpty ||
+        filteredForwards.isNotEmpty;
+
     return Scaffold(
       backgroundColor: const Color(0xFF101314),
       appBar: AppBar(
@@ -308,7 +361,16 @@ class _SquadPageState extends State<SquadPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const _SquadStats(),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 20),
+
+                    _SquadSearchField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() => _searchQuery = value);
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
 
                     _SquadViewModeTabs(
                       activeMode: _viewMode,
@@ -319,33 +381,41 @@ class _SquadPageState extends State<SquadPage> {
 
                     const SizedBox(height: 24),
 
-                    _PositionSection(
-                      title: 'GOLEIROS',
-                      count: goalkeepers.length,
-                      players: goalkeepers,
-                      viewMode: _viewMode,
-                    ),
+                    if (!hasResults)
+                      const _NoResultsMessage()
+                    else ...[
+                      if (filteredGoalkeepers.isNotEmpty)
+                        _PositionSection(
+                          title: 'GOLEIROS',
+                          count: filteredGoalkeepers.length,
+                          players: filteredGoalkeepers,
+                          viewMode: _viewMode,
+                        ),
 
-                    _PositionSection(
-                      title: 'DEFENSORES',
-                      count: defenders.length,
-                      players: defenders,
-                      viewMode: _viewMode,
-                    ),
+                      if (filteredDefenders.isNotEmpty)
+                        _PositionSection(
+                          title: 'DEFENSORES',
+                          count: filteredDefenders.length,
+                          players: filteredDefenders,
+                          viewMode: _viewMode,
+                        ),
 
-                    _PositionSection(
-                      title: 'MEIAS',
-                      count: midfielders.length,
-                      players: midfielders,
-                      viewMode: _viewMode,
-                    ),
+                      if (filteredMidfielders.isNotEmpty)
+                        _PositionSection(
+                          title: 'MEIAS',
+                          count: filteredMidfielders.length,
+                          players: filteredMidfielders,
+                          viewMode: _viewMode,
+                        ),
 
-                    _PositionSection(
-                      title: 'ATACANTES',
-                      count: forwards.length,
-                      players: forwards,
-                      viewMode: _viewMode,
-                    ),
+                      if (filteredForwards.isNotEmpty)
+                        _PositionSection(
+                          title: 'ATACANTES',
+                          count: filteredForwards.length,
+                          players: filteredForwards,
+                          viewMode: _viewMode,
+                        ),
+                    ],
                   ],
                 ),
               ),
@@ -436,6 +506,87 @@ class _StatCard extends StatelessWidget {
   }
 }
 
+/// Campo de busca para localizar um jogador pelo nome.
+class _SquadSearchField extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const _SquadSearchField({required this.controller, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF16191D),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF1F2327)),
+      ),
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+        decoration: InputDecoration(
+          isDense: true,
+          filled: false,
+          hintText: 'Buscar jogador...',
+          hintStyle: const TextStyle(
+            color: Color(0xFF7C8579),
+            fontWeight: FontWeight.w600,
+          ),
+          prefixIcon: const Icon(Icons.search, color: Color(0xFF7C8579)),
+          suffixIcon: controller.text.isEmpty
+              ? null
+              : IconButton(
+                  icon: const Icon(Icons.close, color: Color(0xFF7C8579)),
+                  onPressed: () {
+                    controller.clear();
+                    onChanged('');
+                  },
+                ),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+      ),
+    );
+  }
+}
+
+class _NoResultsMessage extends StatelessWidget {
+  const _NoResultsMessage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      decoration: BoxDecoration(
+        color: const Color(0xFF16191D),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFF1F2327)),
+      ),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.search_off, color: Color(0xFF7C8579), size: 32),
+          SizedBox(height: 10),
+          Text(
+            'Nenhum jogador encontrado',
+            style: TextStyle(
+              color: Color(0xFF9AA39C),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Toggle de visualização [ RESUMO ] [ DETALHADO ], no mesmo padrão visual
 /// das abas "CLASSIFICAÇÃO" / "ARTILHARIA" da tela de ligas.
 class _SquadViewModeTabs extends StatelessWidget {
@@ -453,7 +604,7 @@ class _SquadViewModeTabs extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _SquadViewModeTabButton(
-          label: 'RESUMIDO',
+          label: 'RESUMO',
           selected: activeMode == SquadViewMode.resumo,
           onTap: () => onModeSelected(SquadViewMode.resumo),
         ),
@@ -637,6 +788,17 @@ class _PlayerCard extends StatelessWidget {
                   style: const TextStyle(
                     color: Color(0xFF9AA39C),
                     fontWeight: FontWeight.w700,
+                  ),
+                ),
+
+                const SizedBox(height: 2),
+
+                Text(
+                  'CONTRATO ATÉ ${player.contractUntil}',
+                  style: const TextStyle(
+                    color: Color(0xFF7C8579),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -907,11 +1069,52 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
               if (_expanded)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-                  child: _PlayerActionButtons(player: player),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _ContractChip(contractUntil: player.contractUntil),
+                      const SizedBox(height: 10),
+                      _PlayerActionButtons(player: player),
+                    ],
+                  ),
                 ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Indica até quando o jogador tem contrato com o clube.
+class _ContractChip extends StatelessWidget {
+  final String contractUntil;
+
+  const _ContractChip({required this.contractUntil});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1E22),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.event_note, size: 14, color: Color(0xFF7C8579)),
+          const SizedBox(width: 6),
+          Text(
+            'CONTRATO ATÉ $contractUntil',
+            style: const TextStyle(
+              color: Color(0xFF9AA39C),
+              fontSize: 11,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.6,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1000,7 +1203,7 @@ class _PlayerActionButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1A1E22),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withValues(alpha: 0.4)),
+            border: Border.all(color: color.withOpacity(0.4)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1049,6 +1252,7 @@ class PlayerData {
   final int ovr;
   final String? marketValue;
   final String? salary;
+  final String contractUntil;
 
   PlayerData({
     required this.name,
@@ -1058,5 +1262,6 @@ class PlayerData {
     required this.ovr,
     this.marketValue,
     this.salary,
+    this.contractUntil = '-',
   });
 }
