@@ -804,104 +804,105 @@ class _PlayerCard extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) =>
-                  PlayerDetailPage(player: _buildProfile(player)),
+              builder: (context) => PlayerDetailPage(
+                player: samplePlayerProfile,
+              ), //_buildProfile(player)
             ),
           );
         },
         child: Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2327)),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              width: 56,
-              height: 56,
-              color: const Color(0xFF1F2327),
-              child: const Icon(
-                Icons.person,
-                size: 32,
-                color: Color(0xFF7C8579),
-              ),
-            ),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF16191D),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: const Color(0xFF1F2327)),
           ),
-
-          const SizedBox(width: 14),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  player.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-
-                const SizedBox(height: 4),
-
-                Text(
-                  '${player.position} • ${player.country}',
-                  style: const TextStyle(
-                    color: Color(0xFF9AA39C),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-
-                const SizedBox(height: 2),
-
-                Text(
-                  'CONTRATO ATÉ ${player.contractUntil}',
-                  style: const TextStyle(
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  color: const Color(0xFF1F2327),
+                  child: const Icon(
+                    Icons.person,
+                    size: 32,
                     color: Color(0xFF7C8579),
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: ovrColor,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'OVR',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black,
-                  ),
+              const SizedBox(width: 14),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      player.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    Text(
+                      '${player.position} • ${player.country}',
+                      style: const TextStyle(
+                        color: Color(0xFF9AA39C),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+
+                    const SizedBox(height: 2),
+
+                    Text(
+                      'CONTRATO ATÉ ${player.contractUntil}',
+                      style: const TextStyle(
+                        color: Color(0xFF7C8579),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  player.ovr.toString(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 22,
-                  ),
+              ),
+
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: ovrColor,
+                  borderRadius: BorderRadius.circular(14),
                 ),
-              ],
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'OVR',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      player.ovr.toString(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
         ),
       ),
     );

@@ -32,6 +32,9 @@ class PlayerProfile {
 
   final List<PlayerStatGroup> statGroups;
   final List<PlayerPlaystyle> playstyles;
+  final PlayerProfileInfo? profile;
+  final List<PlayerSpecialty> specialties;
+  final List<PlayerRoleFunction> roleFunctions;
 
   const PlayerProfile({
     required this.name,
@@ -45,6 +48,9 @@ class PlayerProfile {
     required this.radar,
     required this.statGroups,
     required this.playstyles,
+    this.profile,
+    this.specialties = const [],
+    this.roleFunctions = const [],
   });
 }
 
@@ -71,6 +77,57 @@ class PlayerPlaystyle {
   const PlayerPlaystyle({required this.name, required this.icon});
 }
 
+/// Informações únicas do jogador: perna boa, fintas e perna ruim.
+class PlayerProfileInfo {
+  /// Ex.: 'Direita', 'Esquerda'
+  final String pernaBoa;
+
+  /// Número de estrelas de fintas (1–5)
+  final int fintas;
+
+  /// Número de estrelas de perna ruim (1–5)
+  final int pernaRuim;
+
+  const PlayerProfileInfo({
+    required this.pernaBoa,
+    required this.fintas,
+    required this.pernaRuim,
+  });
+}
+
+/// Uma especialidade do jogador, ex.: '#Driblador'.
+class PlayerSpecialty {
+  final String name;
+
+  const PlayerSpecialty({required this.name});
+}
+
+/// Nível de destaque de uma função: 'plus_plus' (++), 'plus' (+) ou 'normal'.
+enum FunctionLevel { plusPlus, plus, normal }
+
+/// Uma função associada a uma posição, com suas sub-funções listadas.
+/// Exemplo: função "Atacante sombra ++", posição MEI, sub-funções [Ataque].
+class PlayerRoleFunction {
+  /// Nome da função, ex.: 'Atacante sombra'
+  final String functionName;
+
+  /// Nível de destaque (++, + ou normal)
+  final FunctionLevel level;
+
+  /// Sigla da posição, ex.: 'MEI', 'ATA', 'PD'
+  final String position;
+
+  /// Sub-funções disponíveis para essa posição, ex.: ['Ataque', 'Armação']
+  final List<String> subFunctions;
+
+  const PlayerRoleFunction({
+    required this.functionName,
+    required this.level,
+    required this.position,
+    required this.subFunctions,
+  });
+}
+
 // ─── DADOS DE EXEMPLO ───────────────────────────────────────────────────────
 
 const PlayerProfile samplePlayerProfile = PlayerProfile(
@@ -82,14 +139,14 @@ const PlayerProfile samplePlayerProfile = PlayerProfile(
   marketValue: '€120M',
   salary: '€250K',
   contractUntil: '2028',
-  radar: const {
+  radar: {
     'ATAQUE': 0.40,
     'TÉCNICA': 0.58,
     'FÍSICO': 0.62,
     'DEFESA': 0.35,
     'MENTAL': 0.72,
   },
-  statGroups: const [
+  statGroups: [
     PlayerStatGroup(
       title: 'OFENSIVO',
       items: [
@@ -143,28 +200,158 @@ const PlayerProfile samplePlayerProfile = PlayerProfile(
       ],
     ),
   ],
-  playstyles: const [
+  playstyles: [
     PlayerPlaystyle(name: 'Passe guiado +', icon: Icons.sports_soccer),
     PlayerPlaystyle(name: 'Sai que é sua', icon: Icons.bolt),
     PlayerPlaystyle(name: 'Visão de jogo +', icon: Icons.visibility_outlined),
     PlayerPlaystyle(name: 'Carrinho', icon: Icons.shield_outlined),
   ],
+  profile: PlayerProfileInfo(pernaBoa: 'Direita', fintas: 4, pernaRuim: 4),
+  specialties: [
+    PlayerSpecialty(name: '#Driblador'),
+    PlayerSpecialty(name: '#Esp. em bola parada'),
+    PlayerSpecialty(name: '#Corredor'),
+    PlayerSpecialty(name: '#Líder'),
+  ],
+  roleFunctions: [
+    PlayerRoleFunction(
+      functionName: 'Atacante sombra',
+      level: FunctionLevel.plusPlus,
+      position: 'MEI',
+      subFunctions: ['Ataque'],
+    ),
+    PlayerRoleFunction(
+      functionName: 'Falso 9',
+      level: FunctionLevel.plusPlus,
+      position: 'ATA',
+      subFunctions: ['Armação', 'Ataque'],
+    ),
+    PlayerRoleFunction(
+      functionName: 'Corta pra dentro',
+      level: FunctionLevel.plus,
+      position: 'PD',
+      subFunctions: ['Ataque', 'Equilibrado', 'Deslocamento'],
+    ),
+    PlayerRoleFunction(
+      functionName: 'Meia clássico',
+      level: FunctionLevel.plus,
+      position: 'MC',
+      subFunctions: ['Armação', 'Equilíbrio'],
+    ),
+    PlayerRoleFunction(
+      functionName: 'Volante',
+      level: FunctionLevel.normal,
+      position: 'VOL',
+      subFunctions: ['Defesa', 'Desarme'],
+    ),
+    PlayerRoleFunction(
+      functionName: 'Meia ofensivo',
+      level: FunctionLevel.plusPlus,
+      position: 'MAO',
+      subFunctions: ['Ataque', 'Armação', 'Finalização'],
+    ),
+  ],
 );
 
 // ─── PÁGINA ─────────────────────────────────────────────────────────────────
 
-class PlayerDetailPage extends StatelessWidget {
+enum _DetailTab { perfil, especialidades, funcoes, estilos, caracteristicas }
+
+class PlayerDetailPage extends StatefulWidget {
   final PlayerProfile player;
 
   const PlayerDetailPage({super.key, this.player = samplePlayerProfile});
 
   @override
+  State<PlayerDetailPage> createState() => _PlayerDetailPageState();
+}
+
+class _PlayerDetailPageState extends State<PlayerDetailPage> {
+  _DetailTab _activeTab = _DetailTab.perfil;
+  bool _tabsSticky = false;
+
+  final _scrollController = ScrollController();
+  final _keyTabs = GlobalKey();
+  final _keyPerfil = GlobalKey();
+  final _keyEspecialidades = GlobalKey();
+  final _keyFuncoes = GlobalKey();
+  final _keyEstilos = GlobalKey();
+  final _keyCaracteristicas = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final ctx = _keyTabs.currentContext;
+    if (ctx == null) return;
+    final box = ctx.findRenderObject() as RenderBox?;
+    if (box == null) return;
+    final pos = box.localToGlobal(Offset.zero);
+    final sticky = pos.dy <= 0;
+    if (sticky != _tabsSticky) setState(() => _tabsSticky = sticky);
+  }
+
+  void _scrollTo(GlobalKey key) {
+    final ctx = key.currentContext;
+    if (ctx == null) return;
+    final box = ctx.findRenderObject() as RenderBox?;
+    if (box == null) return;
+    // Pega a posição do widget relativa ao RenderObject do scroll
+    final scrollBox =
+        _scrollController.position.context.storageContext.findRenderObject()
+            as RenderBox?;
+    if (scrollBox == null) return;
+    final pos = box.localToGlobal(Offset.zero, ancestor: scrollBox);
+    const tabsHeight = 50.0;
+    final destination = (_scrollController.offset + pos.dy - tabsHeight).clamp(
+      0.0,
+      _scrollController.position.maxScrollExtent,
+    );
+    _scrollController.animateTo(
+      destination,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _onTabTap(_DetailTab tab) {
+    setState(() => _activeTab = tab);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      switch (tab) {
+        case _DetailTab.perfil:
+          _scrollTo(_keyPerfil);
+        case _DetailTab.especialidades:
+          _scrollTo(_keyEspecialidades);
+        case _DetailTab.funcoes:
+          _scrollTo(_keyFuncoes);
+        case _DetailTab.estilos:
+          _scrollTo(_keyEstilos);
+        case _DetailTab.caracteristicas:
+          _scrollTo(_keyCaracteristicas);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final player = widget.player;
+
     return Scaffold(
       backgroundColor: _kBackground,
       body: SafeArea(
         child: Column(
           children: [
+            // ── Barra topo: voltar
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Row(
@@ -176,20 +363,210 @@ class PlayerDetailPage extends StatelessWidget {
                 ],
               ),
             ),
+
+            // ── Área de conteúdo (Stack para overlay das abas sticky)
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 4, 20, 28),
-                child: Column(
-                  children: [
-                    _PlayerHeader(player: player),
-                    const SizedBox(height: 16),
-                    _PlayerActionButtons(player: player),
-                    const SizedBox(height: 24),
-                    _PlayerTopStats(player: player),
-                    const SizedBox(height: 24),
-                    _TechnicalAnalysisCard(player: player),
-                  ],
-                ),
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+                    child: Column(
+                      children: [
+                        _PlayerHeader(player: player),
+                        const SizedBox(height: 24),
+                        _PlayerTopStats(player: player),
+                        const SizedBox(height: 16),
+                        _PlayerActionButtons(player: player),
+                        const SizedBox(height: 20),
+
+                        // ── Abas inline (âncora para detectar sticky)
+                        SizedBox(key: _keyTabs),
+                        _DetailNavTabs(active: _activeTab, onTap: _onTabTap),
+                        const SizedBox(height: 20),
+
+                        // PERFIL
+                        SizedBox(key: _keyPerfil, width: double.infinity),
+                        _ProfileCard(
+                          info:
+                              player.profile ??
+                              const PlayerProfileInfo(
+                                pernaBoa: 'Direita',
+                                fintas: 4,
+                                pernaRuim: 4,
+                              ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // ESPECIALIDADES
+                        SizedBox(
+                          key: _keyEspecialidades,
+                          width: double.infinity,
+                        ),
+                        _SpecialtiesCard(
+                          specialties: player.specialties.isNotEmpty
+                              ? player.specialties
+                              : const [
+                                  PlayerSpecialty(name: '#Driblador'),
+                                  PlayerSpecialty(name: '#Esp. em bola parada'),
+                                  PlayerSpecialty(name: '#Corredor'),
+                                  PlayerSpecialty(name: '#Líder'),
+                                ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        // FUNÇÕES
+                        SizedBox(key: _keyFuncoes, width: double.infinity),
+                        _RoleFunctionsCard(
+                          roleFunctions: player.roleFunctions.isNotEmpty
+                              ? player.roleFunctions
+                              : const [
+                                  PlayerRoleFunction(
+                                    functionName: 'Atacante sombra',
+                                    level: FunctionLevel.plusPlus,
+                                    position: 'MEI',
+                                    subFunctions: ['Ataque'],
+                                  ),
+                                  PlayerRoleFunction(
+                                    functionName: 'Falso 9',
+                                    level: FunctionLevel.plusPlus,
+                                    position: 'ATA',
+                                    subFunctions: ['Armação', 'Ataque'],
+                                  ),
+                                ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        // ESTILOS DE JOGO
+                        SizedBox(key: _keyEstilos, width: double.infinity),
+                        _PlaystylesCard(playstyles: player.playstyles),
+                        const SizedBox(height: 16),
+
+                        // CARACTERÍSTICAS (análise técnica)
+                        SizedBox(
+                          key: _keyCaracteristicas,
+                          width: double.infinity,
+                        ),
+                        _TechnicalAnalysisCard(player: player),
+                      ],
+                    ),
+                  ),
+
+                  // ── Abas fixas (aparecem quando scrollar além delas)
+                  if (_tabsSticky)
+                    Positioned(
+                      top: 0,
+                      left: 20,
+                      right: 20,
+                      child: Container(
+                        color: _kBackground,
+                        child: _DetailNavTabs(
+                          active: _activeTab,
+                          onTap: _onTabTap,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─── ABAS DE NAVEGAÇÃO ───────────────────────────────────────────────────────
+
+class _DetailNavTabs extends StatelessWidget {
+  final _DetailTab active;
+  final ValueChanged<_DetailTab> onTap;
+
+  const _DetailNavTabs({required this.active, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: _kBorder, width: 1)),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _DetailTabButton(
+              label: 'PERFIL',
+              selected: active == _DetailTab.perfil,
+              onTap: () => onTap(_DetailTab.perfil),
+            ),
+            const SizedBox(width: 24),
+            _DetailTabButton(
+              label: 'ESPECIALIDADES',
+              selected: active == _DetailTab.especialidades,
+              onTap: () => onTap(_DetailTab.especialidades),
+            ),
+            const SizedBox(width: 24),
+            _DetailTabButton(
+              label: 'FUNÇÕES',
+              selected: active == _DetailTab.funcoes,
+              onTap: () => onTap(_DetailTab.funcoes),
+            ),
+            const SizedBox(width: 24),
+            _DetailTabButton(
+              label: 'ESTILOS',
+              selected: active == _DetailTab.estilos,
+              onTap: () => onTap(_DetailTab.estilos),
+            ),
+            const SizedBox(width: 24),
+            _DetailTabButton(
+              label: 'CARACTERÍSTICAS',
+              selected: active == _DetailTab.caracteristicas,
+              onTap: () => onTap(_DetailTab.caracteristicas),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DetailTabButton extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _DetailTabButton({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: selected ? _kAccent : _kMuted,
+                fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
+                fontSize: 11,
+                letterSpacing: 1.4,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              height: 2,
+              width: label.length * 7.0,
+              decoration: BoxDecoration(
+                color: selected ? _kAccent : Colors.transparent,
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
           ],
@@ -286,7 +663,7 @@ class _OvrBadge extends StatelessWidget {
         border: Border.all(color: _kBackground, width: 5),
         boxShadow: [
           BoxShadow(
-            color: _kAccentStrong.withOpacity(0.55),
+            color: _kAccentStrong.withValues(alpha: 0.55),
             blurRadius: 18,
             spreadRadius: 1,
           ),
@@ -525,7 +902,7 @@ class _PlayerActionButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: _kCardAlt,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withOpacity(0.4)),
+            border: Border.all(color: color.withValues(alpha: 0.4)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -577,7 +954,7 @@ class _TechnicalAnalysisCard extends StatelessWidget {
               Icon(Icons.insert_chart_outlined, color: _kAccent, size: 18),
               SizedBox(width: 10),
               Text(
-                'ANÁLISE TÉCNICA AVANÇADA',
+                'CARACTERÍSTICAS',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
@@ -613,30 +990,57 @@ class _TechnicalAnalysisCard extends StatelessWidget {
                 ],
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
 
-          const SizedBox(height: 28),
+// ─── ESTILOS DE JOGO ────────────────────────────────────────────────────────
 
-          const Text(
-            'ESTILOS DE JOGO',
-            style: TextStyle(
-              color: _kLight,
-              fontWeight: FontWeight.w900,
-              fontSize: 12,
-              letterSpacing: 1.0,
-            ),
+class _PlaystylesCard extends StatelessWidget {
+  final List<PlayerPlaystyle> playstyles;
+
+  const _PlaystylesCard({required this.playstyles});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: _kCard,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _kBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.bolt, color: _kAccent, size: 18),
+              SizedBox(width: 10),
+              Text(
+                'ESTILOS DE JOGO',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 13,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
           ),
-
           const SizedBox(height: 14),
-
           SizedBox(
             height: 40,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
-              itemCount: player.playstyles.length,
+              itemCount: playstyles.length,
               separatorBuilder: (_, __) => const SizedBox(width: 10),
               itemBuilder: (context, index) =>
-                  _PlaystyleChip(playstyle: player.playstyles[index]),
+                  _PlaystyleChip(playstyle: playstyles[index]),
             ),
           ),
         ],
@@ -741,14 +1145,14 @@ class _RadarChartPainter extends CustomPainter {
     dataPath.close();
 
     final glowPaint = Paint()
-      ..color = _kAccent.withOpacity(0.35)
+      ..color = _kAccent.withValues(alpha: 0.35)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
     canvas.drawPath(dataPath, glowPaint);
 
     final fillPaint = Paint()
-      ..color = _kAccent.withOpacity(0.16)
+      ..color = _kAccent.withValues(alpha: 0.16)
       ..style = PaintingStyle.fill;
     canvas.drawPath(dataPath, fillPaint);
 
@@ -886,6 +1290,386 @@ Color _statColor(int value) {
 Color _statTextColor(int value) {
   if (value >= 75) return Colors.black;
   return Colors.white;
+}
+
+// ─── PERFIL (PERNA BOA / FINTAS / PERNA RUIM) ──────────────────────────────
+
+class _ProfileCard extends StatelessWidget {
+  final PlayerProfileInfo info;
+
+  const _ProfileCard({required this.info});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: _kCard,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _kBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.star_outline, color: _kAccent, size: 18),
+              SizedBox(width: 10),
+              Text(
+                'PERFIL',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 13,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Column(
+            children: [
+              _ProfileItem(
+                label: 'Perna boa',
+                child: Text(
+                  info.pernaBoa,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              _ProfileItem(
+                label: 'Fintas',
+                child: _StarRow(count: info.fintas),
+              ),
+              const SizedBox(height: 8),
+              _ProfileItem(
+                label: 'Perna ruim',
+                child: _StarRow(count: info.pernaRuim),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProfileItem extends StatelessWidget {
+  final String label;
+  final Widget child;
+
+  const _ProfileItem({required this.label, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      decoration: BoxDecoration(
+        color: _kCardAlt,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: _kBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              color: _kMuted,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.6,
+            ),
+          ),
+          const SizedBox(height: 6),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+class _StarRow extends StatelessWidget {
+  final int count;
+  final int max;
+
+  const _StarRow({required this.count, this.max = 5});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(max, (i) {
+        final filled = i < count;
+        return Padding(
+          padding: const EdgeInsets.only(right: 2),
+          child: Icon(
+            filled ? Icons.star : Icons.star_border,
+            size: 14,
+            color: filled ? const Color(0xFFF5C518) : _kMuted,
+          ),
+        );
+      }),
+    );
+  }
+}
+
+// ─── ESPECIALIDADES ─────────────────────────────────────────────────────────
+
+class _SpecialtiesCard extends StatelessWidget {
+  final List<PlayerSpecialty> specialties;
+
+  const _SpecialtiesCard({required this.specialties});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: _kCard,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _kBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.workspace_premium_outlined, color: _kAccent, size: 18),
+              SizedBox(width: 10),
+              Text(
+                'ESPECIALIDADES',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 13,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          SizedBox(
+            height: 120,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: specialties
+                    .map((s) => _SpecialtyRow(specialty: s))
+                    .toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SpecialtyRow extends StatelessWidget {
+  final PlayerSpecialty specialty;
+
+  const _SpecialtyRow({required this.specialty});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Container(width: 3, height: 14, color: _kAccent),
+          const SizedBox(width: 10),
+          Text(
+            specialty.name,
+            style: const TextStyle(
+              color: _kLight,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── FUNÇÕES POR POSIÇÃO ────────────────────────────────────────────────────
+
+class _RoleFunctionsCard extends StatelessWidget {
+  final List<PlayerRoleFunction> roleFunctions;
+
+  const _RoleFunctionsCard({required this.roleFunctions});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: _kCard,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _kBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.grid_view_outlined, color: _kAccent, size: 18),
+              SizedBox(width: 10),
+              Text(
+                'FUNÇÕES',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 13,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: roleFunctions
+                    .map((rf) => _RoleFunctionColumn(role: rf))
+                    .toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RoleFunctionColumn extends StatelessWidget {
+  final PlayerRoleFunction role;
+
+  const _RoleFunctionColumn({required this.role});
+
+  String get _levelSuffix {
+    switch (role.level) {
+      case FunctionLevel.plusPlus:
+        return ' ++';
+      case FunctionLevel.plus:
+        return ' +';
+      case FunctionLevel.normal:
+        return '';
+    }
+  }
+
+  Color get _levelColor {
+    switch (role.level) {
+      case FunctionLevel.plusPlus:
+        return Colors.white;
+      case FunctionLevel.plus:
+        return Colors.white;
+      case FunctionLevel.normal:
+        return _kSubtle;
+    }
+  }
+
+  Color get _suffixColor {
+    switch (role.level) {
+      case FunctionLevel.plusPlus:
+        return _kAccent;
+      case FunctionLevel.plus:
+        return _kAccent;
+      case FunctionLevel.normal:
+        return _kMuted;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Nome da função com nível em destaque
+            RichText(
+              softWrap: false,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: role.functionName,
+                    style: TextStyle(
+                      color: _levelColor,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  if (role.level != FunctionLevel.normal)
+                    TextSpan(
+                      text: _levelSuffix,
+                      style: TextStyle(
+                        color: _suffixColor,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            // Badge da posição
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1F6B3A),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                role.position,
+                softWrap: false,
+                style: const TextStyle(
+                  color: _kAccent,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.6,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            // Sub-funções
+            for (final sub in role.subFunctions)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Text(
+                  sub,
+                  softWrap: false,
+                  style: const TextStyle(
+                    color: _kSubtle,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 // ─── PLAYSTYLES ─────────────────────────────────────────────────────────────
