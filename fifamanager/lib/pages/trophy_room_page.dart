@@ -313,17 +313,6 @@ class _TrophyCard extends StatelessWidget {
 
   const _TrophyCard({required this.trophy, required this.accentColor});
 
-  Color get _trophyIconColor {
-    switch (trophy.tier) {
-      case TrophyTier.seriea:
-        return const Color(0xFFFFD700);
-      case TrophyTier.copa:
-        return const Color(0xFFFFD700);
-      case TrophyTier.serieb:
-        return const Color(0xFFCCCCCC);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(

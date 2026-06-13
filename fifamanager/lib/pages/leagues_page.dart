@@ -18,37 +18,72 @@ enum LeagueSeries { serieA, serieB, copa }
 
 enum MatchStatus { todos, finalizado, pendente, aIniciar }
 
-// ─── KNOCKOUT DATA MODELS ───────────────────────────────────────────────────
+// ─── DATA MODELS ────────────────────────────────────────────────────────────
 
-class KnockoutMatchData {
+/// Partida de jogo único (Série A / Série B)
+class LeagueMatchData {
   final String homeTeam;
   final String awayTeam;
-  final String aggregateScore;
+  final String score;
+  final String venue;
+  final MatchStatus status;
+  final bool isHomeWinner;
+  final bool isAwayWinner;
+
+  const LeagueMatchData({
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.score,
+    required this.venue,
+    required this.status,
+    this.isHomeWinner = false,
+    this.isAwayWinner = false,
+  });
+}
+
+/// Partida de mata-mata com ida e volta (Copa)
+class CupMatchData {
+  final String homeTeam;
+  final String awayTeam;
+  final String score;
+  final String venue;
   final bool isHomeWinner;
   final bool isAwayWinner;
   final String leg1Score;
+  final MatchStatus leg1Status;
   final String leg2Score;
-  final String venue;
-  final bool isFinished;
-  final MatchStatus status;
+  final MatchStatus leg2Status;
 
-  const KnockoutMatchData({
+  const CupMatchData({
     required this.homeTeam,
     required this.awayTeam,
-    required this.aggregateScore,
+    required this.score,
+    required this.venue,
     this.isHomeWinner = false,
     this.isAwayWinner = false,
     required this.leg1Score,
+    required this.leg1Status,
     required this.leg2Score,
-    required this.venue,
-    this.isFinished = false,
-    this.status = MatchStatus.finalizado,
+    required this.leg2Status,
   });
+
+  /// Derivado dos legs: ambos finalizado → finalizado; nenhum iniciado → aIniciar; senão → pendente
+  MatchStatus get status {
+    if (leg1Status == MatchStatus.finalizado &&
+        leg2Status == MatchStatus.finalizado) {
+      return MatchStatus.finalizado;
+    }
+    if (leg1Status == MatchStatus.aIniciar &&
+        leg2Status == MatchStatus.aIniciar) {
+      return MatchStatus.aIniciar;
+    }
+    return MatchStatus.pendente;
+  }
 }
 
 class KnockoutRoundData {
   final String label;
-  final List<KnockoutMatchData> matches;
+  final List<CupMatchData> matches;
 
   const KnockoutRoundData({required this.label, required this.matches});
 }
@@ -59,106 +94,105 @@ final _copaKnockoutRounds = [
   KnockoutRoundData(
     label: 'OITAVAS',
     matches: [
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'FLAMENGO',
         awayTeam: 'PALMEIRAS',
-        aggregateScore: '3-1',
+        score: '3-1',
         isHomeWinner: true,
-        leg1Score: 'IDA: 1-1',
-        leg2Score: 'VOLTA: 2-0',
-        venue: 'ARENA MARACANÃ • 21:45',
-        isFinished: false,
-        status: MatchStatus.pendente,
+        leg1Score: '1-1',
+        leg1Status: MatchStatus.finalizado,
+        leg2Score: '2-0',
+        leg2Status: MatchStatus.pendente,
+        venue: 'ARENA MARACANÃ',
       ),
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'CORINTHIANS',
         awayTeam: 'SÃO PAULO',
-        aggregateScore: '0-2',
+        score: '0-2',
         isAwayWinner: true,
-        leg1Score: 'IDA: 0-1',
-        leg2Score: 'VOLTA: 0-1',
-        venue: 'ESTÁDIO MORUMBI • FINALIZADO',
-        isFinished: true,
-        status: MatchStatus.finalizado,
+        leg1Score: '0-1',
+        leg1Status: MatchStatus.finalizado,
+        leg2Score: '0-1',
+        leg2Status: MatchStatus.finalizado,
+        venue: 'ESTÁDIO MORUMBI',
       ),
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'GRÊMIO',
         awayTeam: 'INTER',
-        aggregateScore: '4-2',
+        score: '4-2',
         isHomeWinner: true,
-        leg1Score: 'IDA: 2-1',
-        leg2Score: 'VOLTA: 2-1',
-        venue: 'ARENA DO GRÊMIO • FINALIZADO',
-        isFinished: true,
-        status: MatchStatus.finalizado,
+        leg1Score: '2-1',
+        leg1Status: MatchStatus.finalizado,
+        leg2Score: '2-1',
+        leg2Status: MatchStatus.finalizado,
+        venue: 'ARENA DO GRÊMIO',
       ),
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'CRUZEIRO',
         awayTeam: 'ATLÉTICO MG',
-        aggregateScore: '1-2',
+        score: '1-2',
         isAwayWinner: true,
-        leg1Score: 'IDA: 1-1',
-        leg2Score: 'VOLTA: 0-1',
-        venue: 'MINEIRÃO • FINALIZADO',
-        isFinished: true,
-        status: MatchStatus.finalizado,
+        leg1Score: '1-1',
+        leg1Status: MatchStatus.finalizado,
+        leg2Score: '0-1',
+        leg2Status: MatchStatus.finalizado,
+        venue: 'MINEIRÃO',
       ),
     ],
   ),
   KnockoutRoundData(
     label: 'QUARTAS',
     matches: [
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'FLAMENGO',
         awayTeam: 'SÃO PAULO',
-        aggregateScore: '2-1',
+        score: '2-1',
         isHomeWinner: true,
-        leg1Score: 'IDA: 1-0',
-        leg2Score: 'VOLTA: 1-1',
-        venue: 'ARENA MARACANÃ • FINALIZADO',
-        isFinished: true,
-        status: MatchStatus.finalizado,
+        leg1Score: '1-0',
+        leg1Status: MatchStatus.finalizado,
+        leg2Score: '1-1',
+        leg2Status: MatchStatus.finalizado,
+        venue: 'ARENA MARACANÃ',
       ),
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'GRÊMIO',
         awayTeam: 'ATLÉTICO MG',
-        aggregateScore: '1-3',
-        isAwayWinner: true,
-        leg1Score: 'IDA: 0-2',
-        leg2Score: 'VOLTA: 1-1',
-        venue: 'ARENA DO GRÊMIO • FINALIZADO',
-        isFinished: true,
-        status: MatchStatus.finalizado,
+        score: '0-2',
+        leg1Score: '0-2',
+        leg1Status: MatchStatus.pendente,
+        leg2Score: '-',
+        leg2Status: MatchStatus.aIniciar,
+        venue: 'ARENA DO GRÊMIO',
       ),
     ],
   ),
   KnockoutRoundData(
     label: 'SEMI',
     matches: [
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'FLAMENGO',
         awayTeam: 'ATLÉTICO MG',
-        aggregateScore: '?',
-        leg1Score: 'IDA: -',
-        leg2Score: 'VOLTA: -',
+        score: '',
+        leg1Score: '-',
+        leg1Status: MatchStatus.aIniciar,
+        leg2Score: '-',
+        leg2Status: MatchStatus.aIniciar,
         venue: 'A DEFINIR',
-        isFinished: false,
-        status: MatchStatus.aIniciar,
       ),
     ],
   ),
   KnockoutRoundData(
     label: 'FINAL',
     matches: [
-      KnockoutMatchData(
+      CupMatchData(
         homeTeam: 'A DEFINIR',
         awayTeam: 'A DEFINIR',
-        aggregateScore: '?',
-        leg1Score: 'IDA: -',
-        leg2Score: 'VOLTA: -',
+        score: '',
+        leg1Score: '-',
+        leg1Status: MatchStatus.aIniciar,
+        leg2Score: '-',
+        leg2Status: MatchStatus.aIniciar,
         venue: 'A DEFINIR',
-        isFinished: false,
-        status: MatchStatus.aIniciar,
       ),
     ],
   ),
@@ -307,36 +341,27 @@ final _serieBTopScorers = [
 ];
 
 final _serieBMatches = [
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'VITÓRIA',
     awayTeam: 'FORTALEZA',
-    aggregateScore: '2-1',
+    score: '2-1',
     isHomeWinner: true,
-    leg1Score: 'PLACAR: 2-1',
-    leg2Score: 'RODADA 22',
-    venue: 'BARRADÃO • FINALIZADO',
-    isFinished: true,
+    venue: 'BARRADÃO • RODADA 22',
     status: MatchStatus.finalizado,
   ),
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'CRUZEIRO',
     awayTeam: 'CUIABÁ',
-    aggregateScore: '2-1', // registrado, aguardando confirmação
+    score: '2-1',
     isHomeWinner: true,
-    leg1Score: 'PLACAR: 2-1',
-    leg2Score: 'RODADA 23',
-    venue: '• AGUARD. CONFIRMAÇÃO',
-    isFinished: false,
+    venue: 'MINEIRÃO • RODADA 23',
     status: MatchStatus.pendente,
   ),
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'AMÉRICA-MG',
     awayTeam: 'CEARÁ',
-    aggregateScore: '?',
-    leg1Score: 'PLACAR: -',
-    leg2Score: 'RODADA 23',
-    venue: '• 16:00',
-    isFinished: false,
+    score: '?',
+    venue: 'ARENA INDEPENDÊNCIA • RODADA 23',
     status: MatchStatus.aIniciar,
   ),
 ];
@@ -363,37 +388,37 @@ final _copaTopScorers = [
 ];
 
 final _copaMatches = [
-  KnockoutMatchData(
+  CupMatchData(
     homeTeam: 'FLUMINENSE',
     awayTeam: 'ATLÉTICO-MG',
-    aggregateScore: '2-1',
+    score: '2-1',
     isHomeWinner: true,
-    leg1Score: 'IDA: 1-0',
-    leg2Score: 'VOLTA: 1-1',
-    venue: 'MARACANÃ • FINALIZADO',
-    isFinished: true,
-    status: MatchStatus.finalizado,
+    leg1Score: '1-0',
+    leg1Status: MatchStatus.finalizado,
+    leg2Score: '1-1',
+    leg2Status: MatchStatus.finalizado,
+    venue: 'MARACANÃ',
   ),
-  KnockoutMatchData(
+  CupMatchData(
     homeTeam: 'CORINTHIANS',
     awayTeam: 'SÃO PAULO',
-    aggregateScore: '3-1', // registrado, aguardando confirmação
+    score: '3-1',
     isHomeWinner: true,
-    leg1Score: 'IDA: 1-0',
-    leg2Score: 'VOLTA: 2-1',
-    venue: 'ARENA CORINTHIANS • AGUARD. CONFIRMAÇÃO',
-    isFinished: false,
-    status: MatchStatus.pendente,
+    leg1Score: '1-0',
+    leg1Status: MatchStatus.finalizado,
+    leg2Score: '2-1',
+    leg2Status: MatchStatus.pendente,
+    venue: 'ARENA CORINTHIANS',
   ),
-  KnockoutMatchData(
+  CupMatchData(
     homeTeam: 'PALMEIRAS',
     awayTeam: 'BOTAFOGO',
-    aggregateScore: '?',
-    leg1Score: 'IDA: -',
-    leg2Score: 'VOLTA: -',
-    venue: 'ALLIANZ PARQUE • 19:00',
-    isFinished: false,
-    status: MatchStatus.aIniciar,
+    score: '?',
+    leg1Score: '-',
+    leg1Status: MatchStatus.aIniciar,
+    leg2Score: '-',
+    leg2Status: MatchStatus.aIniciar,
+    venue: 'ALLIANZ PARQUE',
   ),
 ];
 
@@ -515,57 +540,42 @@ final _topScorers = [
 ];
 
 final _leagueMatches = [
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'MAN CITY',
     awayTeam: 'ARSENAL',
-    aggregateScore: '2-0',
+    score: '2-0',
     isHomeWinner: true,
-    leg1Score: 'PLACAR: 2-0',
-    leg2Score: 'RODADA 28',
-    venue: 'ETIHAD STADIUM • FINALIZADO',
-    isFinished: true,
+    venue: 'ETIHAD STADIUM • RODADA 28',
     status: MatchStatus.finalizado,
   ),
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'LIVERPOOL',
     awayTeam: 'CHELSEA',
-    aggregateScore: '1-1',
-    leg1Score: 'PLACAR: 1-1',
-    leg2Score: 'RODADA 28',
-    venue: 'ANFIELD • FINALIZADO',
-    isFinished: true,
+    score: '1-1',
+    venue: 'ANFIELD • RODADA 28',
     status: MatchStatus.finalizado,
   ),
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'APEX SC',
     awayTeam: 'JUVENTUS',
-    aggregateScore: '3-1',
+    score: '3-1',
     isHomeWinner: true,
-    leg1Score: 'PLACAR: 3-1',
-    leg2Score: 'RODADA 29',
-    venue: 'ARENA APEX • FINALIZADO',
-    isFinished: true,
+    venue: 'ARENA APEX • RODADA 29',
     status: MatchStatus.finalizado,
   ),
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'REAL MADRID',
     awayTeam: 'BARCELONA',
-    aggregateScore: '1-2', // registrado, aguardando confirmação
+    score: '1-2',
     isAwayWinner: true,
-    leg1Score: 'PLACAR: 1-2',
-    leg2Score: 'RODADA 31',
-    venue: 'BERNABÉU • AGUARD. CONFIRMAÇÃO',
-    isFinished: false,
+    venue: 'BERNABÉU • RODADA 31',
     status: MatchStatus.pendente,
   ),
-  KnockoutMatchData(
+  LeagueMatchData(
     homeTeam: 'BAYERN',
     awayTeam: 'DORTMUND',
-    aggregateScore: '?',
-    leg1Score: 'PLACAR: -',
-    leg2Score: 'RODADA 31',
-    venue: 'ALLIANZ ARENA • 19:00',
-    isFinished: false,
+    score: '?',
+    venue: 'ALLIANZ ARENA • RODADA 31',
     status: MatchStatus.aIniciar,
   ),
 ];
@@ -611,14 +621,14 @@ class _LeaguesPageState extends State<LeaguesPage> {
     }
   }
 
-  List<KnockoutMatchData> get _selectedMatches {
+  List<LeagueMatchData> get _selectedMatches {
     switch (_activeSeries) {
       case LeagueSeries.serieA:
         return _leagueMatches;
       case LeagueSeries.serieB:
         return _serieBMatches;
-      case LeagueSeries.copa:
-        return _copaMatches;
+      default:
+        return [];
     }
   }
 
@@ -657,10 +667,7 @@ class _LeaguesPageState extends State<LeaguesPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
-                ),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -835,7 +842,7 @@ class _LeaguesPageState extends State<LeaguesPage> {
               ...filtered.map(
                 (match) => Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: _KnockoutMatchCard(match: match),
+                  child: _LeagueMatchCard(match: match),
                 ),
               ),
           ],
@@ -1067,8 +1074,144 @@ class _KnockoutRoundSelector extends StatelessWidget {
   }
 }
 
+// ─── LEAGUE MATCH CARD (Série A/B — jogo único, sem ida/volta) ───────────────
+
+class _LeagueMatchCard extends StatelessWidget {
+  final LeagueMatchData match;
+
+  const _LeagueMatchCard({required this.match});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF16191D),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFF1F2327)),
+      ),
+      child: Column(
+        children: [
+          // Teams + score
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            child: Row(
+              children: [
+                // Home
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _TeamShieldIcon(highlighted: match.isHomeWinner),
+                      const SizedBox(height: 10),
+                      Text(
+                        match.homeTeam,
+                        style: TextStyle(
+                          color: match.isHomeWinner
+                              ? const Color(0xFF00FF41)
+                              : Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Score badge
+                _ScoreBadge(score: match.score, status: match.status),
+                // Away
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _TeamShieldIcon(highlighted: match.isAwayWinner),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        match.awayTeam,
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                          color: match.isAwayWinner
+                              ? const Color(0xFF00FF41)
+                              : Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Divider
+          Container(
+            height: 1,
+            margin: const EdgeInsets.symmetric(horizontal: 18),
+            color: const Color(0xFF1F2327),
+          ),
+          // Venue + pending warning
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            child: Column(
+              children: [
+                Text(
+                  match.venue,
+                  style: const TextStyle(
+                    color: Color(0xFF4A5047),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                if (match.status == MatchStatus.pendente) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE0A86B).withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xFFE0A86B).withValues(alpha: 0.25),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.schedule,
+                          color: Color(0xFFE0A86B),
+                          size: 11,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'RESULTADO NÃO REFLETE NA CLASSIFICAÇÃO',
+                          style: TextStyle(
+                            color: Color(0xFFE0A86B),
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _KnockoutMatchCard extends StatelessWidget {
-  final KnockoutMatchData match;
+  final CupMatchData match;
 
   const _KnockoutMatchCard({required this.match});
 
@@ -1107,8 +1250,12 @@ class _KnockoutMatchCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Score badge
-                _ScoreBadge(score: match.aggregateScore, status: match.status),
+                // Score badge (agregado — derivado de ida+volta)
+                _AggregateBadge(
+                  score: match.score,
+                  leg1Status: match.leg1Status,
+                  leg2Status: match.leg2Status,
+                ),
                 // Away team
                 Expanded(
                   child: Column(
@@ -1150,30 +1297,22 @@ class _KnockoutMatchCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      match.leg1Score,
-                      style: const TextStyle(
-                        color: Color(0xFF7C8579),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.2,
-                      ),
+                    _LegChip(
+                      label: 'IDA',
+                      score: match.leg1Score,
+                      status: match.leg1Status,
                     ),
-                    const SizedBox(width: 18),
+                    const SizedBox(width: 12),
                     Container(
                       width: 1,
-                      height: 14,
+                      height: 32,
                       color: const Color(0xFF2A2F33),
                     ),
-                    const SizedBox(width: 18),
-                    Text(
-                      match.leg2Score,
-                      style: const TextStyle(
-                        color: Color(0xFF7C8579),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.2,
-                      ),
+                    const SizedBox(width: 12),
+                    _LegChip(
+                      label: 'VOLTA',
+                      score: match.leg2Score,
+                      status: match.leg2Status,
                     ),
                   ],
                 ),
@@ -1232,6 +1371,91 @@ class _KnockoutMatchCard extends StatelessWidget {
   }
 }
 
+class _LegChip extends StatelessWidget {
+  final String label;
+  final String score;
+  final MatchStatus status;
+
+  const _LegChip({
+    required this.label,
+    required this.score,
+    required this.status,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final Color accentColor;
+    final String statusLabel;
+
+    switch (status) {
+      case MatchStatus.finalizado:
+        accentColor = const Color(0xFF00FF41);
+        statusLabel = 'FINALIZADO';
+        break;
+      case MatchStatus.pendente:
+        accentColor = const Color(0xFFE0A86B);
+        statusLabel = 'PENDENTE';
+        break;
+      case MatchStatus.aIniciar:
+        accentColor = const Color(0xFF6B9EFF);
+        statusLabel = 'A INICIAR';
+        break;
+      case MatchStatus.todos:
+        accentColor = const Color(0xFF4A5047);
+        statusLabel = '';
+        break;
+    }
+
+    final hasScore = score.isNotEmpty && score != '-';
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Label IDA / VOLTA
+        Text(
+          label,
+          style: const TextStyle(
+            color: Color(0xFF4A5047),
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.4,
+          ),
+        ),
+        const SizedBox(height: 6),
+        // Score
+        Text(
+          hasScore ? score : '-',
+          style: TextStyle(
+            color: hasScore ? Colors.white : const Color(0xFF2A2F33),
+            fontSize: 14,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
+          ),
+        ),
+        const SizedBox(height: 6),
+        // Status badge
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+          decoration: BoxDecoration(
+            color: accentColor.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: accentColor.withValues(alpha: 0.30)),
+          ),
+          child: Text(
+            statusLabel,
+            style: TextStyle(
+              color: accentColor,
+              fontSize: 8,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _TeamShieldIcon extends StatelessWidget {
   final bool highlighted;
 
@@ -1256,6 +1480,91 @@ class _TeamShieldIcon extends StatelessWidget {
         Icons.shield,
         color: highlighted ? const Color(0xFF00FF41) : const Color(0xFF4A5047),
         size: 22,
+      ),
+    );
+  }
+}
+
+class _AggregateBadge extends StatelessWidget {
+  final String score;
+  final MatchStatus leg1Status;
+  final MatchStatus leg2Status;
+
+  const _AggregateBadge({
+    required this.score,
+    required this.leg1Status,
+    required this.leg2Status,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Derive aggregate label from individual leg statuses:
+    // both finalizado → FINAL
+    // both aIniciar   → '' (vazio)
+    // anything else   → PARCIAL
+    final bothFinal =
+        leg1Status == MatchStatus.finalizado &&
+        leg2Status == MatchStatus.finalizado;
+    final noneStarted =
+        leg1Status == MatchStatus.aIniciar &&
+        leg2Status == MatchStatus.aIniciar;
+
+    final String label = bothFinal
+        ? 'FINAL'
+        : noneStarted
+        ? ''
+        : 'PARCIAL';
+    final Color accentColor = bothFinal
+        ? const Color(0xFF00FF41)
+        : noneStarted
+        ? const Color(0xFF4A5047)
+        : const Color(0xFFE0A86B);
+    final Color bgColor = bothFinal
+        ? const Color(0xFF0A1A0E)
+        : noneStarted
+        ? const Color(0xFF1A1E22)
+        : const Color(0xFF1E1608);
+    final Color borderColor = bothFinal
+        ? const Color(0xFF00FF41).withValues(alpha: 0.35)
+        : noneStarted
+        ? const Color(0xFF2A2F33)
+        : const Color(0xFFE0A86B).withValues(alpha: 0.35);
+
+    final hasScore = !noneStarted;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: borderColor),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            hasScore ? score : '?',
+            style: TextStyle(
+              color: hasScore ? accentColor : const Color(0xFF4A5047),
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
+            ),
+          ),
+          if (label.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: accentColor,
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.4,
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -1354,7 +1663,7 @@ class _CopaTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _LeagueTabButton(
           label: 'MATA-MATA',
@@ -1389,7 +1698,7 @@ class _LeagueTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _LeagueTabButton(
           label: 'CLASSIFICAÇÃO',

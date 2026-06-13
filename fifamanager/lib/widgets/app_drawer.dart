@@ -72,7 +72,12 @@ class AppDrawer extends StatelessWidget {
                 route: AppRoutes.leagues,
                 active: activeRoute == AppRoutes.leagues,
               ),
-              _DrawerLink(icon: Icons.group, label: 'ELENCO', route: null), //TR
+              _DrawerLink(
+                icon: Icons.group,
+                label: 'ELENCO',
+                route: AppRoutes.squad,
+                active: activeRoute == AppRoutes.squad,
+              ), //TR
               _DrawerLink(
                 icon: Icons.attach_money,
                 label: 'FINANCEIRO',

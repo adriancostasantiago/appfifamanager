@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:fifamanager/pages/squad_page.dart';
+import 'package:flutter/material.dart';
 
 import 'pages/home_page.dart';
 import 'pages/leagues_page.dart';
@@ -43,12 +44,7 @@ class MyApp extends StatelessWidget {
             page = const RegisterMatchPage();
             break;
           case AppRoutes.squad:
-            page = const ChampionPage(
-              teamName: 'APEX SC',
-              jogos: 38,
-              vitorias: 29,
-              gols: 84,
-            );
+            page = const SquadPage();
           case AppRoutes.champion:
             page = const ChampionPage(
               teamName: 'APEX SC',
