@@ -2,300 +2,329 @@ import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
+import 'player_detail_page.dart';
 
 enum SquadViewMode { resumo, detalhado }
 
-final List<PlayerData> goalkeepers = [
-  PlayerData(
-    name: 'Marc-André Ter Stegen',
-    country: 'ALEMANHA',
-    position: 'GK',
-    photo: '',
-    ovr: 89,
-    marketValue: '€12M',
-    salary: '€350K/sem',
-    contractUntil: '2028',
-  ),
-  PlayerData(
-    name: 'Iñaki Peña',
-    country: 'ESPANHA',
-    position: 'GK',
-    photo: '',
-    ovr: 67,
-    marketValue: '€5M',
-    salary: '€80K/sem',
-    contractUntil: '2026',
-  ),
-  PlayerData(
-    name: 'Ander Astralaga',
-    country: 'ESPANHA',
-    position: 'GK',
-    photo: '',
-    ovr: 59,
-    marketValue: '€1M',
-    salary: '€15K/sem',
-    contractUntil: '2027',
-  ),
-];
+// ─── DADOS DO ELENCO ────────────────────────────────────────────────────────
 
-final List<PlayerData> defenders = [
-  PlayerData(
-    name: 'Ronald Araújo',
-    country: 'URUGUAI',
-    position: 'CB',
-    photo: '',
-    ovr: 49,
-    marketValue: '€35M',
-    salary: '€220K/sem',
-    contractUntil: '2026',
-  ),
-  PlayerData(
-    name: 'Jules Koundé',
-    country: 'FRANÇA',
-    position: 'RB',
-    photo: '',
-    ovr: 85,
-    marketValue: '€55M',
-    salary: '€260K/sem',
-    contractUntil: '2029',
-  ),
-  PlayerData(
-    name: 'Alejandro Balde',
-    country: 'ESPANHA',
-    position: 'LB',
-    photo: '',
-    ovr: 83,
-    marketValue: '€60M',
-    salary: '€240K/sem',
-    contractUntil: '2028',
-  ),
-  PlayerData(
-    name: 'Andreas Christensen',
-    country: 'DINAMARCA',
-    position: 'CB',
-    photo: '',
-    ovr: 83,
-    marketValue: '€18M',
-    salary: '€190K/sem',
-    contractUntil: '2026',
-  ),
-  PlayerData(
-    name: 'Eric García',
-    country: 'ESPANHA',
-    position: 'CB',
-    photo: '',
-    ovr: 80,
-    marketValue: '€15M',
-    salary: '€110K/sem',
-    contractUntil: '2027',
-  ),
-  PlayerData(
-    name: 'Pau Cubarsí',
-    country: 'ESPANHA',
-    position: 'CB',
-    photo: '',
-    ovr: 81,
-    marketValue: '€70M',
-    salary: '€90K/sem',
-    contractUntil: '2030',
-  ),
-  PlayerData(
-    name: 'Héctor Fort',
-    country: 'ESPANHA',
-    position: 'RB',
-    photo: '',
-    ovr: 73,
-    marketValue: '€10M',
-    salary: '€40K/sem',
-    contractUntil: '2029',
-  ),
-  PlayerData(
-    name: 'Gerard Martín',
-    country: 'ESPANHA',
-    position: 'LB',
-    photo: '',
-    ovr: 71,
-    marketValue: '€8M',
-    salary: '€35K/sem',
-    contractUntil: '2027',
-  ),
-];
+/// Objeto com as estatísticas gerais do elenco e a lista completa de
+/// jogadores. Em uma próxima etapa esse objeto pode vir diretamente de uma
+/// API/Firebase em vez de ser montado localmente.
+final SquadData squad = SquadData(
+  averageOvr: 78.0,
+  playerCount: 28,
+  totalValue: '€982M',
+  totalSalary: '€4.1M',
+  players: [
+    // GOLEIROS
+    PlayerData(
+      name: 'Marc-André Ter Stegen',
+      country: 'ALEMANHA',
+      position: 'GK',
+      photo: '',
+      ovr: 89,
+      marketValue: '€12M',
+      salary: '€350K',
+      contractUntil: '2028',
+    ),
+    PlayerData(
+      name: 'Iñaki Peña',
+      country: 'ESPANHA',
+      position: 'GK',
+      photo: '',
+      ovr: 67,
+      marketValue: '€5M',
+      salary: '€80K',
+      contractUntil: '2026',
+    ),
+    PlayerData(
+      name: 'Ander Astralaga',
+      country: 'ESPANHA',
+      position: 'GK',
+      photo: '',
+      ovr: 59,
+      marketValue: '€1M',
+      salary: '€15K',
+      contractUntil: '2027',
+    ),
 
-final List<PlayerData> midfielders = [
-  PlayerData(
-    name: 'Pedri González',
-    country: 'ESPANHA',
-    position: 'CM',
-    photo: '',
-    ovr: 87,
-    marketValue: '€90M',
-    salary: '€280K/sem',
-    contractUntil: '2028',
-  ),
-  PlayerData(
-    name: 'Frenkie de Jong',
-    country: 'HOLANDA',
-    position: 'CDM',
-    photo: '',
-    ovr: 88,
-    marketValue: '€65M',
-    salary: '€300K/sem',
-    contractUntil: '2026',
-  ),
-  PlayerData(
-    name: 'Gavi',
-    country: 'ESPANHA',
-    position: 'CM',
-    photo: '',
-    ovr: 85,
-    marketValue: '€80M',
-    salary: '€220K/sem',
-    contractUntil: '2030',
-  ),
-  PlayerData(
-    name: 'Dani Olmo',
-    country: 'ESPANHA',
-    position: 'CAM',
-    photo: '',
-    ovr: 85,
-    marketValue: '€50M',
-    salary: '€200K/sem',
-    contractUntil: '2029',
-  ),
-  PlayerData(
-    name: 'Fermín López',
-    country: 'ESPANHA',
-    position: 'CM',
-    photo: '',
-    ovr: 80,
-    marketValue: '€40M',
-    salary: '€95K/sem',
-    contractUntil: '2029',
-  ),
-  PlayerData(
-    name: 'Marc Casadó',
-    country: 'ESPANHA',
-    position: 'CDM',
-    photo: '',
-    ovr: 78,
-    marketValue: '€25M',
-    salary: '€60K/sem',
-    contractUntil: '2028',
-  ),
-  PlayerData(
-    name: 'Pablo Torre',
-    country: 'ESPANHA',
-    position: 'CAM',
-    photo: '',
-    ovr: 76,
-    marketValue: '€12M',
-    salary: '€45K/sem',
-    contractUntil: '2027',
-  ),
-  PlayerData(
-    name: 'Oriol Romeu',
-    country: 'ESPANHA',
-    position: 'CDM',
-    photo: '',
-    ovr: 77,
-    marketValue: '€4M',
-    salary: '€85K/sem',
-    contractUntil: '2026',
-  ),
-  PlayerData(
-    name: 'Noah Darvich',
-    country: 'ALEMANHA',
-    position: 'CAM',
-    photo: '',
-    ovr: 70,
-    marketValue: '€6M',
-    salary: '€20K/sem',
-    contractUntil: '2027',
-  ),
-  PlayerData(
-    name: 'Unai Hernández',
-    country: 'ESPANHA',
-    position: 'CM',
-    photo: '',
-    ovr: 68,
-    marketValue: '€3M',
-    salary: '€12K/sem',
-    contractUntil: '2026',
-  ),
-];
+    // DEFENSORES
+    PlayerData(
+      name: 'Ronald Araújo',
+      country: 'URUGUAI',
+      position: 'CB',
+      photo: '',
+      ovr: 49,
+      marketValue: '€35M',
+      salary: '€220K',
+      contractUntil: '2026',
+    ),
+    PlayerData(
+      name: 'Jules Koundé',
+      country: 'FRANÇA',
+      position: 'RB',
+      photo: '',
+      ovr: 85,
+      marketValue: '€55M',
+      salary: '€260K',
+      contractUntil: '2029',
+    ),
+    PlayerData(
+      name: 'Alejandro Balde',
+      country: 'ESPANHA',
+      position: 'LB',
+      photo: '',
+      ovr: 83,
+      marketValue: '€60M',
+      salary: '€240K',
+      contractUntil: '2028',
+    ),
+    PlayerData(
+      name: 'Andreas Christensen',
+      country: 'DINAMARCA',
+      position: 'CB',
+      photo: '',
+      ovr: 83,
+      marketValue: '€18M',
+      salary: '€190K',
+      contractUntil: '2026',
+    ),
+    PlayerData(
+      name: 'Eric García',
+      country: 'ESPANHA',
+      position: 'CB',
+      photo: '',
+      ovr: 80,
+      marketValue: '€15M',
+      salary: '€110K',
+      contractUntil: '2027',
+    ),
+    PlayerData(
+      name: 'Pau Cubarsí',
+      country: 'ESPANHA',
+      position: 'CB',
+      photo: '',
+      ovr: 81,
+      marketValue: '€70M',
+      salary: '€90K',
+      contractUntil: '2030',
+    ),
+    PlayerData(
+      name: 'Héctor Fort',
+      country: 'ESPANHA',
+      position: 'RB',
+      photo: '',
+      ovr: 73,
+      marketValue: '€10M',
+      salary: '€40K',
+      contractUntil: '2029',
+    ),
+    PlayerData(
+      name: 'Gerard Martín',
+      country: 'ESPANHA',
+      position: 'LB',
+      photo: '',
+      ovr: 71,
+      marketValue: '€8M',
+      salary: '€35K',
+      contractUntil: '2027',
+    ),
 
-final List<PlayerData> forwards = [
-  PlayerData(
-    name: 'Robert Lewandowski',
-    country: 'POLÔNIA',
-    position: 'ST',
-    photo: '',
-    ovr: 89,
-    marketValue: '€15M',
-    salary: '€340K/sem',
-    contractUntil: '2026',
-  ),
-  PlayerData(
-    name: 'Raphinha',
-    country: 'BRASIL',
-    position: 'RW',
-    photo: '',
-    ovr: 87,
-    marketValue: '€70M',
-    salary: '€230K/sem',
-    contractUntil: '2027',
-  ),
-  PlayerData(
-    name: 'Lamine Yamal',
-    country: 'ESPANHA',
-    position: 'RW',
-    photo: '',
-    ovr: 81,
-    marketValue: '€150M',
-    salary: '€150K/sem',
-    contractUntil: '2030',
-  ),
-  PlayerData(
-    name: 'Ferran Torres',
-    country: 'ESPANHA',
-    position: 'LW',
-    photo: '',
-    ovr: 82,
-    marketValue: '€30M',
-    salary: '€180K/sem',
-    contractUntil: '2027',
-  ),
-  PlayerData(
-    name: 'Ansu Fati',
-    country: 'ESPANHA',
-    position: 'LW',
-    photo: '',
-    ovr: 78,
-    marketValue: '€20M',
-    salary: '€140K/sem',
-    contractUntil: '2027',
-  ),
-  PlayerData(
-    name: 'Pau Víctor',
-    country: 'ESPANHA',
-    position: 'ST',
-    photo: '',
-    ovr: 73,
-    marketValue: '€8M',
-    salary: '€30K/sem',
-    contractUntil: '2028',
-  ),
-  PlayerData(
-    name: 'Vitor Roque',
-    country: 'BRASIL',
-    position: 'ST',
-    photo: '',
-    ovr: 79,
-    marketValue: '€25M',
-    salary: '€55K/sem',
-    contractUntil: '2029',
-  ),
-];
+    // MEIAS
+    PlayerData(
+      name: 'Pedri González',
+      country: 'ESPANHA',
+      position: 'CM',
+      photo: '',
+      ovr: 87,
+      marketValue: '€90M',
+      salary: '€280K',
+      contractUntil: '2028',
+    ),
+    PlayerData(
+      name: 'Frenkie de Jong',
+      country: 'HOLANDA',
+      position: 'CDM',
+      photo: '',
+      ovr: 88,
+      marketValue: '€65M',
+      salary: '€300K',
+      contractUntil: '2026',
+    ),
+    PlayerData(
+      name: 'Gavi',
+      country: 'ESPANHA',
+      position: 'CM',
+      photo: '',
+      ovr: 85,
+      marketValue: '€80M',
+      salary: '€220K',
+      contractUntil: '2030',
+    ),
+    PlayerData(
+      name: 'Dani Olmo',
+      country: 'ESPANHA',
+      position: 'CAM',
+      photo: '',
+      ovr: 85,
+      marketValue: '€50M',
+      salary: '€200K',
+      contractUntil: '2029',
+    ),
+    PlayerData(
+      name: 'Fermín López',
+      country: 'ESPANHA',
+      position: 'CM',
+      photo: '',
+      ovr: 80,
+      marketValue: '€40M',
+      salary: '€95K',
+      contractUntil: '2029',
+    ),
+    PlayerData(
+      name: 'Marc Casadó',
+      country: 'ESPANHA',
+      position: 'CDM',
+      photo: '',
+      ovr: 78,
+      marketValue: '€25M',
+      salary: '€60K',
+      contractUntil: '2028',
+    ),
+    PlayerData(
+      name: 'Pablo Torre',
+      country: 'ESPANHA',
+      position: 'CAM',
+      photo: '',
+      ovr: 76,
+      marketValue: '€12M',
+      salary: '€45K',
+      contractUntil: '2027',
+    ),
+    PlayerData(
+      name: 'Oriol Romeu',
+      country: 'ESPANHA',
+      position: 'CDM',
+      photo: '',
+      ovr: 77,
+      marketValue: '€4M',
+      salary: '€85K',
+      contractUntil: '2026',
+    ),
+    PlayerData(
+      name: 'Noah Darvich',
+      country: 'ALEMANHA',
+      position: 'CAM',
+      photo: '',
+      ovr: 70,
+      marketValue: '€6M',
+      salary: '€20K',
+      contractUntil: '2027',
+    ),
+    PlayerData(
+      name: 'Unai Hernández',
+      country: 'ESPANHA',
+      position: 'CM',
+      photo: '',
+      ovr: 68,
+      marketValue: '€3M',
+      salary: '€12K',
+      contractUntil: '2026',
+    ),
+
+    // ATACANTES
+    PlayerData(
+      name: 'Robert Lewandowski',
+      country: 'POLÔNIA',
+      position: 'ST',
+      photo: '',
+      ovr: 89,
+      marketValue: '€15M',
+      salary: '€340K',
+      contractUntil: '2026',
+    ),
+    PlayerData(
+      name: 'Raphinha',
+      country: 'BRASIL',
+      position: 'RW',
+      photo: '',
+      ovr: 87,
+      marketValue: '€70M',
+      salary: '€230K',
+      contractUntil: '2027',
+    ),
+    PlayerData(
+      name: 'Lamine Yamal',
+      country: 'ESPANHA',
+      position: 'RW',
+      photo: '',
+      ovr: 81,
+      marketValue: '€150M',
+      salary: '€150K',
+      contractUntil: '2030',
+    ),
+    PlayerData(
+      name: 'Ferran Torres',
+      country: 'ESPANHA',
+      position: 'LW',
+      photo: '',
+      ovr: 82,
+      marketValue: '€30M',
+      salary: '€180K',
+      contractUntil: '2027',
+    ),
+    PlayerData(
+      name: 'Ansu Fati',
+      country: 'ESPANHA',
+      position: 'LW',
+      photo: '',
+      ovr: 78,
+      marketValue: '€20M',
+      salary: '€140K',
+      contractUntil: '2027',
+    ),
+    PlayerData(
+      name: 'Pau Víctor',
+      country: 'ESPANHA',
+      position: 'ST',
+      photo: '',
+      ovr: 73,
+      marketValue: '€8M',
+      salary: '€30K',
+      contractUntil: '2028',
+    ),
+    PlayerData(
+      name: 'Vitor Roque',
+      country: 'BRASIL',
+      position: 'ST',
+      photo: '',
+      ovr: 79,
+      marketValue: '€25M',
+      salary: '€55K',
+      contractUntil: '2029',
+    ),
+  ],
+);
+
+// Listas por posição, derivadas a partir de `squad.players`.
+final List<PlayerData> goalkeepers = squad.players
+    .where((p) => p.position == 'GK')
+    .toList();
+
+final List<PlayerData> defenders = squad.players
+    .where((p) => ['CB', 'RB', 'LB'].contains(p.position))
+    .toList();
+
+final List<PlayerData> midfielders = squad.players
+    .where((p) => ['CM', 'CDM', 'CAM'].contains(p.position))
+    .toList();
+
+final List<PlayerData> forwards = squad.players
+    .where((p) => ['ST', 'RW', 'LW'].contains(p.position))
+    .toList();
+
+// ─── PÁGINA ─────────────────────────────────────────────────────────────────
 
 class SquadPage extends StatefulWidget {
   const SquadPage({super.key});
@@ -360,7 +389,7 @@ class _SquadPageState extends State<SquadPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const _SquadStats(),
+                    _SquadStats(squad: squad),
                     const SizedBox(height: 20),
 
                     _SquadSearchField(
@@ -428,30 +457,49 @@ class _SquadPageState extends State<SquadPage> {
   }
 }
 
+// ─── ESTATÍSTICAS DO ELENCO ─────────────────────────────────────────────────
+
 class _SquadStats extends StatelessWidget {
-  const _SquadStats();
+  final SquadData squad;
+
+  const _SquadStats({required this.squad});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: _StatCard(
-            title: 'MÉDIA OVR',
-            value: '84.2',
-            valueColor: Color(0xFF00FF41),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: _StatCard(
+                title: 'MÉDIA OVR',
+                value: squad.averageOvr.toStringAsFixed(1),
+                valueColor: const Color(0xFF00FF41),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _StatCard(
+                title: 'JOGADORES',
+                value: squad.playerCount.toString(),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 10),
-
-        Expanded(
-          child: _StatCard(title: 'JOGADORES', value: '28'),
-        ),
-
-        const SizedBox(width: 10),
-
-        Expanded(
-          child: _StatCard(title: 'VALOR TOTAL', value: '€420M'),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: _StatCard(title: 'VALOR TOTAL', value: squad.totalValue),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _StatCard(
+                title: 'SALÁRIO TOTAL',
+                value: squad.totalSalary,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -505,6 +553,8 @@ class _StatCard extends StatelessWidget {
     );
   }
 }
+
+// ─── BUSCA ──────────────────────────────────────────────────────────────────
 
 /// Campo de busca para localizar um jogador pelo nome.
 class _SquadSearchField extends StatelessWidget {
@@ -587,6 +637,8 @@ class _NoResultsMessage extends StatelessWidget {
   }
 }
 
+// ─── TOGGLE RESUMO / DETALHADO ──────────────────────────────────────────────
+
 /// Toggle de visualização [ RESUMO ] [ DETALHADO ], no mesmo padrão visual
 /// das abas "CLASSIFICAÇÃO" / "ARTILHARIA" da tela de ligas.
 class _SquadViewModeTabs extends StatelessWidget {
@@ -604,7 +656,7 @@ class _SquadViewModeTabs extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _SquadViewModeTabButton(
-          label: 'RESUMO',
+          label: 'RESUMIDO',
           selected: activeMode == SquadViewMode.resumo,
           onTap: () => onModeSelected(SquadViewMode.resumo),
         ),
@@ -663,6 +715,8 @@ class _SquadViewModeTabButton extends StatelessWidget {
     );
   }
 }
+
+// ─── SEÇÃO POR POSIÇÃO ──────────────────────────────────────────────────────
 
 class _PositionSection extends StatelessWidget {
   final String title;
@@ -743,7 +797,19 @@ class _PlayerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ovrColor = _getOvrColor(player.ovr);
 
-    return Container(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  PlayerDetailPage(player: _buildProfile(player)),
+            ),
+          );
+        },
+        child: Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF16191D),
@@ -836,6 +902,8 @@ class _PlayerCard extends StatelessWidget {
           ),
         ],
       ),
+        ),
+      ),
     );
   }
 }
@@ -865,32 +933,37 @@ class _PlayerTable extends StatelessWidget {
             child: const Row(
               children: [
                 Expanded(
-                  flex: 4,
-                  child: Text(
-                    'NOME',
-                    style: TextStyle(
-                      color: Color(0xFF7C8579),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.0,
-                    ),
+                  flex: 5,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 24),
+                      Text(
+                        'NOME',
+                        style: TextStyle(
+                          color: Color(0xFF7C8579),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                // Expanded(
+                //   flex: 1,
+                //   child: Text(
+                //     'OVR',
+                //     textAlign: TextAlign.center,
+                //     style: TextStyle(
+                //       color: Color(0xFF7C8579),
+                //       fontSize: 11,
+                //       fontWeight: FontWeight.w800,
+                //       letterSpacing: 1.0,
+                //     ),
+                //   ),
+                // ),
                 Expanded(
                   flex: 2,
-                  child: Text(
-                    'OVR',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF7C8579),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
                   child: Text(
                     'VALOR',
                     textAlign: TextAlign.right,
@@ -903,7 +976,7 @@ class _PlayerTable extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: Text(
                     'SALÁRIO',
                     textAlign: TextAlign.right,
@@ -969,7 +1042,7 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Row(
                         children: [
                           Icon(
@@ -980,6 +1053,27 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                             color: const Color(0xFF7C8579),
                           ),
                           const SizedBox(width: 4),
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: ovrColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                player.ovr.toString(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -990,7 +1084,7 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 13,
+                                    fontSize: 10,
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
@@ -1011,31 +1105,31 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                         ],
                       ),
                     ),
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: Center(
+                    //     child: Container(
+                    //       padding: const EdgeInsets.symmetric(
+                    //         horizontal: 8,
+                    //         vertical: 4,
+                    //       ),
+                    //       decoration: BoxDecoration(
+                    //         color: ovrColor,
+                    //         borderRadius: BorderRadius.circular(8),
+                    //       ),
+                    //       child: Text(
+                    //         player.ovr.toString(),
+                    //         style: const TextStyle(
+                    //           color: Colors.black,
+                    //           fontWeight: FontWeight.w900,
+                    //           fontSize: 13,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Expanded(
                       flex: 2,
-                      child: Center(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: ovrColor,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            player.ovr.toString(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
                       child: Text(
                         player.marketValue ?? '-',
                         textAlign: TextAlign.right,
@@ -1049,7 +1143,7 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Text(
                         player.salary ?? '-',
                         textAlign: TextAlign.right,
@@ -1203,7 +1297,7 @@ class _PlayerActionButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1A1E22),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withOpacity(0.4)),
+            border: Border.all(color: color.withValues(alpha: 0.4)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1230,6 +1324,27 @@ class _PlayerActionButton extends StatelessWidget {
 
 // ─── HELPERS ────────────────────────────────────────────────────────────────
 
+/// Monta um [PlayerProfile] a partir de um [PlayerData] da squad, usando os
+/// dados reais do jogador (nome, posição, país, OVR, valor, salário e
+/// contrato) e preenchendo o restante (radar, estatísticas detalhadas e
+/// playstyles) com os dados de exemplo até que essas informações venham
+/// de uma API/Firebase.
+PlayerProfile _buildProfile(PlayerData player) {
+  return PlayerProfile(
+    name: player.name,
+    country: player.country,
+    position: player.position,
+    photo: player.photo,
+    ovr: player.ovr,
+    marketValue: player.marketValue ?? '-',
+    salary: player.salary ?? '-',
+    contractUntil: player.contractUntil,
+    radar: samplePlayerProfile.radar,
+    statGroups: samplePlayerProfile.statGroups,
+    playstyles: samplePlayerProfile.playstyles,
+  );
+}
+
 Color _getOvrColor(int ovr) {
   if (ovr <= 50) {
     return const Color(0xFFE53935); // Vermelho
@@ -1242,6 +1357,25 @@ Color _getOvrColor(int ovr) {
   } else {
     return const Color.fromARGB(255, 5, 104, 46); // Verde Escuro
   }
+}
+
+// ─── MODELOS ────────────────────────────────────────────────────────────────
+
+/// Estatísticas gerais do elenco e a lista completa de jogadores.
+class SquadData {
+  final double averageOvr;
+  final int playerCount;
+  final String totalValue;
+  final String totalSalary;
+  final List<PlayerData> players;
+
+  SquadData({
+    required this.averageOvr,
+    required this.playerCount,
+    required this.totalValue,
+    required this.totalSalary,
+    required this.players,
+  });
 }
 
 class PlayerData {

@@ -1,12 +1,13 @@
-﻿import 'package:fifamanager/pages/squad_page.dart';
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'pages/home_page.dart';
 import 'pages/leagues_page.dart';
 import 'pages/login_page.dart';
+import 'pages/player_detail_page.dart';
 import 'pages/register_match_page.dart';
 import 'pages/splash_page.dart';
 import 'pages/champion_page.dart';
+import 'pages/squad_page.dart';
 import 'pages/trophy_room_page.dart';
 import 'routes/app_routes.dart';
 import 'theme/app_theme.dart';
@@ -45,6 +46,10 @@ class MyApp extends StatelessWidget {
             break;
           case AppRoutes.squad:
             page = const SquadPage();
+            break;
+          case AppRoutes.playerDetail:
+            page = const PlayerDetailPage(player: samplePlayerProfile);
+            break;
           case AppRoutes.champion:
             page = const ChampionPage(
               teamName: 'APEX SC',

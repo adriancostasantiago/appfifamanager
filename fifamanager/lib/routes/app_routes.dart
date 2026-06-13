@@ -7,4 +7,5 @@ abstract class AppRoutes {
   static const squad = '/squad';
   static const champion = '/champion';
   static const trophies = '/trophies';
+  static const playerDetail = '/player-detail';
 }
