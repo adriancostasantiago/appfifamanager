@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'contract_renewal_page.dart';
 
 // ─── PALETA (mesma da squad page) ──────────────────────────────────────────
 
@@ -24,7 +25,9 @@ class PlayerProfile {
   final int ovr;
   final String marketValue;
   final String salary;
-  final String contractUntil;
+
+  /// Quantos anos de contrato o jogador ainda possui (1 a 5).
+  final int contractUntil;
 
   /// Valores de 0.0 a 1.0 para os 5 eixos do radar, na ordem:
   /// ATAQUE, TÉCNICA, FÍSICO, DEFESA, MENTAL.
@@ -138,7 +141,7 @@ const PlayerProfile samplePlayerProfile = PlayerProfile(
   ovr: 87,
   marketValue: '€120M',
   salary: '€250K',
-  contractUntil: '2028',
+  contractUntil: 3,
   radar: {
     'ATAQUE': 0.40,
     'TÉCNICA': 0.58,
@@ -754,8 +757,9 @@ class _PlayerTopStats extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _TopStatCard(
-            title: 'FIM\nCONTRATO',
-            value: player.contractUntil,
+            title: 'CONTRATO\nRESTANTE',
+            value: '${player.contractUntil} '
+                '${player.contractUntil == 1 ? 'ANO' : 'ANOS'}',
             highlighted: true,
           ),
         ),
@@ -835,7 +839,17 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'RENOVAR',
             color: _kAccent,
             onTap: () {
-              // TODO: implementar lógica de renovação de contrato
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ContractRenewalPage(
+                    playerName: player.name,
+                    currentSalaryK: ContractRenewalPage.parseSalaryK(
+                      player.salary,
+                    ),
+                    currentContractYears: player.contractUntil,
+                  ),
+                ),
+              );
             },
           ),
         ),

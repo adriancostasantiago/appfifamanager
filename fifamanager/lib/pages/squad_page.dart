@@ -3,6 +3,7 @@ import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
 import 'player_detail_page.dart';
+import 'contract_renewal_page.dart';
 
 enum SquadViewMode { resumo, detalhado }
 
@@ -26,7 +27,7 @@ final SquadData squad = SquadData(
       ovr: 89,
       marketValue: '€12M',
       salary: '€350K',
-      contractUntil: '2028',
+      contractUntil: 3,
     ),
     PlayerData(
       name: 'Iñaki Peña',
@@ -36,7 +37,7 @@ final SquadData squad = SquadData(
       ovr: 67,
       marketValue: '€5M',
       salary: '€80K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
     PlayerData(
       name: 'Ander Astralaga',
@@ -46,7 +47,7 @@ final SquadData squad = SquadData(
       ovr: 59,
       marketValue: '€1M',
       salary: '€15K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
 
     // DEFENSORES
@@ -58,7 +59,7 @@ final SquadData squad = SquadData(
       ovr: 49,
       marketValue: '€35M',
       salary: '€220K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
     PlayerData(
       name: 'Jules Koundé',
@@ -68,7 +69,7 @@ final SquadData squad = SquadData(
       ovr: 85,
       marketValue: '€55M',
       salary: '€260K',
-      contractUntil: '2029',
+      contractUntil: 4,
     ),
     PlayerData(
       name: 'Alejandro Balde',
@@ -78,7 +79,7 @@ final SquadData squad = SquadData(
       ovr: 83,
       marketValue: '€60M',
       salary: '€240K',
-      contractUntil: '2028',
+      contractUntil: 3,
     ),
     PlayerData(
       name: 'Andreas Christensen',
@@ -88,7 +89,7 @@ final SquadData squad = SquadData(
       ovr: 83,
       marketValue: '€18M',
       salary: '€190K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
     PlayerData(
       name: 'Eric García',
@@ -98,7 +99,7 @@ final SquadData squad = SquadData(
       ovr: 80,
       marketValue: '€15M',
       salary: '€110K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
     PlayerData(
       name: 'Pau Cubarsí',
@@ -108,7 +109,7 @@ final SquadData squad = SquadData(
       ovr: 81,
       marketValue: '€70M',
       salary: '€90K',
-      contractUntil: '2030',
+      contractUntil: 5,
     ),
     PlayerData(
       name: 'Héctor Fort',
@@ -118,7 +119,7 @@ final SquadData squad = SquadData(
       ovr: 73,
       marketValue: '€10M',
       salary: '€40K',
-      contractUntil: '2029',
+      contractUntil: 4,
     ),
     PlayerData(
       name: 'Gerard Martín',
@@ -128,7 +129,7 @@ final SquadData squad = SquadData(
       ovr: 71,
       marketValue: '€8M',
       salary: '€35K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
 
     // MEIAS
@@ -140,7 +141,7 @@ final SquadData squad = SquadData(
       ovr: 87,
       marketValue: '€90M',
       salary: '€280K',
-      contractUntil: '2028',
+      contractUntil: 3,
     ),
     PlayerData(
       name: 'Frenkie de Jong',
@@ -150,7 +151,7 @@ final SquadData squad = SquadData(
       ovr: 88,
       marketValue: '€65M',
       salary: '€300K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
     PlayerData(
       name: 'Gavi',
@@ -160,7 +161,7 @@ final SquadData squad = SquadData(
       ovr: 85,
       marketValue: '€80M',
       salary: '€220K',
-      contractUntil: '2030',
+      contractUntil: 5,
     ),
     PlayerData(
       name: 'Dani Olmo',
@@ -170,7 +171,7 @@ final SquadData squad = SquadData(
       ovr: 85,
       marketValue: '€50M',
       salary: '€200K',
-      contractUntil: '2029',
+      contractUntil: 4,
     ),
     PlayerData(
       name: 'Fermín López',
@@ -180,7 +181,7 @@ final SquadData squad = SquadData(
       ovr: 80,
       marketValue: '€40M',
       salary: '€95K',
-      contractUntil: '2029',
+      contractUntil: 4,
     ),
     PlayerData(
       name: 'Marc Casadó',
@@ -190,7 +191,7 @@ final SquadData squad = SquadData(
       ovr: 78,
       marketValue: '€25M',
       salary: '€60K',
-      contractUntil: '2028',
+      contractUntil: 3,
     ),
     PlayerData(
       name: 'Pablo Torre',
@@ -200,7 +201,7 @@ final SquadData squad = SquadData(
       ovr: 76,
       marketValue: '€12M',
       salary: '€45K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
     PlayerData(
       name: 'Oriol Romeu',
@@ -210,7 +211,7 @@ final SquadData squad = SquadData(
       ovr: 77,
       marketValue: '€4M',
       salary: '€85K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
     PlayerData(
       name: 'Noah Darvich',
@@ -220,7 +221,7 @@ final SquadData squad = SquadData(
       ovr: 70,
       marketValue: '€6M',
       salary: '€20K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
     PlayerData(
       name: 'Unai Hernández',
@@ -230,7 +231,7 @@ final SquadData squad = SquadData(
       ovr: 68,
       marketValue: '€3M',
       salary: '€12K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
 
     // ATACANTES
@@ -242,7 +243,7 @@ final SquadData squad = SquadData(
       ovr: 89,
       marketValue: '€15M',
       salary: '€340K',
-      contractUntil: '2026',
+      contractUntil: 1,
     ),
     PlayerData(
       name: 'Raphinha',
@@ -252,7 +253,7 @@ final SquadData squad = SquadData(
       ovr: 87,
       marketValue: '€70M',
       salary: '€230K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
     PlayerData(
       name: 'Lamine Yamal',
@@ -262,7 +263,7 @@ final SquadData squad = SquadData(
       ovr: 81,
       marketValue: '€150M',
       salary: '€150K',
-      contractUntil: '2030',
+      contractUntil: 5,
     ),
     PlayerData(
       name: 'Ferran Torres',
@@ -272,7 +273,7 @@ final SquadData squad = SquadData(
       ovr: 82,
       marketValue: '€30M',
       salary: '€180K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
     PlayerData(
       name: 'Ansu Fati',
@@ -282,7 +283,7 @@ final SquadData squad = SquadData(
       ovr: 78,
       marketValue: '€20M',
       salary: '€140K',
-      contractUntil: '2027',
+      contractUntil: 2,
     ),
     PlayerData(
       name: 'Pau Víctor',
@@ -292,7 +293,7 @@ final SquadData squad = SquadData(
       ovr: 73,
       marketValue: '€8M',
       salary: '€30K',
-      contractUntil: '2028',
+      contractUntil: 3,
     ),
     PlayerData(
       name: 'Vitor Roque',
@@ -302,7 +303,7 @@ final SquadData squad = SquadData(
       ovr: 79,
       marketValue: '€25M',
       salary: '€55K',
-      contractUntil: '2029',
+      contractUntil: 4,
     ),
   ],
 );
@@ -861,7 +862,8 @@ class _PlayerCard extends StatelessWidget {
                     const SizedBox(height: 2),
 
                     Text(
-                      'CONTRATO ATÉ ${player.contractUntil}',
+                      'CONTRATO: ${player.contractUntil} '
+                      '${player.contractUntil == 1 ? 'ANO' : 'ANOS'}',
                       style: const TextStyle(
                         color: Color(0xFF7C8579),
                         fontSize: 11,
@@ -1181,9 +1183,9 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
   }
 }
 
-/// Indica até quando o jogador tem contrato com o clube.
+/// Indica quantos anos de contrato o jogador ainda possui.
 class _ContractChip extends StatelessWidget {
-  final String contractUntil;
+  final int contractUntil;
 
   const _ContractChip({required this.contractUntil});
 
@@ -1201,7 +1203,7 @@ class _ContractChip extends StatelessWidget {
           const Icon(Icons.event_note, size: 14, color: Color(0xFF7C8579)),
           const SizedBox(width: 6),
           Text(
-            'CONTRATO ATÉ $contractUntil',
+            'CONTRATO: $contractUntil ${contractUntil == 1 ? 'ANO' : 'ANOS'}',
             style: const TextStyle(
               color: Color(0xFF9AA39C),
               fontSize: 11,
@@ -1231,7 +1233,17 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'RENOVAR',
             color: const Color(0xFF00FF41),
             onTap: () {
-              // TODO: implementar lógica de renovação de contrato
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ContractRenewalPage(
+                    playerName: player.name,
+                    currentSalaryK: ContractRenewalPage.parseSalaryK(
+                      player.salary,
+                    ),
+                    currentContractYears: player.contractUntil,
+                  ),
+                ),
+              );
             },
           ),
         ),
@@ -1387,7 +1399,9 @@ class PlayerData {
   final int ovr;
   final String? marketValue;
   final String? salary;
-  final String contractUntil;
+
+  /// Quantos anos de contrato o jogador ainda possui (1 a 5).
+  final int contractUntil;
 
   PlayerData({
     required this.name,
@@ -1397,6 +1411,6 @@ class PlayerData {
     required this.ovr,
     this.marketValue,
     this.salary,
-    this.contractUntil = '-',
+    this.contractUntil = 1,
   });
 }
