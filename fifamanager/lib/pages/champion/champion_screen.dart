@@ -1,17 +1,16 @@
-// champion_screen.dart
-
 import 'dart:ui';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 
-class ChampionPage extends StatefulWidget {
+class ChampionScreen extends StatefulWidget {
   final String teamName;
   final int jogos;
   final int vitorias;
   final int gols;
 
-  const ChampionPage({
+  const ChampionScreen({
     super.key,
     required this.teamName,
     required this.jogos,
@@ -20,10 +19,10 @@ class ChampionPage extends StatefulWidget {
   });
 
   @override
-  State<ChampionPage> createState() => _ChampionPageState();
+  State<ChampionScreen> createState() => _ChampionScreenState();
 }
 
-class _ChampionPageState extends State<ChampionPage>
+class _ChampionScreenState extends State<ChampionScreen>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -186,7 +185,7 @@ class _ChampionPageState extends State<ChampionPage>
                             ],
                           ),
                           child: Image.asset(
-                            'assets/trophy-B.png',
+                            'assets/trophy.png',
                             height: MediaQuery.of(context).size.height * 0.38,
                             fit: BoxFit.contain,
                           ),

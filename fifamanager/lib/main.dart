@@ -1,16 +1,18 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-import 'pages/finance_page.dart';
-import 'pages/home_page.dart';
-import 'pages/leagues_page.dart';
-import 'pages/login_page.dart';
-import 'pages/player_detail_page.dart';
-import 'pages/register_match_page.dart';
-import 'pages/splash_page.dart';
-import 'pages/champion_page.dart';
-import 'pages/sponsors_page.dart';
-import 'pages/squad_page.dart';
-import 'pages/trophy_room_page.dart';
+import 'core/theme/app_colors.dart';
+import 'models/models.dart';
+import 'pages/auth/login_page.dart';
+import 'pages/auth/splash_page.dart';
+import 'pages/champion/champion_page.dart';
+import 'pages/finance/finance_page.dart';
+import 'pages/finance/sponsors_page.dart';
+import 'pages/home/home_page.dart';
+import 'pages/leagues/leagues_page.dart';
+import 'pages/match/register_match_page.dart';
+import 'pages/player/player_detail_page.dart';
+import 'pages/squad/squad_page.dart';
+import 'pages/trophy/trophy_room_page.dart';
 import 'routes/app_routes.dart';
 import 'theme/app_theme.dart';
 
@@ -29,29 +31,20 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.theme,
       initialRoute: AppRoutes.splash,
       onGenerateRoute: (settings) {
-        Widget page;
+        final Widget page;
         switch (settings.name) {
           case AppRoutes.splash:
             page = const SplashPage();
-            break;
           case AppRoutes.login:
             page = const LoginPage();
-            break;
           case AppRoutes.home:
             page = const DashboardPage();
-            break;
           case AppRoutes.leagues:
             page = const LeaguesPage();
-            break;
           case AppRoutes.registerMatch:
             page = const RegisterMatchPage();
-            break;
           case AppRoutes.squad:
             page = const SquadPage();
-            break;
-          case AppRoutes.playerDetail:
-            page = const PlayerDetailPage(player: samplePlayerProfile);
-            break;
           case AppRoutes.champion:
             page = const ChampionPage(
               teamName: 'APEX SC',
@@ -61,13 +54,10 @@ class MyApp extends StatelessWidget {
             );
           case AppRoutes.trophies:
             page = const TrophyRoomPage();
-            break;
           case AppRoutes.finance:
             page = const FinancePage();
-            break;
           case AppRoutes.sponsors:
             page = const SponsorsPage();
-            break;
           default:
             page = const SplashPage();
         }

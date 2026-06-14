@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
+import 'package:fifamanager/models/models.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
-import 'player_detail_page.dart';
-import 'contract_renewal_page.dart';
+import '../player/player_detail_page.dart';
+import '../player/sample_player_profile.dart';
+import '../player/contract_renewal_page.dart';
+import '../player/sell_player_page.dart';
+import '../player/loan_player_page.dart';
+import '../player/release_player_page.dart';
 
-enum SquadViewMode { resumo, detalhado }
-
-// ─── DADOS DO ELENCO ────────────────────────────────────────────────────────
-
-/// Objeto com as estatísticas gerais do elenco e a lista completa de
-/// jogadores. Em uma próxima etapa esse objeto pode vir diretamente de uma
-/// API/Firebase em vez de ser montado localmente.
 final SquadData squad = SquadData(
   averageOvr: 78.0,
   playerCount: 28,
@@ -1236,7 +1235,7 @@ class _PlayerActionButtons extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => ContractRenewalPage(
-                    playerName: player.name,
+                    player: _buildProfile(player),
                     currentSalaryK: ContractRenewalPage.parseSalaryK(
                       player.salary,
                     ),
@@ -1254,7 +1253,12 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'VENDER',
             color: const Color(0xFF00FF41),
             onTap: () {
-              // TODO: implementar lógica de venda do jogador
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SellPlayerPage(player: _buildProfile(player)),
+                ),
+              );
             },
           ),
         ),
@@ -1265,7 +1269,12 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'EMPRESTAR',
             color: const Color(0xFFFFB74D),
             onTap: () {
-              // TODO: implementar lógica de empréstimo do jogador
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      LoanPlayerPage(player: _buildProfile(player)),
+                ),
+              );
             },
           ),
         ),
@@ -1276,7 +1285,12 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'DISPENSAR',
             color: const Color(0xFFE53935),
             onTap: () {
-              // TODO: implementar lógica de dispensa do jogador
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ReleasePlayerPage(player: _buildProfile(player)),
+                ),
+              );
             },
           ),
         ),

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_brand_logo.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -60,7 +60,7 @@ class _SplashBackground extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Container(color: const Color(0xFF121414)),
+        Container(color: AppColors.backgroundDark),
         Align(
           alignment: Alignment.bottomCenter,
           child: Image.asset(
@@ -91,7 +91,7 @@ class _SplashOverlay extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.center,
-                  colors: [Color(0xFF121414), Colors.transparent],
+                  colors: [AppColors.backgroundDark, Colors.transparent],
                   stops: [0.0, 0.45],
                 ),
               ),
@@ -104,7 +104,7 @@ class _SplashOverlay extends StatelessWidget {
                   center: const Alignment(0, -0.2),
                   radius: 0.7,
                   colors: [
-                    Colors.greenAccent.withValues(alpha: 0.14),
+                    AppColors.accent.withValues(alpha: 0.14),
                     Colors.transparent,
                   ],
                   stops: const [0, 1],
@@ -172,7 +172,7 @@ class _SplashLogoSection extends StatelessWidget {
           const Text(
             'SEU CLUBE',
             style: TextStyle(
-              color: Color(0xFFB0B6A7),
+              color: AppColors.textSecondary,
               fontSize: 14,
               letterSpacing: 1.8,
               fontWeight: FontWeight.bold,
@@ -182,22 +182,12 @@ class _SplashLogoSection extends StatelessWidget {
           const Text(
             'SUAS REGRAS',
             style: TextStyle(
-              color: Color(0xFF00FF41),
+              color: AppColors.accent,
               fontSize: 16,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.8,
             ),
           ),
-          // const Text(
-          //   'GERENCIAMENTO TOTAL DA SUA LIGA',
-          //   style: TextStyle(
-          //     color: Color(0xFFB0B6A7),
-          //     fontSize: 14,
-          //     letterSpacing: 1.8,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          //   textAlign: TextAlign.center,
-          // ),
         ],
       ),
     );
@@ -246,7 +236,7 @@ class _SplashRingState extends State<_SplashRing>
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: Colors.greenAccent.withValues(alpha: 0.20),
+            color: AppColors.accent.withValues(alpha: 0.20),
             width: 3,
           ),
         ),
@@ -266,13 +256,13 @@ class _SplashGlowCircle extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
-          colors: [Colors.greenAccent.shade400, const Color(0xFF0B130A)],
+          colors: [AppColors.accentLight, AppColors.accentDark],
           center: Alignment.center,
           radius: 0.8,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.greenAccent.withValues(alpha: 0.24),
+            color: AppColors.accent.withValues(alpha: 0.24),
             blurRadius: 36,
             spreadRadius: 8,
           ),
@@ -294,7 +284,7 @@ class _SplashTitle extends StatelessWidget {
           TextSpan(
             text: 'FC',
             style: TextStyle(
-              color: Color(0xFF00FF41),
+              color: AppColors.accent,
               fontSize: 34,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -329,7 +319,7 @@ class _SplashLoadingFooter extends StatelessWidget {
             width: 44,
             height: 44,
             child: CircularProgressIndicator(
-              color: Color(0xFF00FF41),
+              color: AppColors.accent,
               strokeWidth: 4,
             ),
           ),
@@ -337,7 +327,7 @@ class _SplashLoadingFooter extends StatelessWidget {
           Text(
             'CARREGANDO...',
             style: TextStyle(
-              color: Color(0xFFB0B6A7),
+              color: AppColors.textSecondary,
               fontSize: 13,
               letterSpacing: 1.8,
               fontWeight: FontWeight.w700,

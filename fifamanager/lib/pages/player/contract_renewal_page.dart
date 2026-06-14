@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fifamanager/models/models.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 
-// ─── PALETA (mesma das demais telas) ───────────────────────────────────────
-
-const _kBackground = Color(0xFF101314);
-const _kCard = Color(0xFF16191D);
-const _kCardAlt = Color(0xFF1A1E22);
-const _kBorder = Color(0xFF1F2327);
-const _kAccent = Color(0xFF4FC3F7);
-const _kMuted = Color(0xFF7C8579);
-const _kSubtle = Color(0xFF9AA39C);
-const _kLight = Color(0xFFD7E2D1);
-
-// ─── PÁGINA ─────────────────────────────────────────────────────────────────
-
-/// Tela de "Renovação Estratégica" de contrato. Permite escolher uma nova
-/// duração de vínculo (1 a 5 anos) e mostra a proposta calculada
-/// (novo salário, impacto percentual, investimento total e anos
-/// adicionados ao vínculo).
 class ContractRenewalPage extends StatefulWidget {
-  final String playerName;
+  final PlayerProfile player;
 
-  /// Salário semanal atual do jogador, em milhares de euros (ex: 200 = €200K).
+  /// Salário semanal atual do jogador, em milhares de euros (ex: 200 = $200K).
   final double currentSalaryK;
 
   /// Quantos anos de contrato o jogador ainda possui (vínculo atual),
@@ -29,13 +14,13 @@ class ContractRenewalPage extends StatefulWidget {
 
   const ContractRenewalPage({
     super.key,
-    required this.playerName,
+    required this.player,
     required this.currentSalaryK,
     this.currentContractYears = 2,
   });
 
-  /// Extrai o valor numérico (em milhares de €) de uma string de salário,
-  /// ex: '€250K/sem' ou '€250K' → 250.
+  /// Extrai o valor numérico (em milhares de $) de uma string de salário,
+  /// ex: '$250K/sem' ou '$250K' → 250.
   static double parseSalaryK(String? salary) {
     if (salary == null || salary.isEmpty) return 0;
     final match = RegExp(r'([\d.,]+)').firstMatch(salary);
@@ -94,18 +79,20 @@ class _ContractRenewalPageState extends State<ContractRenewalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _kBackground,
+      backgroundColor: AppColors.backgroundDark,
       body: SafeArea(
         child: Stack(
           children: [
             Column(
               children: [
-                _RenewalAppBar(playerName: widget.playerName),
+                _RenewalAppBar(playerName: widget.player.name),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 140),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
                     child: Column(
                       children: [
+                        _PlayerMiniCard(player: widget.player),
+                        const SizedBox(height: 20),
                         _DurationCard(
                           currentYears: _currentYears,
                           selectedYears: _selectedYears,
@@ -132,10 +119,10 @@ class _ContractRenewalPageState extends State<ContractRenewalPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Vínculo de ${widget.playerName} renovado por '
+                      'Vínculo de ${widget.player.name} renovado por '
                       '$_selectedYears ${_selectedYears == 1 ? 'ano' : 'anos'}.',
                     ),
-                    backgroundColor: _kCardAlt,
+                    backgroundColor: AppColors.cardAlt,
                   ),
                 );
                 // TODO: implementar lógica real de confirmação do vínculo.
@@ -157,27 +144,36 @@ class _RenewalAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 8, 20, 8),
+    return Container(
+      height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: const BoxDecoration(
+        color: AppColors.backgroundDark,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
+      ),
       child: Row(
         children: [
-          IconButton(
-            onPressed: () => Navigator.of(context).maybePop(),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-          ),
-          const Expanded(
-            child: Text(
-              'RENOVAÇÃO ESTRATÉGICA',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: _kSubtle,
-                fontWeight: FontWeight.w900,
-                fontSize: 13,
-                letterSpacing: 2.0,
-              ),
+          GestureDetector(
+            onTap: () => Navigator.of(context).maybePop(),
+            child: const Icon(
+              Icons.arrow_back,
+              color: Color(0xFF4FC3F7),
+              size: 22,
             ),
           ),
-          const SizedBox(width: 48),
+          const SizedBox(width: 16),
+          const Text(
+            'RENOVAR CONTRATO',
+            style: TextStyle(
+              color: Color(0xFF4FC3F7),
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.2,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const Spacer(),
+          const Icon(Icons.info_outline, color: AppColors.muted, size: 20),
         ],
       ),
     );
@@ -207,9 +203,9 @@ class _DurationCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +213,11 @@ class _DurationCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.calendar_today, color: _kAccent, size: 18),
+              const Icon(
+                Icons.calendar_month_outlined,
+                color: Color(0xFF4FC3F7),
+                size: 18,
+              ),
               const SizedBox(width: 10),
               const Expanded(
                 child: Text(
@@ -239,7 +239,7 @@ class _DurationCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: _kCardAlt,
+              color: AppColors.cardAlt,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -267,15 +267,15 @@ class _DurationCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: _kCardAlt,
+              color: AppColors.cardAlt,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: _kBorder),
+              border: Border.all(color: AppColors.border),
             ),
             child: Text(
               infoMessage,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: _kSubtle,
+                color: AppColors.subtle,
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 height: 1.4,
@@ -289,7 +289,7 @@ class _DurationCard extends StatelessWidget {
             'CONTRATOS DIMINUEM 1 ANO POR TEMPORADA',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: _kMuted,
+              color: AppColors.muted,
               fontSize: 9,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.4,
@@ -320,9 +320,9 @@ class _YearButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color contentColor;
     if (disabled) {
-      contentColor = _kMuted.withOpacity(0.35);
+      contentColor = AppColors.muted.withValues(alpha: 0.35);
     } else if (selected) {
-      contentColor = _kAccent;
+      contentColor = Color(0xFF4FC3F7);
     } else {
       contentColor = Colors.white;
     }
@@ -342,11 +342,11 @@ class _YearButton extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14),
               decoration: BoxDecoration(
                 color: selected
-                    ? _kAccent.withValues(alpha: 0.12)
+                    ? Color(0xFF4FC3F7).withValues(alpha: 0.12)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: selected ? _kAccent : Colors.transparent,
+                  color: selected ? Color(0xFF4FC3F7) : Colors.transparent,
                   width: selected ? 1.5 : 1,
                 ),
               ),
@@ -357,7 +357,7 @@ class _YearButton extends StatelessWidget {
                   Text(
                     years.toString(),
                     style: TextStyle(
-                      color: disabled ? contentColor : _kMuted,
+                      color: disabled ? contentColor : AppColors.muted,
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                     ),
@@ -366,7 +366,7 @@ class _YearButton extends StatelessWidget {
                   Text(
                     years == 1 ? 'ANO' : 'ANOS',
                     style: TextStyle(
-                      color: disabled ? contentColor : _kMuted,
+                      color: disabled ? contentColor : AppColors.muted,
                       fontSize: 8,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6,
@@ -428,14 +428,14 @@ class _ProposalCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: _kCard,
-          border: Border.all(color: _kBorder),
+          color: AppColors.card,
+          border: Border.all(color: AppColors.border),
         ),
         child: IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(width: 4, color: _kAccent),
+              Container(width: 4, color: Color(0xFF4FC3F7)),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(18),
@@ -446,7 +446,7 @@ class _ProposalCard extends StatelessWidget {
                         children: const [
                           Icon(
                             Icons.analytics_outlined,
-                            color: _kAccent,
+                            color: Color(0xFF4FC3F7),
                             size: 18,
                           ),
                           SizedBox(width: 10),
@@ -471,19 +471,21 @@ class _ProposalCard extends StatelessWidget {
                           Expanded(
                             child: _ProposalBox(
                               label: 'SALÁRIO ATUAL',
-                              value: '€${currentSalaryK.toStringAsFixed(0)}K',
+                              value: '${currentSalaryK.toStringAsFixed(0)}K',
                               caption: 'BASE DE CONTRATO',
-                              valueColor: _kSubtle,
+                              valueColor: AppColors.subtle,
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: _ProposalBox(
                               label: 'NOVO SALÁRIO',
-                              value: '€${newSalaryK.toStringAsFixed(0)}K',
+                              value: '${newSalaryK.toStringAsFixed(0)}K',
                               caption:
                                   '+${percentage.toStringAsFixed(0)}% IMPACTO',
-                              valueColor: hasImpact ? _kAccent : _kLight,
+                              valueColor: hasImpact
+                                  ? Color(0xFF4FC3F7)
+                                  : AppColors.light,
                               highlighted: true,
                               showNewBadge: true,
                             ),
@@ -499,11 +501,15 @@ class _ProposalCard extends StatelessWidget {
                             child: _SummaryItem(
                               label: 'INVESTIMENTO TOTAL',
                               value:
-                                  '€${totalInvestmentM.toStringAsFixed(1)}M no período',
+                                  '${totalInvestmentM.toStringAsFixed(1)}M no período',
                               alignEnd: false,
                             ),
                           ),
-                          Container(width: 1, height: 32, color: _kBorder),
+                          Container(
+                            width: 1,
+                            height: 32,
+                            color: AppColors.border,
+                          ),
                           Expanded(
                             child: _SummaryItem(
                               label: 'VÍNCULO ESTENDIDO',
@@ -511,7 +517,9 @@ class _ProposalCard extends StatelessWidget {
                                   ? '+0 Temporadas'
                                   : '+$addedYears ${addedYears == 1 ? 'Temporada' : 'Temporadas'}',
                               alignEnd: true,
-                              valueColor: hasImpact ? _kAccent : _kLight,
+                              valueColor: hasImpact
+                                  ? Color(0xFF4FC3F7)
+                                  : AppColors.light,
                             ),
                           ),
                         ],
@@ -550,11 +558,15 @@ class _ProposalBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: highlighted ? _kAccent.withValues(alpha: 0.06) : _kCardAlt,
+        color: highlighted
+            ? Color(0xFF4FC3F7).withValues(alpha: 0.06)
+            : AppColors.cardAlt,
 
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: highlighted ? _kAccent.withValues(alpha: 0.25) : _kBorder,
+          color: highlighted
+              ? Color(0xFF4FC3F7).withValues(alpha: 0.25)
+              : AppColors.border,
         ),
       ),
       child: Stack(
@@ -567,7 +579,7 @@ class _ProposalBox extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: const BoxDecoration(
-                  color: _kAccent,
+                  color: Color(0xFF4FC3F7),
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
@@ -591,7 +603,7 @@ class _ProposalBox extends StatelessWidget {
                 Text(
                   label,
                   style: const TextStyle(
-                    color: _kMuted,
+                    color: AppColors.muted,
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
@@ -611,7 +623,7 @@ class _ProposalBox extends StatelessWidget {
                 Text(
                   caption,
                   style: TextStyle(
-                    color: _kMuted.withOpacity(0.7),
+                    color: AppColors.muted.withValues(alpha: 0.7),
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.4,
@@ -636,7 +648,7 @@ class _SummaryItem extends StatelessWidget {
     required this.label,
     required this.value,
     required this.alignEnd,
-    this.valueColor = _kLight,
+    this.valueColor = AppColors.light,
   });
 
   @override
@@ -654,7 +666,7 @@ class _SummaryItem extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(
-              color: _kMuted,
+              color: AppColors.muted,
               fontSize: 9,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.6,
@@ -694,7 +706,10 @@ class _ConfirmButton extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [_kBackground.withOpacity(0), _kBackground],
+            colors: [
+              AppColors.backgroundDark.withValues(alpha: 0),
+              AppColors.backgroundDark,
+            ],
           ),
         ),
         child: Material(
@@ -705,11 +720,11 @@ class _ConfirmButton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 18),
               decoration: BoxDecoration(
-                color: _kAccent,
+                color: Color(0xFF4FC3F7),
                 borderRadius: BorderRadius.circular(16),
                 // boxShadow: [
                 //   BoxShadow(
-                //     color: _kAccent.withOpacity(0.4),
+                //     color: Color(0xFF4FC3F7).withValues(alpha:0.4),
                 //     blurRadius: 24,
                 //     spreadRadius: 1,
                 //   ),
@@ -735,6 +750,188 @@ class _ConfirmButton extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ─── MINI CARD DO JOGADOR ─────────────────────────────────────────────────────
+
+class _PlayerMiniCard extends StatelessWidget {
+  final PlayerProfile player;
+
+  const _PlayerMiniCard({required this.player});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFF4FC3F7).withValues(alpha: 0.04),
+            blurRadius: 24,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.cardAlt,
+                  border: Border.all(color: AppColors.border, width: 2),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  size: 44,
+                  color: Color(0xFF2A2F33),
+                ),
+              ),
+              Positioned(
+                bottom: -4,
+                right: -4,
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: player.ovrColor,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.backgroundDark,
+                      width: 2,
+                    ),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: player.ovrColor.withValues(alpha: 0.5),
+                    //     blurRadius: 8,
+                    //   ),
+                    // ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'OVR',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 5,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        player.ovr.toString(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 18),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  player.name.toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.8,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _MiniChip(
+                      icon: Icons.directions_run,
+                      label: player.position,
+                    ),
+                    const SizedBox(width: 8),
+                    _MiniChip(icon: Icons.public, label: player.country),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Text(
+                'VALOR\nMERCADO',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 8,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.6,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                player.marketValue,
+                style: const TextStyle(
+                  color: AppColors.light,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _MiniChip({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: AppColors.cardAlt,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 11, color: AppColors.subtle),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.subtle,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.4,
+            ),
+          ),
+        ],
       ),
     );
   }

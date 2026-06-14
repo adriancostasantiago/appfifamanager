@@ -1,96 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
+import 'package:fifamanager/models/models.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
-import 'sponsors_page.dart';
-
-// ─── PALETA ──────────────────────────────────────────────────────────────────
-
-const _kBackground = Color(0xFF101314);
-const _kCard = Color(0xFF16191D);
-const _kCardAlt = Color(0xFF1A1E22);
-const _kBorder = Color(0xFF1F2327);
-const _kAccent = Color(0xFF00FF41);
-const _kMuted = Color(0xFF7C8579);
-const _kSubtle = Color(0xFF9AA39C);
-const _kLight = Color(0xFFD7E2D1);
-const _kRed = Color(0xFFE53935);
-const _kBlue = Color(0xFF4FC3F7);
-const _kOrange = Color(0xFFFFB74D);
-
-// ─── MODELOS ─────────────────────────────────────────────────────────────────
-
-class FinanceData {
-  final String orcamentoTotal;
-  final String orcamentoGasto;
-  final double orcamentoPercent;
-
-  final String receitaTotal;
-  final String despesaTotal;
-  final String saldo;
-  final bool saldoPositivo;
-
-  final String folhaSalarial;
-  final String folhaMensal;
-
-  final String valorMercadoElenco;
-  final String valorMercadoMedia;
-
-  // Dados resumidos de patrocínio (para o card de atalho)
-  final String patrocinioReceita;
-  final int patrocinioTotal;
-  final int patrocinioVencendo;
-
-  final List<FinanceItem> receitas;
-  final List<FinanceItem> despesas;
-  final List<TransferItem> transferencias;
-
-  const FinanceData({
-    required this.orcamentoTotal,
-    required this.orcamentoGasto,
-    required this.orcamentoPercent,
-    required this.receitaTotal,
-    required this.despesaTotal,
-    required this.saldo,
-    required this.saldoPositivo,
-    required this.folhaSalarial,
-    required this.folhaMensal,
-    required this.valorMercadoElenco,
-    required this.valorMercadoMedia,
-    required this.patrocinioReceita,
-    required this.patrocinioTotal,
-    required this.patrocinioVencendo,
-    required this.receitas,
-    required this.despesas,
-    required this.transferencias,
-  });
-}
-
-class FinanceItem {
-  final String label;
-  final String value;
-  final IconData icon;
-
-  const FinanceItem({required this.label, required this.value, required this.icon});
-}
-
-class TransferItem {
-  final String player;
-  final String tipo;    // 'COMPRA' | 'VENDA' | 'EMPRÉSTIMO'
-  final String valor;
-  final String data;
-  final bool entrada;
-
-  const TransferItem({
-    required this.player,
-    required this.tipo,
-    required this.valor,
-    required this.data,
-    required this.entrada,
-  });
-}
-
-// ─── DADOS MOCKADOS ───────────────────────────────────────────────────────────
+import '../finance/sponsors_page.dart';
 
 final FinanceData sampleFinanceData = FinanceData(
   orcamentoTotal: '€250M',
@@ -113,24 +27,88 @@ final FinanceData sampleFinanceData = FinanceData(
   patrocinioVencendo: 2,
 
   receitas: const [
-    FinanceItem(label: 'Bilheteria', value: '€48M', icon: Icons.stadium_outlined),
-    FinanceItem(label: 'TV & Direitos', value: '€210M', icon: Icons.tv_outlined),
-    FinanceItem(label: 'Transferências', value: '€185M', icon: Icons.swap_horiz),
-    FinanceItem(label: 'Patrocínios', value: '€77M', icon: Icons.handshake_outlined),
+    FinanceItem(
+      label: 'Bilheteria',
+      value: '€48M',
+      icon: Icons.stadium_outlined,
+    ),
+    FinanceItem(
+      label: 'TV & Direitos',
+      value: '€210M',
+      icon: Icons.tv_outlined,
+    ),
+    FinanceItem(
+      label: 'Transferências',
+      value: '€185M',
+      icon: Icons.swap_horiz,
+    ),
+    FinanceItem(
+      label: 'Patrocínios',
+      value: '€77M',
+      icon: Icons.handshake_outlined,
+    ),
   ],
   despesas: const [
-    FinanceItem(label: 'Folha salarial', value: '€213M', icon: Icons.payments_outlined),
-    FinanceItem(label: 'Compras', value: '€163M', icon: Icons.shopping_cart_outlined),
-    FinanceItem(label: 'Infraestrutura', value: '€32M', icon: Icons.business_outlined),
+    FinanceItem(
+      label: 'Folha salarial',
+      value: '€213M',
+      icon: Icons.payments_outlined,
+    ),
+    FinanceItem(
+      label: 'Compras',
+      value: '€163M',
+      icon: Icons.shopping_cart_outlined,
+    ),
+    FinanceItem(
+      label: 'Infraestrutura',
+      value: '€32M',
+      icon: Icons.business_outlined,
+    ),
     FinanceItem(label: 'Outros', value: '€23M', icon: Icons.more_horiz),
   ],
   transferencias: const [
-    TransferItem(player: 'Raphinha', tipo: 'COMPRA', valor: '€58M', data: 'Jul 2024', entrada: false),
-    TransferItem(player: 'Dani Olmo', tipo: 'COMPRA', valor: '€55M', data: 'Jul 2024', entrada: false),
-    TransferItem(player: 'Ansu Fati', tipo: 'VENDA', valor: '€20M', data: 'Jan 2024', entrada: true),
-    TransferItem(player: 'Memphis Depay', tipo: 'VENDA', valor: '€8M', data: 'Jun 2023', entrada: true),
-    TransferItem(player: 'Vitor Roque', tipo: 'EMPRÉSTIMO', valor: '€6M', data: 'Jan 2024', entrada: true),
-    TransferItem(player: 'Ferran Torres', tipo: 'EMPRÉSTIMO', valor: '€4M', data: 'Ago 2024', entrada: true),
+    TransferItem(
+      player: 'Raphinha',
+      tipo: 'COMPRA',
+      valor: '€58M',
+      data: 'Jul 2024',
+      entrada: false,
+    ),
+    TransferItem(
+      player: 'Dani Olmo',
+      tipo: 'COMPRA',
+      valor: '€55M',
+      data: 'Jul 2024',
+      entrada: false,
+    ),
+    TransferItem(
+      player: 'Ansu Fati',
+      tipo: 'VENDA',
+      valor: '€20M',
+      data: 'Jan 2024',
+      entrada: true,
+    ),
+    TransferItem(
+      player: 'Memphis Depay',
+      tipo: 'VENDA',
+      valor: '€8M',
+      data: 'Jun 2023',
+      entrada: true,
+    ),
+    TransferItem(
+      player: 'Vitor Roque',
+      tipo: 'EMPRÉSTIMO',
+      valor: '€6M',
+      data: 'Jan 2024',
+      entrada: true,
+    ),
+    TransferItem(
+      player: 'Ferran Torres',
+      tipo: 'EMPRÉSTIMO',
+      valor: '€4M',
+      data: 'Ago 2024',
+      entrada: true,
+    ),
   ],
 );
 
@@ -149,16 +127,16 @@ class _FinancePageState extends State<FinancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _kBackground,
+      backgroundColor: AppColors.backgroundDark,
       appBar: AppBar(
-        backgroundColor: _kBackground,
+        backgroundColor: AppColors.backgroundDark,
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'FC MANAGER',
           style: TextStyle(
-            color: _kAccent,
+            color: AppColors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -267,14 +245,14 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 4, height: 22, color: _kAccent),
+        Container(width: 4, height: 22, color: AppColors.accent),
         const SizedBox(width: 12),
-        Icon(icon, color: _kAccent, size: 16),
+        Icon(icon, color: AppColors.accent, size: 16),
         const SizedBox(width: 8),
         Text(
           title,
           style: const TextStyle(
-            color: _kLight,
+            color: AppColors.light,
             fontWeight: FontWeight.w900,
             fontSize: 13,
             letterSpacing: 1.0,
@@ -287,15 +265,15 @@ class _SectionTitle extends StatelessWidget {
 }
 
 Widget _card({required Widget child}) => Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: _kCard,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
-      ),
-      child: child,
-    );
+  width: double.infinity,
+  padding: const EdgeInsets.all(18),
+  decoration: BoxDecoration(
+    color: AppColors.card,
+    borderRadius: BorderRadius.circular(20),
+    border: Border.all(color: AppColors.border),
+  ),
+  child: child,
+);
 
 // ─── ORÇAMENTO ────────────────────────────────────────────────────────────────
 
@@ -316,21 +294,49 @@ class _OrcamentoCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('TOTAL DISPONÍVEL',
-                      style: TextStyle(color: _kMuted, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 0.8)),
+                  const Text(
+                    'TOTAL DISPONÍVEL',
+                    style: TextStyle(
+                      color: AppColors.muted,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(data.orcamentoTotal,
-                      style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+                  Text(
+                    data.orcamentoTotal,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text('GASTO',
-                      style: TextStyle(color: _kMuted, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 0.8)),
+                  const Text(
+                    'GASTO',
+                    style: TextStyle(
+                      color: AppColors.muted,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(data.orcamentoGasto,
-                      style: const TextStyle(color: _kOrange, fontSize: 20, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+                  Text(
+                    data.orcamentoGasto,
+                    style: const TextStyle(
+                      color: AppColors.orange,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -341,9 +347,9 @@ class _OrcamentoCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: data.orcamentoPercent,
               minHeight: 10,
-              backgroundColor: _kCardAlt,
+              backgroundColor: AppColors.cardAlt,
               valueColor: AlwaysStoppedAnimation<Color>(
-                data.orcamentoPercent > 0.85 ? _kRed : _kOrange,
+                data.orcamentoPercent > 0.85 ? AppColors.red : AppColors.orange,
               ),
             ),
           ),
@@ -351,10 +357,22 @@ class _OrcamentoCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${(data.orcamentoPercent * 100).toStringAsFixed(0)}% UTILIZADO',
-                  style: const TextStyle(color: _kMuted, fontSize: 10, fontWeight: FontWeight.w700)),
-              Text('${((1 - data.orcamentoPercent) * 100).toStringAsFixed(0)}% DISPONÍVEL',
-                  style: const TextStyle(color: _kAccent, fontSize: 10, fontWeight: FontWeight.w800)),
+              Text(
+                '${(data.orcamentoPercent * 100).toStringAsFixed(0)}% UTILIZADO',
+                style: const TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                '${((1 - data.orcamentoPercent) * 100).toStringAsFixed(0)}% DISPONÍVEL',
+                style: const TextStyle(
+                  color: AppColors.accent,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ],
           ),
         ],
@@ -379,26 +397,38 @@ class _BalancoCard extends StatelessWidget {
             child: _BalancoItem(
               label: 'RECEITA TOTAL',
               value: data.receitaTotal,
-              color: _kAccent,
+              color: AppColors.accent,
               icon: Icons.arrow_downward,
             ),
           ),
-          Container(width: 1, height: 60, color: _kBorder, margin: const EdgeInsets.symmetric(horizontal: 14)),
+          Container(
+            width: 1,
+            height: 60,
+            color: AppColors.border,
+            margin: const EdgeInsets.symmetric(horizontal: 14),
+          ),
           Expanded(
             child: _BalancoItem(
               label: 'DESPESA TOTAL',
               value: data.despesaTotal,
-              color: _kRed,
+              color: AppColors.red,
               icon: Icons.arrow_upward,
             ),
           ),
-          Container(width: 1, height: 60, color: _kBorder, margin: const EdgeInsets.symmetric(horizontal: 14)),
+          Container(
+            width: 1,
+            height: 60,
+            color: AppColors.border,
+            margin: const EdgeInsets.symmetric(horizontal: 14),
+          ),
           Expanded(
             child: _BalancoItem(
               label: 'SALDO',
               value: data.saldo,
-              color: data.saldoPositivo ? _kAccent : _kRed,
-              icon: data.saldoPositivo ? Icons.trending_up : Icons.trending_down,
+              color: data.saldoPositivo ? AppColors.accent : AppColors.red,
+              icon: data.saldoPositivo
+                  ? Icons.trending_up
+                  : Icons.trending_down,
               large: true,
             ),
           ),
@@ -432,8 +462,15 @@ class _BalancoItem extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 12),
             const SizedBox(width: 4),
-            Text(label,
-                style: const TextStyle(color: _kMuted, fontSize: 8, fontWeight: FontWeight.w800, letterSpacing: 0.6)),
+            Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.muted,
+                fontSize: 8,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.6,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 6),
@@ -470,30 +507,54 @@ class _ReceitasDespesasCard extends StatelessWidget {
               children: [
                 Row(
                   children: const [
-                    Icon(Icons.arrow_downward, color: _kAccent, size: 13),
+                    Icon(Icons.arrow_downward, color: AppColors.accent, size: 13),
                     SizedBox(width: 5),
-                    Text('RECEITAS', style: TextStyle(color: _kAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 0.8)),
+                    Text(
+                      'RECEITAS',
+                      style: TextStyle(
+                        color: AppColors.accent,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                ...data.receitas.map((item) => _FinanceLineItem(item: item, color: _kAccent)),
+                ...data.receitas.map(
+                  (item) => _FinanceLineItem(item: item, color: AppColors.accent),
+                ),
               ],
             ),
           ),
-          Container(width: 1, margin: const EdgeInsets.symmetric(horizontal: 16), color: _kBorder),
+          Container(
+            width: 1,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            color: AppColors.border,
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: const [
-                    Icon(Icons.arrow_upward, color: _kRed, size: 13),
+                    Icon(Icons.arrow_upward, color: AppColors.red, size: 13),
                     SizedBox(width: 5),
-                    Text('DESPESAS', style: TextStyle(color: _kRed, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 0.8)),
+                    Text(
+                      'DESPESAS',
+                      style: TextStyle(
+                        color: AppColors.red,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                ...data.despesas.map((item) => _FinanceLineItem(item: item, color: _kRed)),
+                ...data.despesas.map(
+                  (item) => _FinanceLineItem(item: item, color: AppColors.red),
+                ),
               ],
             ),
           ),
@@ -519,18 +580,30 @@ class _FinanceLineItem extends StatelessWidget {
             width: 28,
             height: 28,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(item.icon, size: 13, color: color),
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(item.label,
-                style: const TextStyle(color: _kSubtle, fontSize: 11, fontWeight: FontWeight.w600)),
+            child: Text(
+              item.label,
+              style: const TextStyle(
+                color: AppColors.subtle,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
-          Text(item.value,
-              style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w900)),
+          Text(
+            item.value,
+            style: TextStyle(
+              color: color,
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
         ],
       ),
     );
@@ -554,7 +627,7 @@ class _FolhaCard extends StatelessWidget {
               label: 'TOTAL SEMANAL',
               value: data.folhaSalarial,
               icon: Icons.calendar_view_week_outlined,
-              color: _kOrange,
+              color: AppColors.orange,
             ),
           ),
           const SizedBox(width: 12),
@@ -563,7 +636,7 @@ class _FolhaCard extends StatelessWidget {
               label: 'TOTAL MENSAL',
               value: data.folhaMensal,
               icon: Icons.calendar_month_outlined,
-              color: _kBlue,
+              color: AppColors.blue,
             ),
           ),
         ],
@@ -589,7 +662,7 @@ class _ValorMercadoCard extends StatelessWidget {
               label: 'VALOR TOTAL',
               value: data.valorMercadoElenco,
               icon: Icons.account_balance_wallet_outlined,
-              color: _kAccent,
+              color: AppColors.accent,
             ),
           ),
           const SizedBox(width: 12),
@@ -598,7 +671,7 @@ class _ValorMercadoCard extends StatelessWidget {
               label: 'MÉDIA POR JOGADOR',
               value: data.valorMercadoMedia,
               icon: Icons.person_outline,
-              color: _kSubtle,
+              color: AppColors.subtle,
             ),
           ),
         ],
@@ -613,16 +686,21 @@ class _StatBox extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _StatBox({required this.label, required this.value, required this.icon, required this.color});
+  const _StatBox({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: _kCardAlt,
+        color: AppColors.cardAlt,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -632,14 +710,28 @@ class _StatBox extends StatelessWidget {
               Icon(icon, color: color, size: 13),
               const SizedBox(width: 6),
               Expanded(
-                child: Text(label,
-                    style: const TextStyle(color: _kMuted, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 0.6)),
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    color: AppColors.muted,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.6,
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Text(value,
-              style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic)),
+          Text(
+            value,
+            style: TextStyle(
+              color: color,
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
         ],
       ),
     );
@@ -657,9 +749,9 @@ class _TransferenciasCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -667,18 +759,39 @@ class _TransferenciasCard extends StatelessWidget {
           // Cabeçalho
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: _kCardAlt,
+            color: AppColors.cardAlt,
             child: const Row(
               children: [
                 Expanded(flex: 4, child: Text('JOGADOR', style: _headerStyle)),
-                Expanded(flex: 2, child: Text('TIPO', textAlign: TextAlign.center, style: _headerStyle)),
-                Expanded(flex: 2, child: Text('VALOR', textAlign: TextAlign.right, style: _headerStyle)),
-                Expanded(flex: 2, child: Text('DATA', textAlign: TextAlign.right, style: _headerStyle)),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'TIPO',
+                    textAlign: TextAlign.center,
+                    style: _headerStyle,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'VALOR',
+                    textAlign: TextAlign.right,
+                    style: _headerStyle,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'DATA',
+                    textAlign: TextAlign.right,
+                    style: _headerStyle,
+                  ),
+                ),
               ],
             ),
           ),
           for (int i = 0; i < transferencias.length; i++) ...[
-            if (i > 0) const Divider(height: 1, color: _kBorder),
+            if (i > 0) const Divider(height: 1, color: AppColors.border),
             _TransferRow(item: transferencias[i]),
           ],
         ],
@@ -688,7 +801,7 @@ class _TransferenciasCard extends StatelessWidget {
 }
 
 const _headerStyle = TextStyle(
-  color: _kMuted,
+  color: AppColors.muted,
   fontSize: 10,
   fontWeight: FontWeight.w800,
   letterSpacing: 0.8,
@@ -702,11 +815,11 @@ class _TransferRow extends StatelessWidget {
   Color get _tipoColor {
     switch (item.tipo) {
       case 'COMPRA':
-        return _kRed;
+        return AppColors.red;
       case 'VENDA':
-        return _kAccent;
+        return AppColors.accent;
       default:
-        return _kOrange;
+        return AppColors.orange;
     }
   }
 
@@ -723,7 +836,7 @@ class _TransferRow extends StatelessWidget {
                 Icon(
                   item.entrada ? Icons.arrow_downward : Icons.arrow_upward,
                   size: 13,
-                  color: item.entrada ? _kAccent : _kRed,
+                  color: item.entrada ? AppColors.accent : AppColors.red,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -731,7 +844,11 @@ class _TransferRow extends StatelessWidget {
                     item.player,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ],
@@ -743,14 +860,19 @@ class _TransferRow extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(
-                  color: _tipoColor.withOpacity(0.12),
+                  color: _tipoColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: _tipoColor.withOpacity(0.4)),
+                  border: Border.all(color: _tipoColor.withValues(alpha: 0.4)),
                 ),
                 child: Text(
                   item.tipo,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: _tipoColor, fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 0.4),
+                  style: TextStyle(
+                    color: _tipoColor,
+                    fontSize: 8,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.4,
+                  ),
                 ),
               ),
             ),
@@ -761,7 +883,7 @@ class _TransferRow extends StatelessWidget {
               item.valor,
               textAlign: TextAlign.right,
               style: TextStyle(
-                color: item.entrada ? _kAccent : _kRed,
+                color: item.entrada ? AppColors.accent : AppColors.red,
                 fontSize: 12,
                 fontWeight: FontWeight.w900,
               ),
@@ -772,7 +894,11 @@ class _TransferRow extends StatelessWidget {
             child: Text(
               item.data,
               textAlign: TextAlign.right,
-              style: const TextStyle(color: _kMuted, fontSize: 10, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                color: AppColors.muted,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -793,9 +919,9 @@ class _PatrocinioCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: [
@@ -806,7 +932,7 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'RECEITA ANUAL',
                   value: data.patrocinioReceita,
                   icon: Icons.monetization_on_outlined,
-                  color: _kAccent,
+                  color: AppColors.accent,
                 ),
               ),
               const SizedBox(width: 12),
@@ -815,7 +941,7 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'PATROCINADORES',
                   value: data.patrocinioTotal.toString(),
                   icon: Icons.groups_outlined,
-                  color: _kLight,
+                  color: AppColors.light,
                 ),
               ),
               const SizedBox(width: 12),
@@ -824,7 +950,7 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'VENCENDO',
                   value: data.patrocinioVencendo.toString(),
                   icon: Icons.schedule_outlined,
-                  color: data.patrocinioVencendo > 0 ? _kOrange : _kSubtle,
+                  color: data.patrocinioVencendo > 0 ? AppColors.orange : AppColors.subtle,
                 ),
               ),
             ],
@@ -836,20 +962,24 @@ class _PatrocinioCard extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: _kOrange.withOpacity(0.07),
+                color: AppColors.orange.withValues(alpha: 0.07),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: _kOrange.withOpacity(0.3)),
+                border: Border.all(color: AppColors.orange.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.schedule_outlined, color: _kOrange, size: 14),
+                  const Icon(
+                    Icons.schedule_outlined,
+                    color: AppColors.orange,
+                    size: 14,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       '${data.patrocinioVencendo} contrato${data.patrocinioVencendo > 1 ? 's' : ''} '
                       'vencendo em breve. Considere renovar.',
                       style: const TextStyle(
-                        color: _kOrange,
+                        color: AppColors.orange,
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         height: 1.4,
@@ -862,7 +992,7 @@ class _PatrocinioCard extends StatelessWidget {
           ],
 
           const SizedBox(height: 16),
-          const Divider(height: 1, color: _kBorder),
+          const Divider(height: 1, color: AppColors.border),
           const SizedBox(height: 4),
 
           Material(
@@ -882,14 +1012,14 @@ class _PatrocinioCard extends StatelessWidget {
                     Text(
                       'VER MAIS INFORMAÇÕES',
                       style: TextStyle(
-                        color: _kAccent,
+                        color: AppColors.accent,
                         fontSize: 11,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.0,
                       ),
                     ),
                     SizedBox(width: 6),
-                    Icon(Icons.arrow_forward_ios, color: _kAccent, size: 11),
+                    Icon(Icons.arrow_forward_ios, color: AppColors.accent, size: 11),
                   ],
                 ),
               ),

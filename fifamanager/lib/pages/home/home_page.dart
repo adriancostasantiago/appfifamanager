@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
+import 'package:fifamanager/models/models.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
 import 'package:fifamanager/widgets/standings_table.dart';
@@ -113,7 +115,7 @@ class _ClubOverviewCard extends StatelessWidget {
         //             ),
         //             SizedBox(height: 8),
         //             Text(
-        //               '€420.5M',
+        //               '$420.5M',
         //               style: TextStyle(
         //                 color: Color(0xFF00FF41),
         //                 fontSize: 26,

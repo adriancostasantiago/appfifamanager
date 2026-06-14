@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
-import 'player_detail_page.dart';
-
-// ─── PALETA ──────────────────────────────────────────────────────────────────
-
-const _kBackground = Color(0xFF101314);
-const _kCard = Color(0xFF16191D);
-const _kCardAlt = Color(0xFF1A1E22);
-const _kBorder = Color(0xFF1F2327);
-const _kAccent = Color(0xFF00FF41);
-const _kMuted = Color(0xFF7C8579);
-const _kSubtle = Color(0xFF9AA39C);
-const _kLight = Color(0xFFD7E2D1);
-
-// Cor primária desta tela
-const _kPrimary = Color(0xFFE53935);
-const _kPrimaryLight = Color(0xFFEF5350);
-
-// ─── PÁGINA ──────────────────────────────────────────────────────────────────
+import 'package:fifamanager/models/models.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 
 class ReleasePlayerPage extends StatefulWidget {
   final PlayerProfile player;
@@ -34,20 +18,15 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
   final List<_Motivo> _motivos = const [
     _Motivo(label: 'Desempenho insatisfatório', icon: Icons.trending_down),
     _Motivo(label: 'Excesso de elenco', icon: Icons.group_outlined),
-    _Motivo(label: 'Problemas disciplinares', icon: Icons.warning_amber_outlined),
+    _Motivo(
+      label: 'Problemas disciplinares',
+      icon: Icons.warning_amber_outlined,
+    ),
     _Motivo(label: 'Redução de custos', icon: Icons.savings_outlined),
     _Motivo(label: 'Aposentadoria', icon: Icons.elderly_outlined),
     _Motivo(label: 'Rescisão mútua', icon: Icons.handshake_outlined),
     _Motivo(label: 'Outro', icon: Icons.more_horiz),
   ];
-
-  double get _marketValueNum {
-    final raw = widget.player.marketValue
-        .replaceAll('€', '')
-        .replaceAll('M', '')
-        .replaceAll(',', '.');
-    return double.tryParse(raw) ?? 0;
-  }
 
   /// Custo estimado de rescisão: salário semanal × semanas restantes do contrato.
   /// contractUntil agora é int com os anos restantes (1–5).
@@ -59,7 +38,8 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
 
     double salario;
     if (salaryRaw.endsWith('M')) {
-      salario = (double.tryParse(salaryRaw.replaceAll('M', '')) ?? 0) * 1_000_000;
+      salario =
+          (double.tryParse(salaryRaw.replaceAll('M', '')) ?? 0) * 1_000_000;
     } else if (salaryRaw.endsWith('K')) {
       salario = (double.tryParse(salaryRaw.replaceAll('K', '')) ?? 0) * 1_000;
     } else {
@@ -70,7 +50,9 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
     final custo = salario * semanasRestantes;
 
     if (custo <= 0) return '—';
-    if (custo >= 1_000_000) return '€${(custo / 1_000_000).toStringAsFixed(1)}M';
+    if (custo >= 1_000_000) {
+      return '€${(custo / 1_000_000).toStringAsFixed(1)}M';
+    }
     if (custo >= 1_000) return '€${(custo / 1_000).toStringAsFixed(0)}K';
     return '€${custo.toStringAsFixed(0)}';
   }
@@ -90,19 +72,28 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: _kCard,
+              backgroundColor: AppColors.card,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: _kPrimary, width: 1),
+                side: const BorderSide(
+                  color: const Color(0xFFE53935),
+                  width: 1,
+                ),
               ),
               content: Row(
                 children: [
-                  const Icon(Icons.person_remove_outlined, color: _kPrimary),
+                  const Icon(
+                    Icons.person_remove_outlined,
+                    color: const Color(0xFFE53935),
+                  ),
                   const SizedBox(width: 12),
                   Text(
                     '${widget.player.name} foi dispensado.',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -118,7 +109,7 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
     final player = widget.player;
 
     return Scaffold(
-      backgroundColor: _kBackground,
+      backgroundColor: AppColors.backgroundDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -164,13 +155,17 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
                     // Checkbox de confirmação
                     _ConfirmCheckbox(
                       checked: _confirmChecked,
-                      onChanged: (v) => setState(() => _confirmChecked = v ?? false),
+                      onChanged: (v) =>
+                          setState(() => _confirmChecked = v ?? false),
                       playerName: player.name,
                     ),
                     const SizedBox(height: 24),
 
                     // Botão confirmar
-                    _ConfirmButton(onTap: _confirmRelease, enabled: _canConfirm),
+                    _ConfirmButton(
+                      onTap: _confirmRelease,
+                      enabled: _canConfirm,
+                    ),
 
                     const SizedBox(height: 12),
                     const Center(
@@ -178,7 +173,7 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
                         'ESTA AÇÃO É PERMANENTE E NÃO PODE SER DESFEITA.\nO JOGADOR SERÁ REMOVIDO DO ELENCO IMEDIATAMENTE.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: _kMuted,
+                          color: AppColors.muted,
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.5,
@@ -210,20 +205,24 @@ class _ReleaseAppBar extends StatelessWidget {
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
-        color: _kBackground,
-        border: Border(bottom: BorderSide(color: _kBorder)),
+        color: AppColors.backgroundDark,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
       ),
       child: Row(
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: const Icon(Icons.arrow_back, color: _kPrimary, size: 22),
+            child: const Icon(
+              Icons.arrow_back,
+              color: const Color(0xFFE53935),
+              size: 22,
+            ),
           ),
           const SizedBox(width: 16),
           const Text(
             'DISPENSAR JOGADOR',
             style: TextStyle(
-              color: _kPrimary,
+              color: const Color(0xFFE53935),
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -231,7 +230,7 @@ class _ReleaseAppBar extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Icon(Icons.info_outline, color: _kMuted, size: 20),
+          const Icon(Icons.info_outline, color: AppColors.muted, size: 20),
         ],
       ),
     );
@@ -250,11 +249,17 @@ class _PlayerMiniCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kPrimary.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: const Color(0xFFE53935).withValues(alpha: 0.3),
+        ),
         boxShadow: [
-          BoxShadow(color: _kPrimary.withValues(alpha: 0.04), blurRadius: 24, spreadRadius: 2),
+          BoxShadow(
+            color: const Color(0xFFE53935).withValues(alpha: 0.04),
+            blurRadius: 24,
+            spreadRadius: 2,
+          ),
         ],
       ),
       child: Row(
@@ -267,10 +272,17 @@ class _PlayerMiniCard extends StatelessWidget {
                 height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: _kCardAlt,
-                  border: Border.all(color: _kPrimary.withValues(alpha: 0.3), width: 2),
+                  color: AppColors.cardAlt,
+                  border: Border.all(
+                    color: const Color(0xFFE53935).withValues(alpha: 0.3),
+                    width: 2,
+                  ),
                 ),
-                child: const Icon(Icons.person, size: 44, color: Color(0xFF2A2F33)),
+                child: const Icon(
+                  Icons.person,
+                  size: 44,
+                  color: Color(0xFF2A2F33),
+                ),
               ),
               Positioned(
                 bottom: -4,
@@ -279,16 +291,35 @@ class _PlayerMiniCard extends StatelessWidget {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                    color: _kPrimary,
+                    color: player.ovrColor,
                     shape: BoxShape.circle,
-                    border: Border.all(color: _kBackground, width: 2),
-                    boxShadow: [BoxShadow(color: _kPrimary.withValues(alpha: 0.5), blurRadius: 8)],
+                    border: Border.all(
+                      color: AppColors.backgroundDark,
+                      width: 2,
+                    ),
+                    // boxShadow: [
+                    //   BoxShadow(color: player.ovrColor, blurRadius: 8),
+                    // ],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('OVR', style: TextStyle(color: Colors.white, fontSize: 5, fontWeight: FontWeight.w900)),
-                      Text(player.ovr.toString(), style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900)),
+                      const Text(
+                        'OVR',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 5,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        player.ovr.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -313,7 +344,10 @@ class _PlayerMiniCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    _MiniChip(icon: Icons.directions_run, label: player.position),
+                    _MiniChip(
+                      icon: Icons.directions_run,
+                      label: player.position,
+                    ),
                     const SizedBox(width: 8),
                     _MiniChip(icon: Icons.public, label: player.country),
                   ],
@@ -327,10 +361,23 @@ class _PlayerMiniCard extends StatelessWidget {
               const Text(
                 'VALOR\nMERCADO',
                 textAlign: TextAlign.right,
-                style: TextStyle(color: _kMuted, fontSize: 8, fontWeight: FontWeight.w800, letterSpacing: 0.6, height: 1.4),
+                style: TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 8,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.6,
+                  height: 1.4,
+                ),
               ),
               const SizedBox(height: 4),
-              Text(player.marketValue, style: const TextStyle(color: _kLight, fontSize: 18, fontWeight: FontWeight.w900)),
+              Text(
+                player.marketValue,
+                style: const TextStyle(
+                  color: AppColors.light,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
             ],
           ),
         ],
@@ -350,16 +397,24 @@ class _MiniChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: _kCardAlt,
+        color: AppColors.cardAlt,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 11, color: _kSubtle),
+          Icon(icon, size: 11, color: AppColors.subtle),
           const SizedBox(width: 5),
-          Text(label, style: const TextStyle(color: _kSubtle, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 0.4)),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.subtle,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.4,
+            ),
+          ),
         ],
       ),
     );
@@ -375,9 +430,11 @@ class _WarningBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _kPrimary.withValues(alpha: 0.08),
+        color: const Color(0xFFE53935).withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _kPrimary.withValues(alpha: 0.4)),
+        border: Border.all(
+          color: const Color(0xFFE53935).withValues(alpha: 0.4),
+        ),
       ),
       child: Row(
         children: [
@@ -385,10 +442,14 @@ class _WarningBanner extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: _kPrimary.withValues(alpha: 0.15),
+              color: const Color(0xFFE53935).withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.warning_amber_rounded, color: _kPrimary, size: 22),
+            child: const Icon(
+              Icons.warning_amber_rounded,
+              color: const Color(0xFFE53935),
+              size: 22,
+            ),
           ),
           const SizedBox(width: 14),
           const Expanded(
@@ -397,12 +458,22 @@ class _WarningBanner extends StatelessWidget {
               children: [
                 Text(
                   'AÇÃO IRREVERSÍVEL',
-                  style: TextStyle(color: _kPrimary, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.8),
+                  style: TextStyle(
+                    color: const Color(0xFFE53935),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.8,
+                  ),
                 ),
                 SizedBox(height: 4),
                 Text(
                   'Ao dispensar o jogador, ele será removido permanentemente do elenco e não poderá ser recuperado.',
-                  style: TextStyle(color: _kLight, fontSize: 11, fontWeight: FontWeight.w500, height: 1.5),
+                  style: TextStyle(
+                    color: AppColors.light,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    height: 1.5,
+                  ),
                 ),
               ],
             ),
@@ -433,46 +504,70 @@ class _FinancialImpactCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
-              Icon(Icons.account_balance_outlined, color: _kPrimary, size: 16),
+              Icon(
+                Icons.account_balance_outlined,
+                color: const Color(0xFFE53935),
+                size: 16,
+              ),
               SizedBox(width: 8),
               Text(
                 'IMPACTO FINANCEIRO',
-                style: TextStyle(color: _kMuted, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 0.8),
+                style: TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.8,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _ImpactTile(label: 'SALÁRIO SEMANAL', value: salary, icon: Icons.payments_outlined)),
+              Expanded(
+                child: _ImpactTile(
+                  label: 'SALÁRIO SEMANAL',
+                  value: salary,
+                  icon: Icons.payments_outlined,
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _ImpactTile(
-                label: 'CONTRATO RESTANTE',
-                value: '$contractUntil ${contractUntil == 1 ? 'ANO' : 'ANOS'}',
-                icon: Icons.event_outlined,
-              )),
+              Expanded(
+                child: _ImpactTile(
+                  label: 'CONTRATO RESTANTE',
+                  value:
+                      '$contractUntil ${contractUntil == 1 ? 'ANO' : 'ANOS'}',
+                  icon: Icons.event_outlined,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(child: _ImpactTile(label: 'VALOR DE MERCADO', value: marketValue, icon: Icons.trending_up)),
+              Expanded(
+                child: _ImpactTile(
+                  label: 'VALOR DE MERCADO',
+                  value: marketValue,
+                  icon: Icons.trending_up,
+                ),
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: _ImpactTile(
                   label: 'CUSTO RESCISÃO EST.',
                   value: custoRescisao,
                   icon: Icons.money_off_outlined,
-                  valueColor: _kPrimary,
+                  valueColor: const Color(0xFFE53935),
                 ),
               ),
             ],
@@ -493,7 +588,7 @@ class _ImpactTile extends StatelessWidget {
     required this.label,
     required this.value,
     required this.icon,
-    this.valueColor = _kLight,
+    this.valueColor = AppColors.light,
   });
 
   @override
@@ -501,22 +596,37 @@ class _ImpactTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: _kCardAlt,
+        color: AppColors.cardAlt,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: _kMuted, size: 11),
+              Icon(icon, color: AppColors.muted, size: 11),
               const SizedBox(width: 5),
-              Text(label, style: const TextStyle(color: _kMuted, fontSize: 8, fontWeight: FontWeight.w700, letterSpacing: 0.5)),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 8,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.5,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
-          Text(value, style: TextStyle(color: valueColor, fontSize: 15, fontWeight: FontWeight.w900)),
+          Text(
+            value,
+            style: TextStyle(
+              color: valueColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
         ],
       ),
     );
@@ -536,27 +646,40 @@ class _MotivoCard extends StatelessWidget {
   final String selected;
   final ValueChanged<String> onSelected;
 
-  const _MotivoCard({required this.motivos, required this.selected, required this.onSelected});
+  const _MotivoCard({
+    required this.motivos,
+    required this.selected,
+    required this.onSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
-              Icon(Icons.list_alt_outlined, color: _kPrimary, size: 16),
+              Icon(
+                Icons.list_alt_outlined,
+                color: const Color(0xFFE53935),
+                size: 16,
+              ),
               SizedBox(width: 8),
               Text(
                 'MOTIVO DA DISPENSA',
-                style: TextStyle(color: _kMuted, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 0.8),
+                style: TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.8,
+                ),
               ),
             ],
           ),
@@ -567,12 +690,19 @@ class _MotivoCard extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 180),
                 margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
-                  color: selected == m.label ? _kPrimary.withValues(alpha: 0.1) : _kCardAlt,
+                  color: selected == m.label
+                      ? const Color(0xFFE53935).withValues(alpha: 0.1)
+                      : AppColors.cardAlt,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: selected == m.label ? _kPrimary.withValues(alpha: 0.6) : _kBorder,
+                    color: selected == m.label
+                        ? const Color(0xFFE53935).withValues(alpha: 0.6)
+                        : AppColors.border,
                     width: selected == m.label ? 1.5 : 1,
                   ),
                 ),
@@ -581,20 +711,30 @@ class _MotivoCard extends StatelessWidget {
                     Icon(
                       m.icon,
                       size: 16,
-                      color: selected == m.label ? _kPrimary : _kSubtle,
+                      color: selected == m.label
+                          ? const Color(0xFFE53935)
+                          : AppColors.subtle,
                     ),
                     const SizedBox(width: 12),
                     Text(
                       m.label,
                       style: TextStyle(
-                        color: selected == m.label ? _kPrimary : _kSubtle,
+                        color: selected == m.label
+                            ? const Color(0xFFE53935)
+                            : AppColors.subtle,
                         fontSize: 13,
-                        fontWeight: selected == m.label ? FontWeight.w800 : FontWeight.w600,
+                        fontWeight: selected == m.label
+                            ? FontWeight.w800
+                            : FontWeight.w600,
                       ),
                     ),
                     const Spacer(),
                     if (selected == m.label)
-                      const Icon(Icons.check_circle, color: _kPrimary, size: 16),
+                      const Icon(
+                        Icons.check_circle,
+                        color: const Color(0xFFE53935),
+                        size: 16,
+                      ),
                   ],
                 ),
               ),
@@ -613,36 +753,48 @@ class _ReleaseSummary extends StatelessWidget {
   final String motivo;
   final String custoRescisao;
 
-  const _ReleaseSummary({required this.player, required this.motivo, required this.custoRescisao});
+  const _ReleaseSummary({
+    required this.player,
+    required this.motivo,
+    required this.custoRescisao,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: [
-          _SummaryRow(label: 'Jogador', value: player.name, valueColor: _kLight),
+          _SummaryRow(
+            label: 'Jogador',
+            value: player.name,
+            valueColor: AppColors.light,
+          ),
           const SizedBox(height: 10),
-          _SummaryRow(label: 'Posição', value: player.position, valueColor: _kSubtle),
+          _SummaryRow(
+            label: 'Posição',
+            value: player.position,
+            valueColor: AppColors.subtle,
+          ),
           const SizedBox(height: 10),
           _SummaryRow(
             label: 'Motivo',
             value: motivo.isEmpty ? '—' : motivo,
-            valueColor: motivo.isEmpty ? _kMuted : _kSubtle,
+            valueColor: motivo.isEmpty ? AppColors.muted : AppColors.subtle,
           ),
           const SizedBox(height: 10),
-          const Divider(color: _kBorder, height: 1),
+          const Divider(color: AppColors.border, height: 1),
           const SizedBox(height: 10),
           _SummaryRow(
             label: 'CUSTO ESTIMADO',
             value: custoRescisao,
             labelBold: true,
-            valueColor: _kPrimary,
+            valueColor: const Color(0xFFE53935),
             valueLarge: true,
           ),
         ],
@@ -674,7 +826,7 @@ class _SummaryRow extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: labelBold ? Colors.white : _kSubtle,
+            color: labelBold ? Colors.white : AppColors.subtle,
             fontSize: 11,
             fontWeight: labelBold ? FontWeight.w900 : FontWeight.w600,
             letterSpacing: labelBold ? 0.6 : 0,
@@ -704,7 +856,11 @@ class _ConfirmCheckbox extends StatelessWidget {
   final ValueChanged<bool?> onChanged;
   final String playerName;
 
-  const _ConfirmCheckbox({required this.checked, required this.onChanged, required this.playerName});
+  const _ConfirmCheckbox({
+    required this.checked,
+    required this.onChanged,
+    required this.playerName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -713,10 +869,14 @@ class _ConfirmCheckbox extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: checked ? _kPrimary.withValues(alpha: 0.08) : _kCard,
+          color: checked
+              ? const Color(0xFFE53935).withValues(alpha: 0.08)
+              : AppColors.card,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: checked ? _kPrimary.withValues(alpha: 0.5) : _kBorder,
+            color: checked
+                ? const Color(0xFFE53935).withValues(alpha: 0.5)
+                : AppColors.border,
             width: checked ? 1.5 : 1,
           ),
         ),
@@ -727,9 +887,12 @@ class _ConfirmCheckbox extends StatelessWidget {
               width: 22,
               height: 22,
               decoration: BoxDecoration(
-                color: checked ? _kPrimary : _kCardAlt,
+                color: checked ? const Color(0xFFE53935) : AppColors.cardAlt,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: checked ? _kPrimary : _kBorder, width: 1.5),
+                border: Border.all(
+                  color: checked ? const Color(0xFFE53935) : AppColors.border,
+                  width: 1.5,
+                ),
               ),
               child: checked
                   ? const Icon(Icons.check, color: Colors.white, size: 14)
@@ -740,7 +903,7 @@ class _ConfirmCheckbox extends StatelessWidget {
               child: Text(
                 'Confirmo que desejo dispensar $playerName permanentemente do elenco.',
                 style: TextStyle(
-                  color: checked ? _kLight : _kSubtle,
+                  color: checked ? AppColors.light : AppColors.subtle,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   height: 1.4,
@@ -771,21 +934,31 @@ class _ConfirmButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: enabled ? _kPrimary : _kCardAlt,
+          color: enabled ? const Color(0xFFE53935) : AppColors.cardAlt,
           borderRadius: BorderRadius.circular(18),
           boxShadow: enabled
-              ? [BoxShadow(color: _kPrimary.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 6))]
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFFE53935).withValues(alpha: 0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
+                  ),
+                ]
               : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.person_remove_outlined, color: enabled ? Colors.white : _kMuted, size: 22),
+            Icon(
+              Icons.person_remove_outlined,
+              color: enabled ? Colors.white : AppColors.muted,
+              size: 22,
+            ),
             const SizedBox(width: 12),
             Text(
               'DISPENSAR JOGADOR',
               style: TextStyle(
-                color: enabled ? Colors.white : _kMuted,
+                color: enabled ? Colors.white : AppColors.muted,
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.0,
@@ -817,8 +990,11 @@ class _ConfirmReleaseDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: _kCard,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: _kBorder)),
+      backgroundColor: AppColors.card,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: const BorderSide(color: AppColors.border),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(28),
         child: Column(
@@ -828,37 +1004,58 @@ class _ConfirmReleaseDialog extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: _kPrimary.withValues(alpha: 0.1),
+                color: const Color(0xFFE53935).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
-                border: Border.all(color: _kPrimary.withValues(alpha: 0.4), width: 1.5),
+                border: Border.all(
+                  color: const Color(0xFFE53935).withValues(alpha: 0.4),
+                  width: 1.5,
+                ),
               ),
-              child: const Icon(Icons.person_remove_outlined, color: _kPrimary, size: 28),
+              child: const Icon(
+                Icons.person_remove_outlined,
+                color: const Color(0xFFE53935),
+                size: 28,
+              ),
             ),
             const SizedBox(height: 20),
             const Text(
               'DISPENSAR JOGADOR?',
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 0.8),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.8,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               '${player.name} será removido permanentemente do elenco.',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: _kSubtle, fontSize: 12, fontWeight: FontWeight.w600, height: 1.5),
+              style: const TextStyle(
+                color: AppColors.subtle,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 8),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: _kCardAlt,
+                color: AppColors.cardAlt,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: _kBorder),
+                border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 children: [
                   _DialogRow(label: 'Motivo', value: motivo),
                   const SizedBox(height: 6),
-                  _DialogRow(label: 'Custo estimado', value: custoRescisao, valueColor: _kPrimary),
+                  _DialogRow(
+                    label: 'Custo estimado',
+                    value: custoRescisao,
+                    valueColor: const Color(0xFFE53935),
+                  ),
                 ],
               ),
             ),
@@ -871,14 +1068,19 @@ class _ConfirmReleaseDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: _kCardAlt,
+                        color: AppColors.cardAlt,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: _kBorder),
+                        border: Border.all(color: AppColors.border),
                       ),
                       child: const Text(
                         'CANCELAR',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: _kSubtle, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.5),
+                        style: TextStyle(
+                          color: AppColors.subtle,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                   ),
@@ -890,14 +1092,26 @@ class _ConfirmReleaseDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: _kPrimary,
+                        color: const Color(0xFFE53935),
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [BoxShadow(color: _kPrimary.withValues(alpha: 0.4), blurRadius: 12)],
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(
+                              0xFFE53935,
+                            ).withValues(alpha: 0.4),
+                            blurRadius: 12,
+                          ),
+                        ],
                       ),
                       child: const Text(
                         'CONFIRMAR',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 0.5),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                   ),
@@ -916,15 +1130,33 @@ class _DialogRow extends StatelessWidget {
   final String value;
   final Color valueColor;
 
-  const _DialogRow({required this.label, required this.value, this.valueColor = _kLight});
+  const _DialogRow({
+    required this.label,
+    required this.value,
+    this.valueColor = AppColors.light,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(color: _kMuted, fontSize: 11, fontWeight: FontWeight.w600)),
-        Text(value, style: TextStyle(color: valueColor, fontSize: 11, fontWeight: FontWeight.w800)),
+        Text(
+          label,
+          style: const TextStyle(
+            color: AppColors.muted,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            color: valueColor,
+            fontSize: 11,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
       ],
     );
   }

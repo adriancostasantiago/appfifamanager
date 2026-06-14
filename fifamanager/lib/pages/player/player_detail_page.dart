@@ -1,265 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:fifamanager/models/models.dart';
+import 'sample_player_profile.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 import 'contract_renewal_page.dart';
 import 'sell_player_page.dart';
 import 'loan_player_page.dart';
 import 'release_player_page.dart';
-
-// ─── PALETA (mesma da squad page) ──────────────────────────────────────────
-
-const _kBackground = Color(0xFF101314);
-const _kCard = Color(0xFF16191D);
-const _kCardAlt = Color(0xFF1A1E22);
-const _kBorder = Color(0xFF1F2327);
-const _kAccent = Color(0xFF00FF41);
-const _kAccentStrong = Color(0xFF1FE35B);
-const _kMuted = Color(0xFF7C8579);
-const _kSubtle = Color(0xFF9AA39C);
-const _kLight = Color(0xFFD7E2D1);
-
-// ─── MODELOS ────────────────────────────────────────────────────────────────
-
-/// Perfil completo do jogador exibido na tela de detalhes.
-class PlayerProfile {
-  final String name;
-  final String country;
-  final String position;
-  final String photo;
-  final int ovr;
-  final String marketValue;
-  final String salary;
-
-  /// Quantos anos de contrato o jogador ainda possui (1 a 5).
-  final int contractUntil;
-
-  /// Valores de 0.0 a 1.0 para os 5 eixos do radar, na ordem:
-  /// ATAQUE, TÉCNICA, FÍSICO, DEFESA, MENTAL.
-  final Map<String, double> radar;
-
-  final List<PlayerStatGroup> statGroups;
-  final List<PlayerPlaystyle> playstyles;
-  final PlayerProfileInfo? profile;
-  final List<PlayerSpecialty> specialties;
-  final List<PlayerRoleFunction> roleFunctions;
-
-  const PlayerProfile({
-    required this.name,
-    required this.country,
-    required this.position,
-    required this.photo,
-    required this.ovr,
-    required this.marketValue,
-    required this.salary,
-    required this.contractUntil,
-    required this.radar,
-    required this.statGroups,
-    required this.playstyles,
-    this.profile,
-    this.specialties = const [],
-    this.roleFunctions = const [],
-  });
-}
-
-class PlayerStatGroup {
-  final String title;
-  final List<PlayerStatItem> items;
-
-  const PlayerStatGroup({required this.title, required this.items});
-}
-
-class PlayerStatItem {
-  final String label;
-  final int value;
-
-  const PlayerStatItem({required this.label, required this.value});
-}
-
-/// Estilo de jogo (playstyle) do jogador, exibido como um chip em uma
-/// lista horizontal com scroll.
-class PlayerPlaystyle {
-  final String name;
-  final IconData icon;
-
-  const PlayerPlaystyle({required this.name, required this.icon});
-}
-
-/// Informações únicas do jogador: perna boa, fintas e perna ruim.
-class PlayerProfileInfo {
-  /// Ex.: 'Direita', 'Esquerda'
-  final String pernaBoa;
-
-  /// Número de estrelas de fintas (1–5)
-  final int fintas;
-
-  /// Número de estrelas de perna ruim (1–5)
-  final int pernaRuim;
-
-  const PlayerProfileInfo({
-    required this.pernaBoa,
-    required this.fintas,
-    required this.pernaRuim,
-  });
-}
-
-/// Uma especialidade do jogador, ex.: '#Driblador'.
-class PlayerSpecialty {
-  final String name;
-
-  const PlayerSpecialty({required this.name});
-}
-
-/// Nível de destaque de uma função: 'plus_plus' (++), 'plus' (+) ou 'normal'.
-enum FunctionLevel { plusPlus, plus, normal }
-
-/// Uma função associada a uma posição, com suas sub-funções listadas.
-/// Exemplo: função "Atacante sombra ++", posição MEI, sub-funções [Ataque].
-class PlayerRoleFunction {
-  /// Nome da função, ex.: 'Atacante sombra'
-  final String functionName;
-
-  /// Nível de destaque (++, + ou normal)
-  final FunctionLevel level;
-
-  /// Sigla da posição, ex.: 'MEI', 'ATA', 'PD'
-  final String position;
-
-  /// Sub-funções disponíveis para essa posição, ex.: ['Ataque', 'Armação']
-  final List<String> subFunctions;
-
-  const PlayerRoleFunction({
-    required this.functionName,
-    required this.level,
-    required this.position,
-    required this.subFunctions,
-  });
-}
-
-// ─── DADOS DE EXEMPLO ───────────────────────────────────────────────────────
-
-const PlayerProfile samplePlayerProfile = PlayerProfile(
-  name: 'P. González',
-  country: 'ESPANHA',
-  position: 'MC',
-  photo: '',
-  ovr: 87,
-  marketValue: '€120M',
-  salary: '€250K',
-  contractUntil: 3,
-  radar: {
-    'ATAQUE': 0.40,
-    'TÉCNICA': 0.58,
-    'FÍSICO': 0.62,
-    'DEFESA': 0.35,
-    'MENTAL': 0.72,
-  },
-  statGroups: [
-    PlayerStatGroup(
-      title: 'OFENSIVO',
-      items: [
-        PlayerStatItem(label: 'Cruzamento', value: 18),
-        PlayerStatItem(label: 'Finalização', value: 14),
-        PlayerStatItem(label: 'Cabeceio', value: 11),
-        PlayerStatItem(label: 'Passe curto', value: 62),
-      ],
-    ),
-    PlayerStatGroup(
-      title: 'HABILIDADE',
-      items: [
-        PlayerStatItem(label: 'Dribles', value: 21),
-        PlayerStatItem(label: 'Curva', value: 18),
-        PlayerStatItem(label: 'Lançamento', value: 63),
-        PlayerStatItem(label: 'Controle', value: 30),
-      ],
-    ),
-    PlayerStatGroup(
-      title: 'MOBILIDADE',
-      items: [
-        PlayerStatItem(label: 'Aceleração', value: 41),
-        PlayerStatItem(label: 'Pique', value: 48),
-        PlayerStatItem(label: 'Reação', value: 82),
-        PlayerStatItem(label: 'Equilíbrio', value: 43),
-      ],
-    ),
-    PlayerStatGroup(
-      title: 'POTÊNCIA',
-      items: [
-        PlayerStatItem(label: 'F. Chute', value: 65),
-        PlayerStatItem(label: 'Impulsão', value: 68),
-        PlayerStatItem(label: 'Fôlego', value: 35),
-        PlayerStatItem(label: 'Força', value: 75),
-      ],
-    ),
-    PlayerStatGroup(
-      title: 'CEREBRAL',
-      items: [
-        PlayerStatItem(label: 'Visão', value: 70),
-        PlayerStatItem(label: 'Compostura', value: 70),
-        PlayerStatItem(label: 'Combativ.', value: 43),
-      ],
-    ),
-    PlayerStatGroup(
-      title: 'GOLEIRO',
-      items: [
-        PlayerStatItem(label: 'Reflexos GL', value: 82),
-        PlayerStatItem(label: 'Manejo GL', value: 82),
-        PlayerStatItem(label: 'Posic. GL', value: 83),
-      ],
-    ),
-  ],
-  playstyles: [
-    PlayerPlaystyle(name: 'Passe guiado +', icon: Icons.sports_soccer),
-    PlayerPlaystyle(name: 'Sai que é sua', icon: Icons.bolt),
-    PlayerPlaystyle(name: 'Visão de jogo +', icon: Icons.visibility_outlined),
-    PlayerPlaystyle(name: 'Carrinho', icon: Icons.shield_outlined),
-  ],
-  profile: PlayerProfileInfo(pernaBoa: 'Direita', fintas: 4, pernaRuim: 4),
-  specialties: [
-    PlayerSpecialty(name: '#Driblador'),
-    PlayerSpecialty(name: '#Esp. em bola parada'),
-    PlayerSpecialty(name: '#Corredor'),
-    PlayerSpecialty(name: '#Líder'),
-  ],
-  roleFunctions: [
-    PlayerRoleFunction(
-      functionName: 'Atacante sombra',
-      level: FunctionLevel.plusPlus,
-      position: 'MEI',
-      subFunctions: ['Ataque'],
-    ),
-    PlayerRoleFunction(
-      functionName: 'Falso 9',
-      level: FunctionLevel.plusPlus,
-      position: 'ATA',
-      subFunctions: ['Armação', 'Ataque'],
-    ),
-    PlayerRoleFunction(
-      functionName: 'Corta pra dentro',
-      level: FunctionLevel.plus,
-      position: 'PD',
-      subFunctions: ['Ataque', 'Equilibrado', 'Deslocamento'],
-    ),
-    PlayerRoleFunction(
-      functionName: 'Meia clássico',
-      level: FunctionLevel.plus,
-      position: 'MC',
-      subFunctions: ['Armação', 'Equilíbrio'],
-    ),
-    PlayerRoleFunction(
-      functionName: 'Volante',
-      level: FunctionLevel.normal,
-      position: 'VOL',
-      subFunctions: ['Defesa', 'Desarme'],
-    ),
-    PlayerRoleFunction(
-      functionName: 'Meia ofensivo',
-      level: FunctionLevel.plusPlus,
-      position: 'MAO',
-      subFunctions: ['Ataque', 'Armação', 'Finalização'],
-    ),
-  ],
-);
-
-// ─── PÁGINA ─────────────────────────────────────────────────────────────────
 
 enum _DetailTab { perfil, especialidades, funcoes, estilos, caracteristicas }
 
@@ -353,7 +100,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
     final player = widget.player;
 
     return Scaffold(
-      backgroundColor: _kBackground,
+      backgroundColor: AppColors.backgroundDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -465,7 +212,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
                       left: 20,
                       right: 20,
                       child: Container(
-                        color: _kBackground,
+                        color: AppColors.backgroundDark,
                         child: _DetailNavTabs(
                           active: _activeTab,
                           onTap: _onTabTap,
@@ -494,7 +241,7 @@ class _DetailNavTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: _kBorder, width: 1)),
+        border: Border(bottom: BorderSide(color: AppColors.border, width: 1)),
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -560,7 +307,7 @@ class _DetailTabButton extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: selected ? _kAccent : _kMuted,
+                color: selected ? AppColors.accent : AppColors.muted,
                 fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
                 fontSize: 11,
                 letterSpacing: 1.4,
@@ -571,7 +318,7 @@ class _DetailTabButton extends StatelessWidget {
               height: 2,
               width: label.length * 7.0,
               decoration: BoxDecoration(
-                color: selected ? _kAccent : Colors.transparent,
+                color: selected ? AppColors.accent : Colors.transparent,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -664,12 +411,12 @@ class _OvrBadge extends StatelessWidget {
       height: 78,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: _kAccentStrong,
+        color: AppColors.accentStrong,
         shape: BoxShape.circle,
-        border: Border.all(color: _kBackground, width: 5),
+        border: Border.all(color: AppColors.backgroundDark, width: 5),
         boxShadow: [
           BoxShadow(
-            color: _kAccentStrong.withValues(alpha: 0.55),
+            color: AppColors.accentStrong.withValues(alpha: 0.55),
             blurRadius: 18,
             spreadRadius: 1,
           ),
@@ -712,19 +459,19 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: _kSubtle),
+          Icon(icon, size: 14, color: AppColors.subtle),
           const SizedBox(width: 6),
           Text(
             label,
             style: const TextStyle(
-              color: _kLight,
+              color: AppColors.light,
               fontSize: 12,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.6,
@@ -788,9 +535,9 @@ class _TopStatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: [
@@ -798,7 +545,7 @@ class _TopStatCard extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              color: _kMuted,
+              color: AppColors.muted,
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.8,
@@ -846,7 +593,7 @@ class _PlayerActionButtons extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => ContractRenewalPage(
-                    playerName: player.name,
+                    player: player,
                     currentSalaryK: ContractRenewalPage.parseSalaryK(
                       player.salary,
                     ),
@@ -862,7 +609,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.sell_outlined,
             label: 'VENDER',
-            color: _kAccent,
+            color: AppColors.accent,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -930,7 +677,7 @@ class _PlayerActionButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
           decoration: BoxDecoration(
-            color: _kCardAlt,
+            color: AppColors.cardAlt,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: color.withValues(alpha: 0.4)),
           ),
@@ -972,16 +719,16 @@ class _TechnicalAnalysisCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
-              Icon(Icons.insert_chart_outlined, color: _kAccent, size: 18),
+              Icon(Icons.insert_chart_outlined, color: AppColors.accent, size: 18),
               SizedBox(width: 10),
               Text(
                 'CARACTERÍSTICAS',
@@ -1039,16 +786,16 @@ class _PlaystylesCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
-              Icon(Icons.bolt, color: _kAccent, size: 18),
+              Icon(Icons.bolt, color: AppColors.accent, size: 18),
               SizedBox(width: 10),
               Text(
                 'ESTILOS DE JOGO',
@@ -1175,19 +922,19 @@ class _RadarChartPainter extends CustomPainter {
     dataPath.close();
 
     final glowPaint = Paint()
-      ..color = _kAccent.withValues(alpha: 0.35)
+      ..color = AppColors.accent.withValues(alpha: 0.35)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
     canvas.drawPath(dataPath, glowPaint);
 
     final fillPaint = Paint()
-      ..color = _kAccent.withValues(alpha: 0.16)
+      ..color = AppColors.accent.withValues(alpha: 0.16)
       ..style = PaintingStyle.fill;
     canvas.drawPath(dataPath, fillPaint);
 
     final strokePaint = Paint()
-      ..color = _kAccent
+      ..color = AppColors.accent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.5;
     canvas.drawPath(dataPath, strokePaint);
@@ -1205,7 +952,7 @@ class _RadarChartPainter extends CustomPainter {
         text: TextSpan(
           text: labels[i],
           style: const TextStyle(
-            color: _kSubtle,
+            color: AppColors.subtle,
             fontSize: 10,
             fontWeight: FontWeight.w800,
             letterSpacing: 1.0,
@@ -1244,7 +991,7 @@ class _StatGroupSection extends StatelessWidget {
       children: [
         Row(
           children: [
-            Container(width: 3, height: 14, color: _kAccent),
+            Container(width: 3, height: 14, color: AppColors.accent),
             const SizedBox(width: 8),
             Text(
               group.title,
@@ -1267,7 +1014,7 @@ class _StatGroupSection extends StatelessWidget {
                   child: Text(
                     item.label,
                     style: const TextStyle(
-                      color: _kSubtle,
+                      color: AppColors.subtle,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
@@ -1335,16 +1082,16 @@ class _ProfileCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
-              Icon(Icons.star_outline, color: _kAccent, size: 18),
+              Icon(Icons.star_outline, color: AppColors.accent, size: 18),
               SizedBox(width: 10),
               Text(
                 'PERFIL',
@@ -1401,9 +1148,9 @@ class _ProfileItem extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
       decoration: BoxDecoration(
-        color: _kCardAlt,
+        color: AppColors.cardAlt,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1411,7 +1158,7 @@ class _ProfileItem extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(
-              color: _kMuted,
+              color: AppColors.muted,
               fontSize: 10,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.6,
@@ -1429,7 +1176,7 @@ class _StarRow extends StatelessWidget {
   final int count;
   final int max;
 
-  const _StarRow({required this.count, this.max = 5});
+  const _StarRow({required this.count}) : max = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -1442,7 +1189,7 @@ class _StarRow extends StatelessWidget {
           child: Icon(
             filled ? Icons.star : Icons.star_border,
             size: 14,
-            color: filled ? const Color(0xFFF5C518) : _kMuted,
+            color: filled ? const Color(0xFFF5C518) : AppColors.muted,
           ),
         );
       }),
@@ -1463,16 +1210,16 @@ class _SpecialtiesCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
-              Icon(Icons.workspace_premium_outlined, color: _kAccent, size: 18),
+              Icon(Icons.workspace_premium_outlined, color: AppColors.accent, size: 18),
               SizedBox(width: 10),
               Text(
                 'ESPECIALIDADES',
@@ -1515,12 +1262,12 @@ class _SpecialtyRow extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Container(width: 3, height: 14, color: _kAccent),
+          Container(width: 3, height: 14, color: AppColors.accent),
           const SizedBox(width: 10),
           Text(
             specialty.name,
             style: const TextStyle(
-              color: _kLight,
+              color: AppColors.light,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -1544,16 +1291,16 @@ class _RoleFunctionsCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: _kCard,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
-              Icon(Icons.grid_view_outlined, color: _kAccent, size: 18),
+              Icon(Icons.grid_view_outlined, color: AppColors.accent, size: 18),
               SizedBox(width: 10),
               Text(
                 'FUNÇÕES',
@@ -1608,18 +1355,18 @@ class _RoleFunctionColumn extends StatelessWidget {
       case FunctionLevel.plus:
         return Colors.white;
       case FunctionLevel.normal:
-        return _kSubtle;
+        return AppColors.subtle;
     }
   }
 
   Color get _suffixColor {
     switch (role.level) {
       case FunctionLevel.plusPlus:
-        return _kAccent;
+        return AppColors.accent;
       case FunctionLevel.plus:
-        return _kAccent;
+        return AppColors.accent;
       case FunctionLevel.normal:
-        return _kMuted;
+        return AppColors.muted;
     }
   }
 
@@ -1671,7 +1418,7 @@ class _RoleFunctionColumn extends StatelessWidget {
                 role.position,
                 softWrap: false,
                 style: const TextStyle(
-                  color: _kAccent,
+                  color: AppColors.accent,
                   fontSize: 11,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.6,
@@ -1689,7 +1436,7 @@ class _RoleFunctionColumn extends StatelessWidget {
                   sub,
                   softWrap: false,
                   style: const TextStyle(
-                    color: _kSubtle,
+                    color: AppColors.subtle,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1715,19 +1462,19 @@ class _PlaystyleChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: _kCardAlt,
+        color: AppColors.cardAlt,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: _kBorder),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(playstyle.icon, size: 14, color: _kSubtle),
+          Icon(playstyle.icon, size: 14, color: AppColors.subtle),
           const SizedBox(width: 8),
           Text(
             playstyle.name,
             style: const TextStyle(
-              color: _kLight,
+              color: AppColors.light,
               fontSize: 12,
               fontWeight: FontWeight.w800,
             ),

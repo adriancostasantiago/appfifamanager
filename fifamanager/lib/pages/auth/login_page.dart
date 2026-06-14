@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_brand_logo.dart';
+import 'package:fifamanager/core/theme/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121414),
+      backgroundColor: AppColors.backgroundDark,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -124,12 +125,12 @@ class _LoginBrandHeaderState extends State<_LoginBrandHeader> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: const [
-          Icon(Icons.sports_soccer, size: 72, color: Color(0xFF00FF41)),
+          Icon(Icons.sports_soccer, size: 72, color: AppColors.accent),
           SizedBox(height: 20),
           Text(
             'FC',
             style: TextStyle(
-              color: Color(0xFF00FF41),
+              color: AppColors.accent,
               fontSize: 32,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.4,
@@ -171,7 +172,7 @@ class _LoginTitle extends StatelessWidget {
           'Entre para gerenciar seu clube',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Color(0xFFB0B6A7),
+            color: AppColors.textSecondary,
             fontSize: 14,
             letterSpacing: 0.8,
           ),
@@ -189,10 +190,10 @@ class _EmailField extends StatelessWidget {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: 'E-mail ou usuário',
-        hintStyle: const TextStyle(color: Color(0xFF8A9289)),
+        hintStyle: const TextStyle(color: AppColors.muted),
         filled: true,
-        fillColor: const Color(0xFF1B1E20),
-        prefixIcon: const Icon(Icons.person, color: Color(0xFF8A9289)),
+        fillColor: AppColors.card,
+        prefixIcon: const Icon(Icons.person, color: AppColors.muted),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
@@ -215,14 +216,14 @@ class _PasswordField extends StatelessWidget {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: 'Senha',
-        hintStyle: const TextStyle(color: Color(0xFF8A9289)),
+        hintStyle: const TextStyle(color: AppColors.muted),
         filled: true,
-        fillColor: const Color(0xFF1B1E20),
-        prefixIcon: const Icon(Icons.lock, color: Color(0xFF8A9289)),
+        fillColor: AppColors.card,
+        prefixIcon: const Icon(Icons.lock, color: AppColors.muted),
         suffixIcon: IconButton(
           icon: Icon(
             obscureText ? Icons.visibility : Icons.visibility_off,
-            color: const Color(0xFF8A9289),
+            color: AppColors.muted,
           ),
           onPressed: onToggle,
         ),
@@ -256,14 +257,10 @@ class _RememberForgotRow extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: rememberMe
-                      ? const Color(0xFF00FF41)
-                      : Colors.transparent,
+                  color: rememberMe ? AppColors.accent : Colors.transparent,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: rememberMe
-                        ? const Color(0xFF00FF41)
-                        : const Color(0xFF4A4F52),
+                    color: rememberMe ? AppColors.accent : AppColors.border,
                     width: 1.8,
                   ),
                 ),
@@ -275,7 +272,7 @@ class _RememberForgotRow extends StatelessWidget {
               const Text(
                 'Lembrar meu acesso',
                 style: TextStyle(
-                  color: Color(0xFFB0B6A7),
+                  color: AppColors.textSecondary,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -294,7 +291,7 @@ class _RememberForgotRow extends StatelessWidget {
           child: const Text(
             'Esqueceu a senha?',
             style: TextStyle(
-              color: Color(0xFF00FF41),
+              color: AppColors.accent,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -315,7 +312,7 @@ class _LoginButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF00FF41),
+        backgroundColor: AppColors.accent,
         foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -337,19 +334,19 @@ class _ContinueWithDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: const [
-        Expanded(child: Divider(color: Color(0xFF2C2F31), thickness: 1)),
+        Expanded(child: Divider(color: AppColors.border, thickness: 1)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12),
           child: Text(
             'OU CONTINUE COM',
             style: TextStyle(
-              color: Color(0xFF6F756F),
+              color: AppColors.muted,
               fontSize: 12,
               letterSpacing: 1.4,
             ),
           ),
         ),
-        Expanded(child: Divider(color: Color(0xFF2C2F31), thickness: 1)),
+        Expanded(child: Divider(color: AppColors.border, thickness: 1)),
       ],
     );
   }
@@ -368,8 +365,8 @@ class _GoogleButton extends StatelessWidget {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
       ),
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Color(0xFF2C2F31), width: 1.4),
-        backgroundColor: const Color(0xFF1B1E20),
+        side: const BorderSide(color: AppColors.border, width: 1.4),
+        backgroundColor: AppColors.card,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
@@ -388,12 +385,12 @@ class _SignupFooter extends StatelessWidget {
         child: const Text.rich(
           TextSpan(
             text: 'Não tem uma conta? ',
-            style: TextStyle(color: Color(0xFFB0B6A7), fontSize: 13),
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
             children: [
               TextSpan(
                 text: 'Cadastre-se',
                 style: TextStyle(
-                  color: Color(0xFF00FF41),
+                  color: AppColors.accent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
