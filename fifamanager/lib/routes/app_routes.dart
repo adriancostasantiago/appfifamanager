@@ -8,4 +8,6 @@ abstract class AppRoutes {
   static const champion = '/champion';
   static const trophies = '/trophies';
   static const playerDetail = '/player-detail';
+  static const finance = '/finance';
+  static const sponsors = '/sponsors';
 }

@@ -81,12 +81,14 @@ class AppDrawer extends StatelessWidget {
               _DrawerLink(
                 icon: Icons.attach_money,
                 label: 'FINANCEIRO',
-                route: null,
+                route: AppRoutes.finance,
+                active: activeRoute == AppRoutes.finance,
               ),
               _DrawerLink(
                 icon: Icons.card_giftcard,
                 label: 'PATROCÍNIOS',
-                route: null,
+                route: AppRoutes.sponsors,
+                active: activeRoute == AppRoutes.sponsors,
               ),
               _DrawerLink(
                 icon: Icons.military_tech,

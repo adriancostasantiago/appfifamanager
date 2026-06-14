@@ -1,6 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'contract_renewal_page.dart';
+import 'sell_player_page.dart';
+import 'loan_player_page.dart';
+import 'release_player_page.dart';
 
 // ─── PALETA (mesma da squad page) ──────────────────────────────────────────
 
@@ -758,7 +761,8 @@ class _PlayerTopStats extends StatelessWidget {
         Expanded(
           child: _TopStatCard(
             title: 'CONTRATO\nRESTANTE',
-            value: '${player.contractUntil} '
+            value:
+                '${player.contractUntil} '
                 '${player.contractUntil == 1 ? 'ANO' : 'ANOS'}',
             highlighted: true,
           ),
@@ -837,7 +841,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.autorenew,
             label: 'RENOVAR',
-            color: _kAccent,
+            color: const Color(0xFF4FC3F7),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -858,9 +862,13 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.sell_outlined,
             label: 'VENDER',
-            color: const Color(0xFF4FC3F7),
+            color: _kAccent,
             onTap: () {
-              // TODO: implementar lógica de venda do jogador
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SellPlayerPage(player: player),
+                ),
+              );
             },
           ),
         ),
@@ -871,7 +879,11 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'EMPRESTAR',
             color: const Color(0xFFFFB74D),
             onTap: () {
-              // TODO: implementar lógica de empréstimo do jogador
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => LoanPlayerPage(player: player),
+                ),
+              );
             },
           ),
         ),
@@ -882,7 +894,11 @@ class _PlayerActionButtons extends StatelessWidget {
             label: 'DISPENSAR',
             color: const Color(0xFFE53935),
             onTap: () {
-              // TODO: implementar lógica de dispensa do jogador
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ReleasePlayerPage(player: player),
+                ),
+              );
             },
           ),
         ),
@@ -1052,7 +1068,7 @@ class _PlaystylesCard extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemCount: playstyles.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              separatorBuilder: (_, _) => const SizedBox(width: 10),
               itemBuilder: (context, index) =>
                   _PlaystyleChip(playstyle: playstyles[index]),
             ),

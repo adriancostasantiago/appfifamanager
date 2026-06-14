@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 
+import 'pages/finance_page.dart';
 import 'pages/home_page.dart';
 import 'pages/leagues_page.dart';
 import 'pages/login_page.dart';
@@ -7,6 +8,7 @@ import 'pages/player_detail_page.dart';
 import 'pages/register_match_page.dart';
 import 'pages/splash_page.dart';
 import 'pages/champion_page.dart';
+import 'pages/sponsors_page.dart';
 import 'pages/squad_page.dart';
 import 'pages/trophy_room_page.dart';
 import 'routes/app_routes.dart';
@@ -59,6 +61,12 @@ class MyApp extends StatelessWidget {
             );
           case AppRoutes.trophies:
             page = const TrophyRoomPage();
+            break;
+          case AppRoutes.finance:
+            page = const FinancePage();
+            break;
+          case AppRoutes.sponsors:
+            page = const SponsorsPage();
             break;
           default:
             page = const SplashPage();

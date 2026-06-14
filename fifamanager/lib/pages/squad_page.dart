@@ -1231,7 +1231,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.autorenew,
             label: 'RENOVAR',
-            color: const Color(0xFF00FF41),
+            color: const Color(0xFF4FC3F7),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -1252,7 +1252,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.sell_outlined,
             label: 'VENDER',
-            color: const Color(0xFF4FC3F7),
+            color: const Color(0xFF00FF41),
             onTap: () {
               // TODO: implementar lógica de venda do jogador
             },

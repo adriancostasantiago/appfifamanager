@@ -51,13 +51,21 @@ class AppBottomNavigation extends StatelessWidget {
             icon: Icons.attach_money,
             label: 'FINANCEIRO',
             active: false,
-            onTap: () {},
+            onTap: () {
+              if (activeRoute != AppRoutes.finance) {
+                Navigator.pushReplacementNamed(context, AppRoutes.finance);
+              }
+            },
           ),
           _NavigationLink(
             icon: Icons.card_giftcard,
             label: 'PATROCÍNIOS',
             active: false,
-            onTap: () {},
+            onTap: () {
+              if (activeRoute != AppRoutes.sponsors) {
+                Navigator.pushReplacementNamed(context, AppRoutes.sponsors);
+              }
+            },
           ),
         ],
       ),
