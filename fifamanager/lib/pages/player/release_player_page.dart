@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
 import 'package:fifamanager/core/theme/app_colors.dart';
@@ -72,20 +73,17 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: AppColors.card,
+              backgroundColor: context.colors.card,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(
-                  color: const Color(0xFFE53935),
-                  width: 1,
-                ),
+                side: const BorderSide(color: Color(0xFFE53935), width: 1),
               ),
               content: Row(
                 children: [
                   const Icon(
                     Icons.person_remove_outlined,
-                    color: const Color(0xFFE53935),
+                    color: Color(0xFFE53935),
                   ),
                   const SizedBox(width: 12),
                   Text(
@@ -109,7 +107,7 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
     final player = widget.player;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: context.colors.backgroundDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -204,9 +202,9 @@ class _ReleaseAppBar extends StatelessWidget {
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: const BoxDecoration(
-        color: AppColors.backgroundDark,
-        border: Border(bottom: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.colors.backgroundDark,
+        border: Border(bottom: BorderSide(color: context.colors.border)),
       ),
       child: Row(
         children: [
@@ -214,7 +212,7 @@ class _ReleaseAppBar extends StatelessWidget {
             onTap: () => Navigator.of(context).pop(),
             child: const Icon(
               Icons.arrow_back,
-              color: const Color(0xFFE53935),
+              color: Color(0xFFE53935),
               size: 22,
             ),
           ),
@@ -222,7 +220,7 @@ class _ReleaseAppBar extends StatelessWidget {
           const Text(
             'DISPENSAR JOGADOR',
             style: TextStyle(
-              color: const Color(0xFFE53935),
+              color: Color(0xFFE53935),
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -249,7 +247,7 @@ class _PlayerMiniCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFFE53935).withValues(alpha: 0.3),
@@ -272,7 +270,7 @@ class _PlayerMiniCard extends StatelessWidget {
                 height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.cardAlt,
+                  color: context.colors.cardAlt,
                   border: Border.all(
                     color: const Color(0xFFE53935).withValues(alpha: 0.3),
                     width: 2,
@@ -294,7 +292,7 @@ class _PlayerMiniCard extends StatelessWidget {
                     color: player.ovrColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.backgroundDark,
+                      color: context.colors.backgroundDark,
                       width: 2,
                     ),
                     // boxShadow: [
@@ -397,9 +395,9 @@ class _MiniChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: AppColors.cardAlt,
+        color: context.colors.cardAlt,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -447,7 +445,7 @@ class _WarningBanner extends StatelessWidget {
             ),
             child: const Icon(
               Icons.warning_amber_rounded,
-              color: const Color(0xFFE53935),
+              color: Color(0xFFE53935),
               size: 22,
             ),
           ),
@@ -459,7 +457,7 @@ class _WarningBanner extends StatelessWidget {
                 Text(
                   'AÇÃO IRREVERSÍVEL',
                   style: TextStyle(
-                    color: const Color(0xFFE53935),
+                    color: Color(0xFFE53935),
                     fontSize: 11,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.8,
@@ -504,9 +502,9 @@ class _FinancialImpactCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -515,7 +513,7 @@ class _FinancialImpactCard extends StatelessWidget {
             children: [
               Icon(
                 Icons.account_balance_outlined,
-                color: const Color(0xFFE53935),
+                color: Color(0xFFE53935),
                 size: 16,
               ),
               SizedBox(width: 8),
@@ -596,9 +594,9 @@ class _ImpactTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.cardAlt,
+        color: context.colors.cardAlt,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -657,20 +655,16 @@ class _MotivoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
-              Icon(
-                Icons.list_alt_outlined,
-                color: const Color(0xFFE53935),
-                size: 16,
-              ),
+              Icon(Icons.list_alt_outlined, color: Color(0xFFE53935), size: 16),
               SizedBox(width: 8),
               Text(
                 'MOTIVO DA DISPENSA',
@@ -697,12 +691,12 @@ class _MotivoCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: selected == m.label
                       ? const Color(0xFFE53935).withValues(alpha: 0.1)
-                      : AppColors.cardAlt,
+                      : context.colors.cardAlt,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: selected == m.label
                         ? const Color(0xFFE53935).withValues(alpha: 0.6)
-                        : AppColors.border,
+                        : context.colors.border,
                     width: selected == m.label ? 1.5 : 1,
                   ),
                 ),
@@ -732,7 +726,7 @@ class _MotivoCard extends StatelessWidget {
                     if (selected == m.label)
                       const Icon(
                         Icons.check_circle,
-                        color: const Color(0xFFE53935),
+                        color: Color(0xFFE53935),
                         size: 16,
                       ),
                   ],
@@ -764,9 +758,9 @@ class _ReleaseSummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [
@@ -788,7 +782,7 @@ class _ReleaseSummary extends StatelessWidget {
             valueColor: motivo.isEmpty ? AppColors.muted : AppColors.subtle,
           ),
           const SizedBox(height: 10),
-          const Divider(color: AppColors.border, height: 1),
+          Divider(color: context.colors.border, height: 1),
           const SizedBox(height: 10),
           _SummaryRow(
             label: 'CUSTO ESTIMADO',
@@ -871,12 +865,12 @@ class _ConfirmCheckbox extends StatelessWidget {
         decoration: BoxDecoration(
           color: checked
               ? const Color(0xFFE53935).withValues(alpha: 0.08)
-              : AppColors.card,
+              : context.colors.card,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: checked
                 ? const Color(0xFFE53935).withValues(alpha: 0.5)
-                : AppColors.border,
+                : context.colors.border,
             width: checked ? 1.5 : 1,
           ),
         ),
@@ -887,10 +881,14 @@ class _ConfirmCheckbox extends StatelessWidget {
               width: 22,
               height: 22,
               decoration: BoxDecoration(
-                color: checked ? const Color(0xFFE53935) : AppColors.cardAlt,
+                color: checked
+                    ? const Color(0xFFE53935)
+                    : context.colors.cardAlt,
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(
-                  color: checked ? const Color(0xFFE53935) : AppColors.border,
+                  color: checked
+                      ? const Color(0xFFE53935)
+                      : context.colors.border,
                   width: 1.5,
                 ),
               ),
@@ -934,7 +932,7 @@ class _ConfirmButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: enabled ? const Color(0xFFE53935) : AppColors.cardAlt,
+          color: enabled ? const Color(0xFFE53935) : context.colors.cardAlt,
           borderRadius: BorderRadius.circular(18),
           boxShadow: enabled
               ? [
@@ -990,10 +988,10 @@ class _ConfirmReleaseDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.card,
+      backgroundColor: context.colors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: context.colors.border),
       ),
       child: Padding(
         padding: const EdgeInsets.all(28),
@@ -1013,7 +1011,7 @@ class _ConfirmReleaseDialog extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.person_remove_outlined,
-                color: const Color(0xFFE53935),
+                color: Color(0xFFE53935),
                 size: 28,
               ),
             ),
@@ -1043,9 +1041,9 @@ class _ConfirmReleaseDialog extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.cardAlt,
+                color: context.colors.cardAlt,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: context.colors.border),
               ),
               child: Column(
                 children: [
@@ -1068,9 +1066,9 @@ class _ConfirmReleaseDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: AppColors.cardAlt,
+                        color: context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: context.colors.border),
                       ),
                       child: const Text(
                         'CANCELAR',

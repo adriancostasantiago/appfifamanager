@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 
 class ChampionScreen extends StatefulWidget {
   final String teamName;

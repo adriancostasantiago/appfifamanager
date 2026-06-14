@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
 import 'package:fifamanager/core/theme/app_colors.dart';
@@ -79,7 +80,7 @@ class _ContractRenewalPageState extends State<ContractRenewalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: context.colors.backgroundDark,
       body: SafeArea(
         child: Stack(
           children: [
@@ -122,7 +123,7 @@ class _ContractRenewalPageState extends State<ContractRenewalPage> {
                       'Vínculo de ${widget.player.name} renovado por '
                       '$_selectedYears ${_selectedYears == 1 ? 'ano' : 'anos'}.',
                     ),
-                    backgroundColor: AppColors.cardAlt,
+                    backgroundColor: context.colors.cardAlt,
                   ),
                 );
                 // TODO: implementar lógica real de confirmação do vínculo.
@@ -147,9 +148,9 @@ class _RenewalAppBar extends StatelessWidget {
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: const BoxDecoration(
-        color: AppColors.backgroundDark,
-        border: Border(bottom: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.colors.backgroundDark,
+        border: Border(bottom: BorderSide(color: context.colors.border)),
       ),
       child: Row(
         children: [
@@ -203,9 +204,9 @@ class _DurationCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +240,7 @@ class _DurationCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppColors.cardAlt,
+              color: context.colors.cardAlt,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -267,9 +268,9 @@ class _DurationCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: AppColors.cardAlt,
+              color: context.colors.cardAlt,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: context.colors.border),
             ),
             child: Text(
               infoMessage,
@@ -428,8 +429,8 @@ class _ProposalCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: AppColors.card,
-          border: Border.all(color: AppColors.border),
+          color: context.colors.card,
+          border: Border.all(color: context.colors.border),
         ),
         child: IntrinsicHeight(
           child: Row(
@@ -508,7 +509,7 @@ class _ProposalCard extends StatelessWidget {
                           Container(
                             width: 1,
                             height: 32,
-                            color: AppColors.border,
+                            color: context.colors.border,
                           ),
                           Expanded(
                             child: _SummaryItem(
@@ -560,13 +561,13 @@ class _ProposalBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: highlighted
             ? Color(0xFF4FC3F7).withValues(alpha: 0.06)
-            : AppColors.cardAlt,
+            : context.colors.cardAlt,
 
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: highlighted
               ? Color(0xFF4FC3F7).withValues(alpha: 0.25)
-              : AppColors.border,
+              : context.colors.border,
         ),
       ),
       child: Stack(
@@ -707,8 +708,8 @@ class _ConfirmButton extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppColors.backgroundDark.withValues(alpha: 0),
-              AppColors.backgroundDark,
+              context.colors.backgroundDark.withValues(alpha: 0),
+              context.colors.backgroundDark,
             ],
           ),
         ),
@@ -767,9 +768,9 @@ class _PlayerMiniCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
         boxShadow: [
           BoxShadow(
             color: Color(0xFF4FC3F7).withValues(alpha: 0.04),
@@ -788,8 +789,8 @@ class _PlayerMiniCard extends StatelessWidget {
                 height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.cardAlt,
-                  border: Border.all(color: AppColors.border, width: 2),
+                  color: context.colors.cardAlt,
+                  border: Border.all(color: context.colors.border, width: 2),
                 ),
                 child: const Icon(
                   Icons.person,
@@ -807,7 +808,7 @@ class _PlayerMiniCard extends StatelessWidget {
                     color: player.ovrColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.backgroundDark,
+                      color: context.colors.backgroundDark,
                       width: 2,
                     ),
                     // boxShadow: [
@@ -913,9 +914,9 @@ class _MiniChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: AppColors.cardAlt,
+        color: context.colors.cardAlt,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

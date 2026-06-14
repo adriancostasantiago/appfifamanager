@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
@@ -127,16 +128,16 @@ class _FinancePageState extends State<FinancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: context.colors.backgroundDark,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: context.colors.backgroundDark,
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        title: Text(
           'FC MANAGER',
           style: TextStyle(
-            color: AppColors.accent,
+            color: context.colors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -245,9 +246,9 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 4, height: 22, color: AppColors.accent),
+        Container(width: 4, height: 22, color: context.colors.accent),
         const SizedBox(width: 12),
-        Icon(icon, color: AppColors.accent, size: 16),
+        Icon(icon, color: context.colors.accent, size: 16),
         const SizedBox(width: 8),
         Text(
           title,
@@ -264,16 +265,17 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-Widget _card({required Widget child}) => Container(
-  width: double.infinity,
-  padding: const EdgeInsets.all(18),
-  decoration: BoxDecoration(
-    color: AppColors.card,
-    borderRadius: BorderRadius.circular(20),
-    border: Border.all(color: AppColors.border),
-  ),
-  child: child,
-);
+Widget _card({required BuildContext context, required Widget child}) =>
+    Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: context.colors.card,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.colors.border),
+      ),
+      child: child,
+    );
 
 // ─── ORÇAMENTO ────────────────────────────────────────────────────────────────
 
@@ -285,6 +287,7 @@ class _OrcamentoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _card(
+      context: context,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -347,7 +350,7 @@ class _OrcamentoCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: data.orcamentoPercent,
               minHeight: 10,
-              backgroundColor: AppColors.cardAlt,
+              backgroundColor: context.colors.cardAlt,
               valueColor: AlwaysStoppedAnimation<Color>(
                 data.orcamentoPercent > 0.85 ? AppColors.red : AppColors.orange,
               ),
@@ -367,8 +370,8 @@ class _OrcamentoCard extends StatelessWidget {
               ),
               Text(
                 '${((1 - data.orcamentoPercent) * 100).toStringAsFixed(0)}% DISPONÍVEL',
-                style: const TextStyle(
-                  color: AppColors.accent,
+                style: TextStyle(
+                  color: context.colors.accent,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                 ),
@@ -391,20 +394,21 @@ class _BalancoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _card(
+      context: context,
       child: Row(
         children: [
           Expanded(
             child: _BalancoItem(
               label: 'RECEITA TOTAL',
               value: data.receitaTotal,
-              color: AppColors.accent,
+              color: context.colors.accent,
               icon: Icons.arrow_downward,
             ),
           ),
           Container(
             width: 1,
             height: 60,
-            color: AppColors.border,
+            color: context.colors.border,
             margin: const EdgeInsets.symmetric(horizontal: 14),
           ),
           Expanded(
@@ -418,14 +422,14 @@ class _BalancoCard extends StatelessWidget {
           Container(
             width: 1,
             height: 60,
-            color: AppColors.border,
+            color: context.colors.border,
             margin: const EdgeInsets.symmetric(horizontal: 14),
           ),
           Expanded(
             child: _BalancoItem(
               label: 'SALDO',
               value: data.saldo,
-              color: data.saldoPositivo ? AppColors.accent : AppColors.red,
+              color: data.saldoPositivo ? context.colors.accent : AppColors.red,
               icon: data.saldoPositivo
                   ? Icons.trending_up
                   : Icons.trending_down,
@@ -498,6 +502,7 @@ class _ReceitasDespesasCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _card(
+      context: context,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -506,13 +511,17 @@ class _ReceitasDespesasCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: const [
-                    Icon(Icons.arrow_downward, color: AppColors.accent, size: 13),
+                  children: [
+                    Icon(
+                      Icons.arrow_downward,
+                      color: context.colors.accent,
+                      size: 13,
+                    ),
                     SizedBox(width: 5),
                     Text(
                       'RECEITAS',
                       style: TextStyle(
-                        color: AppColors.accent,
+                        color: context.colors.accent,
                         fontSize: 10,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.8,
@@ -522,7 +531,10 @@ class _ReceitasDespesasCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 ...data.receitas.map(
-                  (item) => _FinanceLineItem(item: item, color: AppColors.accent),
+                  (item) => _FinanceLineItem(
+                    item: item,
+                    color: context.colors.accent,
+                  ),
                 ),
               ],
             ),
@@ -530,7 +542,7 @@ class _ReceitasDespesasCard extends StatelessWidget {
           Container(
             width: 1,
             margin: const EdgeInsets.symmetric(horizontal: 16),
-            color: AppColors.border,
+            color: context.colors.border,
           ),
           Expanded(
             child: Column(
@@ -620,6 +632,7 @@ class _FolhaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _card(
+      context: context,
       child: Row(
         children: [
           Expanded(
@@ -655,6 +668,7 @@ class _ValorMercadoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _card(
+      context: context,
       child: Row(
         children: [
           Expanded(
@@ -662,7 +676,7 @@ class _ValorMercadoCard extends StatelessWidget {
               label: 'VALOR TOTAL',
               value: data.valorMercadoElenco,
               icon: Icons.account_balance_wallet_outlined,
-              color: AppColors.accent,
+              color: context.colors.accent,
             ),
           ),
           const SizedBox(width: 12),
@@ -698,9 +712,9 @@ class _StatBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.cardAlt,
+        color: context.colors.cardAlt,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -749,9 +763,9 @@ class _TransferenciasCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -759,7 +773,7 @@ class _TransferenciasCard extends StatelessWidget {
           // Cabeçalho
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: AppColors.cardAlt,
+            color: context.colors.cardAlt,
             child: const Row(
               children: [
                 Expanded(flex: 4, child: Text('JOGADOR', style: _headerStyle)),
@@ -791,7 +805,7 @@ class _TransferenciasCard extends StatelessWidget {
             ),
           ),
           for (int i = 0; i < transferencias.length; i++) ...[
-            if (i > 0) const Divider(height: 1, color: AppColors.border),
+            if (i > 0) Divider(height: 1, color: context.colors.border),
             _TransferRow(item: transferencias[i]),
           ],
         ],
@@ -812,14 +826,16 @@ class _TransferRow extends StatelessWidget {
 
   const _TransferRow({required this.item});
 
-  Color get _tipoColor {
+  Color _tipoColor(BuildContext context) {
     switch (item.tipo) {
       case 'COMPRA':
-        return AppColors.red;
+        return context.colors.red;
+
       case 'VENDA':
-        return AppColors.accent;
+        return context.colors.accent;
+
       default:
-        return AppColors.orange;
+        return context.colors.orange;
     }
   }
 
@@ -836,7 +852,7 @@ class _TransferRow extends StatelessWidget {
                 Icon(
                   item.entrada ? Icons.arrow_downward : Icons.arrow_upward,
                   size: 13,
-                  color: item.entrada ? AppColors.accent : AppColors.red,
+                  color: item.entrada ? context.colors.accent : AppColors.red,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -860,15 +876,17 @@ class _TransferRow extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(
-                  color: _tipoColor.withValues(alpha: 0.12),
+                  color: _tipoColor(context).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: _tipoColor.withValues(alpha: 0.4)),
+                  border: Border.all(
+                    color: _tipoColor(context).withValues(alpha: 0.4),
+                  ),
                 ),
                 child: Text(
                   item.tipo,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: _tipoColor,
+                    color: _tipoColor(context),
                     fontSize: 8,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.4,
@@ -883,7 +901,7 @@ class _TransferRow extends StatelessWidget {
               item.valor,
               textAlign: TextAlign.right,
               style: TextStyle(
-                color: item.entrada ? AppColors.accent : AppColors.red,
+                color: item.entrada ? context.colors.accent : AppColors.red,
                 fontSize: 12,
                 fontWeight: FontWeight.w900,
               ),
@@ -919,9 +937,9 @@ class _PatrocinioCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [
@@ -932,7 +950,7 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'RECEITA ANUAL',
                   value: data.patrocinioReceita,
                   icon: Icons.monetization_on_outlined,
-                  color: AppColors.accent,
+                  color: context.colors.accent,
                 ),
               ),
               const SizedBox(width: 12),
@@ -950,7 +968,9 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'VENCENDO',
                   value: data.patrocinioVencendo.toString(),
                   icon: Icons.schedule_outlined,
-                  color: data.patrocinioVencendo > 0 ? AppColors.orange : AppColors.subtle,
+                  color: data.patrocinioVencendo > 0
+                      ? AppColors.orange
+                      : AppColors.subtle,
                 ),
               ),
             ],
@@ -964,7 +984,9 @@ class _PatrocinioCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.orange.withValues(alpha: 0.07),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.orange.withValues(alpha: 0.3)),
+                border: Border.all(
+                  color: AppColors.orange.withValues(alpha: 0.3),
+                ),
               ),
               child: Row(
                 children: [
@@ -992,7 +1014,7 @@ class _PatrocinioCard extends StatelessWidget {
           ],
 
           const SizedBox(height: 16),
-          const Divider(height: 1, color: AppColors.border),
+          Divider(height: 1, color: context.colors.border),
           const SizedBox(height: 4),
 
           Material(
@@ -1008,18 +1030,22 @@ class _PatrocinioCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       'VER MAIS INFORMAÇÕES',
                       style: TextStyle(
-                        color: AppColors.accent,
+                        color: context.colors.accent,
                         fontSize: 11,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.0,
                       ),
                     ),
                     SizedBox(width: 6),
-                    Icon(Icons.arrow_forward_ios, color: AppColors.accent, size: 11),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: context.colors.accent,
+                      size: 11,
+                    ),
                   ],
                 ),
               ),

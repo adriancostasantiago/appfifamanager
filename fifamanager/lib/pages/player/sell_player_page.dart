@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
 import 'package:fifamanager/core/theme/app_colors.dart';
@@ -119,20 +120,17 @@ class _SellPlayerPageState extends State<SellPlayerPage> {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: AppColors.card,
+              backgroundColor: context.colors.card,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(
-                  color: const Color(0xFF00FF41),
-                  width: 1,
-                ),
+                side: const BorderSide(color: Color(0xFF00FF41), width: 1),
               ),
               content: Row(
                 children: [
                   const Icon(
                     Icons.check_circle_outline,
-                    color: const Color(0xFF00FF41),
+                    color: Color(0xFF00FF41),
                   ),
                   const SizedBox(width: 12),
                   Text(
@@ -156,7 +154,7 @@ class _SellPlayerPageState extends State<SellPlayerPage> {
     final player = widget.player;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: context.colors.backgroundDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -257,9 +255,9 @@ class _SellAppBar extends StatelessWidget {
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: const BoxDecoration(
-        color: AppColors.backgroundDark,
-        border: Border(bottom: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.colors.backgroundDark,
+        border: Border(bottom: BorderSide(color: context.colors.border)),
       ),
       child: Row(
         children: [
@@ -267,7 +265,7 @@ class _SellAppBar extends StatelessWidget {
             onTap: () => Navigator.of(context).pop(),
             child: const Icon(
               Icons.arrow_back,
-              color: const Color(0xFF00FF41),
+              color: Color(0xFF00FF41),
               size: 22,
             ),
           ),
@@ -275,7 +273,7 @@ class _SellAppBar extends StatelessWidget {
           const Text(
             'VENDER JOGADOR',
             style: TextStyle(
-              color: const Color(0xFF00FF41),
+              color: Color(0xFF00FF41),
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -302,9 +300,9 @@ class _PlayerMiniCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF00FF41).withValues(alpha: 0.04),
@@ -324,8 +322,8 @@ class _PlayerMiniCard extends StatelessWidget {
                 height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.cardAlt,
-                  border: Border.all(color: AppColors.border, width: 2),
+                  color: context.colors.cardAlt,
+                  border: Border.all(color: context.colors.border, width: 2),
                 ),
                 child: const Icon(
                   Icons.person,
@@ -343,7 +341,7 @@ class _PlayerMiniCard extends StatelessWidget {
                     color: player.ovrColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.backgroundDark,
+                      color: context.colors.backgroundDark,
                       width: 2,
                     ),
                     // boxShadow: [
@@ -454,9 +452,9 @@ class _MiniChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: AppColors.cardAlt,
+        color: context.colors.cardAlt,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -490,9 +488,9 @@ class _NegotiationPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [
@@ -507,13 +505,13 @@ class _NegotiationPanel extends StatelessWidget {
                       width: 52,
                       height: 52,
                       decoration: BoxDecoration(
-                        color: AppColors.cardAlt,
+                        color: context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: context.colors.border),
                       ),
                       child: const Icon(
                         Icons.shield,
-                        color: const Color(0xFF00FF41),
+                        color: Color(0xFF00FF41),
                         size: 28,
                       ),
                     ),
@@ -557,23 +555,23 @@ class _NegotiationPanel extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.cardAlt,
+                        color: context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: context.colors.border),
                       ),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.handshake_outlined,
-                            color: const Color(0xFF00FF41),
+                            color: Color(0xFF00FF41),
                             size: 10,
                           ),
                           SizedBox(width: 4),
                           Text(
                             'ACORDO VERBAL',
                             style: TextStyle(
-                              color: const Color(0xFF00FF41),
+                              color: Color(0xFF00FF41),
                               fontSize: 7,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 0.5,
@@ -595,7 +593,7 @@ class _NegotiationPanel extends StatelessWidget {
                       width: 52,
                       height: 52,
                       decoration: BoxDecoration(
-                        color: AppColors.cardAlt,
+                        color: context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: const Color(0xFF00FF41).withValues(alpha: 0.4),
@@ -612,7 +610,7 @@ class _NegotiationPanel extends StatelessWidget {
                       ),
                       child: const Icon(
                         Icons.shield_outlined,
-                        color: const Color(0xFF00FF41),
+                        color: Color(0xFF00FF41),
                         size: 28,
                       ),
                     ),
@@ -622,7 +620,7 @@ class _NegotiationPanel extends StatelessWidget {
                           ? 'COMPRADOR'
                           : controller.text.trim().toUpperCase(),
                       style: const TextStyle(
-                        color: const Color(0xFF00FF41),
+                        color: Color(0xFF00FF41),
                         fontSize: 8,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.8,
@@ -635,7 +633,7 @@ class _NegotiationPanel extends StatelessWidget {
           ),
 
           const SizedBox(height: 18),
-          const Divider(color: AppColors.border, height: 1),
+          Divider(color: context.colors.border, height: 1),
           const SizedBox(height: 16),
 
           // Campo: nome do clube comprador
@@ -675,9 +673,9 @@ class _TransferValueCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -686,7 +684,7 @@ class _TransferValueCard extends StatelessWidget {
             children: [
               const Icon(
                 Icons.payments_outlined,
-                color: const Color(0xFF00FF41),
+                color: Color(0xFF00FF41),
                 size: 16,
               ),
               const SizedBox(width: 8),
@@ -724,9 +722,9 @@ class _TransferValueCard extends StatelessWidget {
           // Input principal
           Container(
             decoration: BoxDecoration(
-              color: AppColors.cardAlt,
+              color: context.colors.cardAlt,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: context.colors.border),
             ),
             child: Row(
               children: [
@@ -735,7 +733,7 @@ class _TransferValueCard extends StatelessWidget {
                   child: Text(
                     '€',
                     style: TextStyle(
-                      color: const Color(0xFF00FF41),
+                      color: Color(0xFF00FF41),
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
                     ),
@@ -793,7 +791,7 @@ class _TransferValueCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: pct.clamp(0.0, 1.5) / 1.5,
               minHeight: 4,
-              backgroundColor: AppColors.cardAlt,
+              backgroundColor: context.colors.cardAlt,
               valueColor: AlwaysStoppedAnimation<Color>(pctColor),
             ),
           ),
@@ -849,9 +847,9 @@ class _PaymentMethodCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -860,7 +858,7 @@ class _PaymentMethodCard extends StatelessWidget {
             children: [
               Icon(
                 Icons.account_balance_wallet_outlined,
-                color: const Color(0xFF00FF41),
+                color: Color(0xFF00FF41),
                 size: 16,
               ),
               SizedBox(width: 8),
@@ -901,7 +899,7 @@ class _PaymentMethodCard extends StatelessWidget {
           // Parcelas (só aparece quando parcelado)
           if (selected == PaymentMethod.parcelado) ...[
             const SizedBox(height: 16),
-            const Divider(color: AppColors.border, height: 1),
+            Divider(color: context.colors.border, height: 1),
             const SizedBox(height: 14),
 
             // Campo valor de entrada
@@ -912,14 +910,14 @@ class _PaymentMethodCard extends StatelessWidget {
                   children: const [
                     Icon(
                       Icons.arrow_downward,
-                      color: const Color(0xFF00FF41),
+                      color: Color(0xFF00FF41),
                       size: 13,
                     ),
                     SizedBox(width: 6),
                     Text(
                       'VALOR DE ENTRADA',
                       style: TextStyle(
-                        color: const Color(0xFF00FF41),
+                        color: Color(0xFF00FF41),
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
@@ -930,7 +928,7 @@ class _PaymentMethodCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.cardAlt,
+                    color: context.colors.cardAlt,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: const Color(0xFF00FF41).withValues(alpha: 0.5),
@@ -944,7 +942,7 @@ class _PaymentMethodCard extends StatelessWidget {
                         child: Text(
                           '€',
                           style: TextStyle(
-                            color: const Color(0xFF00FF41),
+                            color: Color(0xFF00FF41),
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                           ),
@@ -956,7 +954,7 @@ class _PaymentMethodCard extends StatelessWidget {
                           onChanged: onEntradaChanged,
                           keyboardType: TextInputType.number,
                           style: const TextStyle(
-                            color: const Color(0xFF00FF41),
+                            color: Color(0xFF00FF41),
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                           ),
@@ -1019,12 +1017,12 @@ class _PaymentMethodCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: sel
                             ? const Color(0xFF00FF41).withValues(alpha: 0.12)
-                            : AppColors.cardAlt,
+                            : context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: sel
                               ? const Color(0xFF00FF41).withValues(alpha: 0.7)
-                              : AppColors.border,
+                              : context.colors.border,
                           width: sel ? 1.5 : 1,
                         ),
                       ),
@@ -1074,12 +1072,12 @@ class _PaymentOption extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected
               ? const Color(0xFF00FF41).withValues(alpha: 0.08)
-              : AppColors.cardAlt,
+              : context.colors.cardAlt,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: selected
                 ? const Color(0xFF00FF41).withValues(alpha: 0.6)
-                : AppColors.border,
+                : context.colors.border,
             width: selected ? 1.5 : 1,
           ),
         ),
@@ -1134,9 +1132,9 @@ class _FinancialSummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [
@@ -1147,7 +1145,7 @@ class _FinancialSummary extends StatelessWidget {
               valueColor: AppColors.light,
             ),
             const SizedBox(height: 10),
-            const Divider(color: AppColors.border, height: 1),
+            Divider(color: context.colors.border, height: 1),
             const SizedBox(height: 10),
             _SummaryRow(
               label: 'VALOR DA TRANSFERÊNCIA',
@@ -1171,7 +1169,7 @@ class _FinancialSummary extends StatelessWidget {
               valueColor: const Color(0xFF00FF41),
             ),
             const SizedBox(height: 10),
-            const Divider(color: AppColors.border, height: 1),
+            Divider(color: context.colors.border, height: 1),
             const SizedBox(height: 10),
             _SummaryRow(
               label: 'VALOR DA TRANSFERÊNCIA',
@@ -1339,9 +1337,9 @@ class _SellTextField extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.cardAlt,
+            color: context.colors.cardAlt,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: context.colors.border),
           ),
           child: TextField(
             controller: controller,
@@ -1406,10 +1404,10 @@ class _ConfirmSaleDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.card,
+      backgroundColor: context.colors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: context.colors.border),
       ),
       child: Padding(
         padding: const EdgeInsets.all(28),
@@ -1429,7 +1427,7 @@ class _ConfirmSaleDialog extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.handshake_outlined,
-                color: const Color(0xFF00FF41),
+                color: Color(0xFF00FF41),
                 size: 28,
               ),
             ),
@@ -1475,9 +1473,9 @@ class _ConfirmSaleDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: AppColors.cardAlt,
+                        color: context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: context.colors.border),
                       ),
                       child: const Text(
                         'CANCELAR',

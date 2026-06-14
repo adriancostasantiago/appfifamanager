@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_brand_logo.dart';
@@ -60,7 +61,7 @@ class _SplashBackground extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Container(color: AppColors.backgroundDark),
+        Container(color: context.colors.backgroundDark),
         Align(
           alignment: Alignment.bottomCenter,
           child: Image.asset(
@@ -87,11 +88,11 @@ class _SplashOverlay extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.center,
-                  colors: [AppColors.backgroundDark, Colors.transparent],
+                  colors: [context.colors.backgroundDark, Colors.transparent],
                   stops: [0.0, 0.45],
                 ),
               ),
@@ -104,7 +105,7 @@ class _SplashOverlay extends StatelessWidget {
                   center: const Alignment(0, -0.2),
                   radius: 0.7,
                   colors: [
-                    AppColors.accent.withValues(alpha: 0.14),
+                    context.colors.accent.withValues(alpha: 0.14),
                     Colors.transparent,
                   ],
                   stops: const [0, 1],
@@ -179,10 +180,10 @@ class _SplashLogoSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'SUAS REGRAS',
             style: TextStyle(
-              color: AppColors.accent,
+              color: context.colors.accent,
               fontSize: 16,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.8,
@@ -236,7 +237,7 @@ class _SplashRingState extends State<_SplashRing>
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: AppColors.accent.withValues(alpha: 0.20),
+            color: context.colors.accent.withValues(alpha: 0.20),
             width: 3,
           ),
         ),
@@ -256,13 +257,13 @@ class _SplashGlowCircle extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
-          colors: [AppColors.accentLight, AppColors.accentDark],
+          colors: [context.colors.accentLight, context.colors.accentDark],
           center: Alignment.center,
           radius: 0.8,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.accent.withValues(alpha: 0.24),
+            color: context.colors.accent.withValues(alpha: 0.24),
             blurRadius: 36,
             spreadRadius: 8,
           ),
@@ -279,12 +280,12 @@ class _SplashTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       textAlign: TextAlign.center,
-      text: const TextSpan(
+      text: TextSpan(
         children: [
           TextSpan(
             text: 'FC',
             style: TextStyle(
-              color: AppColors.accent,
+              color: context.colors.accent,
               fontSize: 34,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -314,12 +315,12 @@ class _SplashLoadingFooter extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 100),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           SizedBox(
             width: 44,
             height: 44,
             child: CircularProgressIndicator(
-              color: AppColors.accent,
+              color: context.colors.accent,
               strokeWidth: 4,
             ),
           ),

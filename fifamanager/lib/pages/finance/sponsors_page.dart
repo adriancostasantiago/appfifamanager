@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
@@ -103,16 +104,16 @@ class _SponsorsPageState extends State<SponsorsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: context.colors.backgroundDark,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: context.colors.backgroundDark,
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        title: Text(
           'FC MANAGER',
           style: TextStyle(
-            color: AppColors.accent,
+            color: context.colors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -197,9 +198,9 @@ class _ReceitaResumo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [
@@ -209,7 +210,7 @@ class _ReceitaResumo extends StatelessWidget {
                 child: _ResumoBox(
                   label: 'RECEITA ANUAL',
                   value: data.receitaTotal,
-                  color: AppColors.accent,
+                  color: context.colors.accent,
                   icon: Icons.monetization_on_outlined,
                 ),
               ),
@@ -240,7 +241,9 @@ class _ReceitaResumo extends StatelessWidget {
                 child: _ResumoBox(
                   label: 'VENCENDO EM BREVE',
                   value: data.vencendoEm6Meses.toString(),
-                  color: data.vencendoEm6Meses > 0 ? AppColors.orange : AppColors.subtle,
+                  color: data.vencendoEm6Meses > 0
+                      ? AppColors.orange
+                      : AppColors.subtle,
                   icon: Icons.schedule_outlined,
                 ),
               ),
@@ -270,9 +273,9 @@ class _ResumoBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.cardAlt,
+        color: context.colors.cardAlt,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,9 +326,9 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 4, height: 22, color: AppColors.accent),
+        Container(width: 4, height: 22, color: context.colors.accent),
         const SizedBox(width: 12),
-        Icon(icon, color: AppColors.accent, size: 16),
+        Icon(icon, color: context.colors.accent, size: 16),
         const SizedBox(width: 8),
         Text(
           title,
@@ -342,9 +345,9 @@ class _SectionTitle extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: AppColors.cardAlt,
+              color: context.colors.cardAlt,
               borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: context.colors.border),
             ),
             child: Text(
               badge!,
@@ -380,7 +383,11 @@ class _AlertBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.schedule_outlined, color: AppColors.orange, size: 16),
+          const Icon(
+            Icons.schedule_outlined,
+            color: AppColors.orange,
+            size: 16,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -406,14 +413,16 @@ class _SponsorCard extends StatelessWidget {
 
   const _SponsorCard({required this.sponsor});
 
-  Color get _statusColor {
+  Color _statusColor(BuildContext context) {
     switch (sponsor.status) {
       case SponsorStatus.ativo:
-        return AppColors.accent;
+        return context.colors.accent;
+
       case SponsorStatus.vencendo:
-        return AppColors.orange;
+        return context.colors.orange;
+
       case SponsorStatus.expirado:
-        return AppColors.red;
+        return context.colors.red;
     }
   }
 
@@ -430,14 +439,14 @@ class _SponsorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _statusColor;
+    final color = _statusColor(context);
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         children: [
@@ -484,8 +493,8 @@ class _SponsorCard extends StatelessWidget {
                 children: [
                   Text(
                     sponsor.valorAnual,
-                    style: const TextStyle(
-                      color: AppColors.accent,
+                    style: TextStyle(
+                      color: context.colors.accent,
                       fontSize: 16,
                       fontWeight: FontWeight.w900,
                       fontStyle: FontStyle.italic,
@@ -519,11 +528,15 @@ class _SponsorCard extends StatelessWidget {
 
           if (sponsor.status != SponsorStatus.expirado) ...[
             const SizedBox(height: 14),
-            const Divider(height: 1, color: AppColors.border),
+            Divider(height: 1, color: context.colors.border),
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.event_note_outlined, size: 13, color: AppColors.muted),
+                Icon(
+                  Icons.event_note_outlined,
+                  size: 13,
+                  color: AppColors.muted,
+                ),
                 const SizedBox(width: 6),
                 Text(
                   '${sponsor.contratoAnos} ${sponsor.contratoAnos == 1 ? 'ano restante' : 'anos restantes'}',
@@ -546,11 +559,15 @@ class _SponsorCard extends StatelessWidget {
             ),
           ] else ...[
             const SizedBox(height: 14),
-            const Divider(height: 1, color: AppColors.border),
+            Divider(height: 1, color: context.colors.border),
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.warning_amber_outlined, size: 13, color: AppColors.red),
+                Icon(
+                  Icons.warning_amber_outlined,
+                  size: 13,
+                  color: AppColors.red,
+                ),
                 const SizedBox(width: 6),
                 const Text(
                   'Contrato expirado',
@@ -590,9 +607,9 @@ class _OpportunityCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Row(
         children: [
@@ -600,9 +617,9 @@ class _OpportunityCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.cardAlt,
+              color: context.colors.cardAlt,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: context.colors.border),
             ),
             child: Icon(sponsor.icon, color: AppColors.subtle, size: 22),
           ),

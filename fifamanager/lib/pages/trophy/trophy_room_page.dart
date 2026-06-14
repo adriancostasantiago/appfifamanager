@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 
 final _trophyGroups = [
   TrophyGroupData(
