@@ -1,12 +1,13 @@
 import 'package:fifamanager/models/player_position.dart';
 import 'package:fifamanager/models/squad_data.dart';
 import 'package:flutter/material.dart';
+import 'player_selection_page.dart';
 
 import 'squad_page.dart';
 
 // Dimensões de referência usadas para calcular as posições originais
 const double _kRefWidth = 300.0;
-const double _kRefHeight = 600.0;
+// const double _kRefHeight = 600.0;
 
 class TacticalBoardPage extends StatefulWidget {
   const TacticalBoardPage({super.key});
@@ -17,39 +18,19 @@ class TacticalBoardPage extends StatefulWidget {
 
 class _TacticalBoardPageState extends State<TacticalBoardPage> {
   Future<void> _selectPlayer(PlayerPosition slot) async {
-    final selected = await showModalBottomSheet<PlayerData>(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) {
-        return _PlayerPicker(position: slot.position);
-      },
-    );
-
-    if (selected != null) {
-      setState(() {
-        slot.player = selected;
-      });
-    }
-  }
-
-  void _showPlayerOptions(PlayerPosition slot) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return SafeArea(
-          child: ListTile(
-            leading: const Icon(Icons.close),
-            title: const Text('Remover jogador'),
-            onTap: () {
-              Navigator.pop(context);
-
-              setState(() {
-                slot.player = null;
-              });
-            },
-          ),
-        );
-      },
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PlayerSelectionPage(
+          position: slot.position,
+          players: squad.players,
+          onPlayerSelected: (player) {
+            setState(() {
+              slot.player = player;
+            });
+          },
+        ),
+      ),
     );
   }
 
@@ -95,7 +76,10 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
             ),
           ),
           child: AppBar(
-            title: const Text('Prancheta Tática'),
+            title: const Text(
+              'Prancheta Tática',
+              style: TextStyle(color: Colors.white),
+            ),
             centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -158,11 +142,13 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                         top: top,
                         child: GestureDetector(
                           onTap: () async {
+                            // posição vazia
                             if (player.player == null) {
-                              _selectPlayer(player);
+                              await _selectPlayer(player);
                               return;
                             }
 
+                            // segundo clique = remove
                             if (player.showDelete) {
                               setState(() {
                                 player.player = null;
@@ -171,10 +157,12 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                               return;
                             }
 
+                            // primeiro clique = mostra X
                             setState(() {
                               for (final p in players) {
                                 p.showDelete = false;
                               }
+
                               player.showDelete = true;
                             });
                           },
@@ -400,99 +388,6 @@ class PlayerWidget extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// --------------------------------------------------------------------------
-// _PlayerPicker (sem alterações de lógica)
-// --------------------------------------------------------------------------
-class _PlayerPicker extends StatefulWidget {
-  final String position;
-
-  const _PlayerPicker({required this.position});
-
-  @override
-  State<_PlayerPicker> createState() => _PlayerPickerState();
-}
-
-class _PlayerPickerState extends State<_PlayerPicker> {
-  String search = '';
-
-  @override
-  Widget build(BuildContext context) {
-    final players = squad.players.where((p) {
-      switch (widget.position) {
-        case 'GK':
-          return p.position == 'GK';
-        case 'LB':
-          return p.position == 'LB';
-        case 'RB':
-          return p.position == 'RB';
-        case 'CB':
-          return p.position == 'CB';
-        case 'MC':
-          return ['CM', 'CDM', 'CAM'].contains(p.position);
-        case 'LW':
-          return p.position == 'LW';
-        case 'RW':
-          return p.position == 'RW';
-        case 'ST':
-          return p.position == 'ST';
-        default:
-          return true;
-      }
-    }).toList();
-
-    final filteredPlayers = players
-        .where((p) => p.name.toLowerCase().contains(search.toLowerCase()))
-        .toList();
-
-    return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.75,
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Text(
-              'Selecionar Jogador',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Buscar jogador...',
-                  prefixIcon: Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    search = value;
-                  });
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredPlayers.length,
-                itemBuilder: (context, index) {
-                  final player = filteredPlayers[index];
-                  return ListTile(
-                    leading: CircleAvatar(child: Text(player.ovr.toString())),
-                    title: Text(player.name),
-                    subtitle: Text('${player.position} • OVR ${player.ovr}'),
-                    onTap: () {
-                      Navigator.pop(context, player);
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
