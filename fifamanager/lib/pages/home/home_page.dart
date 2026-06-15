@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
@@ -9,18 +10,19 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Scaffold(
-      backgroundColor: const Color(0xFF101314),
+      backgroundColor: colors.background,
       drawer: const AppDrawer(activeRoute: AppRoutes.home),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF101314),
+        backgroundColor: colors.background,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        iconTheme: IconThemeData(color: colors.textPrimary),
+        title: Text(
           'FC MANAGER',
           style: TextStyle(
-            color: Color(0xFF00FF41),
+            color: colors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -37,7 +39,7 @@ class DashboardPage extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     SizedBox(height: 12),
                     _ClubOverviewCard(),
                     SizedBox(height: 20),
@@ -66,10 +68,10 @@ class _ClubOverviewCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'APEX SC',
           style: TextStyle(
-            color: Colors.white,
+            color: context.colors.textPrimary,
             fontSize: 38,
             fontWeight: FontWeight.w900,
           ),
@@ -142,17 +144,17 @@ class _ActionButton extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).pushNamed(AppRoutes.registerMatch);
         },
-        icon: const Icon(Icons.add, color: Colors.black),
-        label: const Text(
+        icon: Icon(Icons.add, color: context.colors.onAccent),
+        label: Text(
           'REGISTRAR NOVA PARTIDA',
           style: TextStyle(
-            color: Colors.black,
+            color: context.colors.onAccent,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00FF41),
+          backgroundColor: context.colors.accent,
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -215,14 +217,14 @@ class _SeriesCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          children: const [
-            Icon(Icons.emoji_events, color: Color(0xFF00FF41)),
-
+          children: [
+            Icon(Icons.emoji_events, color: context.colors.accent),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 'SÉRIE A',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -236,12 +238,12 @@ class _SeriesCard extends StatelessWidget {
         FittedBox(
           fit: BoxFit.scaleDown,
           alignment: Alignment.centerLeft,
-          child: const Text(
+          child: Text(
             'VISUALIZAR INFORMAÇÕES DA COMPETIÇÃO',
             maxLines: 1,
             overflow: TextOverflow.visible,
             style: TextStyle(
-              color: Color(0xFF00FF41),
+              color: context.colors.accent,
               fontSize: 12,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.4,
@@ -262,17 +264,17 @@ class _RecentMatchesCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          children: const [
+          children: [
             Text(
               'PARTIDAS RECENTES',
               style: TextStyle(
-                color: Colors.white,
+                color: context.colors.textPrimary,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(width: 10),
-            _MatchStatusDots(),
+            const SizedBox(width: 10),
+            const _MatchStatusDots(),
           ],
         ),
         const SizedBox(height: 16),
@@ -306,13 +308,14 @@ class _MatchStatusDots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Row(
-      children: const [
-        CircleAvatar(radius: 4, backgroundColor: Color(0xFF00FF41)),
-        SizedBox(width: 6),
-        CircleAvatar(radius: 4, backgroundColor: Color(0xFF4ECF4E)),
-        SizedBox(width: 6),
-        CircleAvatar(radius: 4, backgroundColor: Color(0xFFE0A86B)),
+      children: [
+        CircleAvatar(radius: 4, backgroundColor: colors.green),
+        const SizedBox(width: 6),
+        CircleAvatar(radius: 4, backgroundColor: colors.accentLight),
+        const SizedBox(width: 6),
+        CircleAvatar(radius: 4, backgroundColor: colors.amber),
       ],
     );
   }
@@ -336,9 +339,10 @@ class _MatchTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: context.colors.border),
+        boxShadow: context.colors.cardShadow,
       ),
       child: Row(
         children: [
@@ -348,8 +352,8 @@ class _MatchTile extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: Color(0xFF00FF41),
+                  style: TextStyle(
+                    color: context.colors.accent,
                     fontSize: 10,
                     letterSpacing: 1.4,
                     fontWeight: FontWeight.w700,
@@ -358,8 +362,8 @@ class _MatchTile extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   opponent,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.colors.textPrimary,
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),
@@ -372,8 +376,8 @@ class _MatchTile extends StatelessWidget {
             children: [
               Text(
                 score,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: context.colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -385,13 +389,13 @@ class _MatchTile extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0A1A0E),
+                  color: context.colors.accentBg,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   result,
-                  style: const TextStyle(
-                    color: Color(0xFF00FF41),
+                  style: TextStyle(
+                    color: context.colors.accent,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

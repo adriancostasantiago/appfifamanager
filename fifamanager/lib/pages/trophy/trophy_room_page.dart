@@ -241,12 +241,12 @@ class _TrophyGroup extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         // Trophy grid
-        _buildGrid(data),
+        _buildGrid(context, data),
       ],
     );
   }
 
-  Widget _buildGrid(TrophyGroupData group) {
+  Widget _buildGrid(BuildContext context, TrophyGroupData group) {
     return SizedBox(
       height: 290,
       child: SingleChildScrollView(
@@ -255,11 +255,15 @@ class _TrophyGroup extends StatelessWidget {
           children: group.trophies.map((trophy) {
             return Padding(
               padding: const EdgeInsets.only(right: 12),
-              child: SizedBox(
-                width: 120,
-                child: _TrophyCard(
-                  trophy: trophy,
-                  accentColor: group.accentColor,
+              child: InkWell(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.champion),
+                child: SizedBox(
+                  width: 120,
+                  child: _TrophyCard(
+                    trophy: trophy,
+                    accentColor: group.accentColor,
+                  ),
                 ),
               ),
             );

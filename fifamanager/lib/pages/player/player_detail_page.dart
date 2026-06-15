@@ -3,7 +3,6 @@ import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
 import 'sample_player_profile.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 import 'contract_renewal_page.dart';
 import 'sell_player_page.dart';
 import 'loan_player_page.dart';
@@ -112,7 +111,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.of(context).maybePop(),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: context.colors.textPrimary,
+                    ),
                   ),
                 ],
               ),
@@ -310,7 +312,7 @@ class _DetailTabButton extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: selected ? context.colors.accent : AppColors.muted,
+                color: selected ? context.colors.accent : context.colors.muted,
                 fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
                 fontSize: 11,
                 letterSpacing: 1.4,
@@ -352,24 +354,27 @@ class _PlayerHeader extends StatelessWidget {
                 height: 200,
                 width: 200,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Color(0xFF20262A), Color(0xFF0B0D0E)],
+                    colors: [
+                      context.colors.cardAlt,
+                      context.colors.backgroundDark,
+                    ],
                   ),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   size: 150,
-                  color: Color(0xFF2A2F33),
+                  color: context.colors.border,
                 ),
               ),
             ),
             Positioned(
               bottom: -20,
               right: 16,
-              child: _OvrBadge(ovr: player.ovr),
+              child: _OvrBadge(ovr: player.ovr, ovrColor: player.ovrColor),
             ),
           ],
         ),
@@ -379,8 +384,8 @@ class _PlayerHeader extends StatelessWidget {
         Text(
           player.name.toUpperCase(),
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: context.colors.textPrimary,
             fontSize: 26,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
@@ -404,8 +409,9 @@ class _PlayerHeader extends StatelessWidget {
 
 class _OvrBadge extends StatelessWidget {
   final int ovr;
+  final Color ovrColor;
 
-  const _OvrBadge({required this.ovr});
+  const _OvrBadge({required this.ovr, required this.ovrColor});
 
   @override
   Widget build(BuildContext context) {
@@ -414,16 +420,17 @@ class _OvrBadge extends StatelessWidget {
       height: 78,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: context.colors.accentStrong,
-        shape: BoxShape.circle,
+        color: ovrColor,
+        // shape: BoxShape.circle,
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: context.colors.backgroundDark, width: 5),
-        boxShadow: [
-          BoxShadow(
-            color: context.colors.accentStrong.withValues(alpha: 0.55),
-            blurRadius: 18,
-            spreadRadius: 1,
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: context.colors.accentStrong.withValues(alpha: 0.55),
+        //     blurRadius: 18,
+        //     spreadRadius: 1,
+        //   ),
+        // ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -469,12 +476,12 @@ class _InfoChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: AppColors.subtle),
+          Icon(icon, size: 14, color: context.colors.subtle),
           const SizedBox(width: 6),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.light,
+            style: TextStyle(
+              color: context.colors.textPrimary,
               fontSize: 12,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.6,
@@ -547,8 +554,8 @@ class _TopStatCard extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: context.colors.muted,
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.8,
@@ -560,15 +567,15 @@ class _TopStatCard extends StatelessWidget {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.colors.textPrimary,
               fontSize: 17,
               fontWeight: FontWeight.w900,
             ),
           ),
           if (highlighted) ...[
             const SizedBox(height: 8),
-            Container(height: 2, width: 36, color: Colors.white),
+            Container(height: 2, width: 36, color: context.colors.accent),
           ],
         ],
       ),
@@ -591,7 +598,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.autorenew,
             label: 'RENOVAR',
-            color: const Color(0xFF4FC3F7),
+            color: context.colors.blue,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -612,7 +619,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.sell_outlined,
             label: 'VENDER',
-            color: context.colors.accent,
+            color: context.colors.green,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -627,7 +634,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.swap_horiz,
             label: 'EMPRESTAR',
-            color: const Color(0xFFFFB74D),
+            color: context.colors.orange,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -642,7 +649,7 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.person_remove_outlined,
             label: 'DISPENSAR',
-            color: const Color(0xFFE53935),
+            color: context.colors.red,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -740,7 +747,7 @@ class _TechnicalAnalysisCard extends StatelessWidget {
               Text(
                 'CARACTERÍSTICAS',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 13,
                   letterSpacing: 1.0,
@@ -807,7 +814,7 @@ class _PlaystylesCard extends StatelessWidget {
               Text(
                 'ESTILOS DE JOGO',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 13,
                   letterSpacing: 1.0,
@@ -854,6 +861,9 @@ class _RadarChart extends StatelessWidget {
             painter: _RadarChartPainter(
               labels: values.keys.toList(),
               values: values.values.toList(),
+              accentColor: context.colors.green,
+              gridColor: context.colors.border,
+              labelColor: context.colors.muted,
             ),
           ),
         ),
@@ -865,8 +875,17 @@ class _RadarChart extends StatelessWidget {
 class _RadarChartPainter extends CustomPainter {
   final List<String> labels;
   final List<double> values;
+  final Color accentColor;
+  final Color gridColor;
+  final Color labelColor;
 
-  _RadarChartPainter({required this.labels, required this.values});
+  _RadarChartPainter({
+    required this.labels,
+    required this.values,
+    required this.accentColor,
+    required this.gridColor,
+    required this.labelColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -877,7 +896,7 @@ class _RadarChartPainter extends CustomPainter {
     const startAngle = -pi / 2;
 
     final gridPaint = Paint()
-      ..color = const Color(0xFF2A2F33)
+      ..color = gridColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 
@@ -929,19 +948,19 @@ class _RadarChartPainter extends CustomPainter {
     dataPath.close();
 
     final glowPaint = Paint()
-      ..color = Color(0xFF00FF41).withValues(alpha: 0.35)
+      ..color = accentColor.withValues(alpha: 0.35)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
     canvas.drawPath(dataPath, glowPaint);
 
     final fillPaint = Paint()
-      ..color = Color(0xFF00FF41).withValues(alpha: 0.16)
+      ..color = accentColor.withValues(alpha: 0.16)
       ..style = PaintingStyle.fill;
     canvas.drawPath(dataPath, fillPaint);
 
     final strokePaint = Paint()
-      ..color = Color(0xFF00FF41)
+      ..color = accentColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.5;
     canvas.drawPath(dataPath, strokePaint);
@@ -958,8 +977,8 @@ class _RadarChartPainter extends CustomPainter {
       final textPainter = TextPainter(
         text: TextSpan(
           text: labels[i],
-          style: const TextStyle(
-            color: AppColors.subtle,
+          style: TextStyle(
+            color: labelColor,
             fontSize: 10,
             fontWeight: FontWeight.w800,
             letterSpacing: 1.0,
@@ -980,7 +999,11 @@ class _RadarChartPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _RadarChartPainter oldDelegate) {
-    return oldDelegate.values != values || oldDelegate.labels != labels;
+    return oldDelegate.values != values ||
+        oldDelegate.labels != labels ||
+        oldDelegate.accentColor != accentColor ||
+        oldDelegate.gridColor != gridColor ||
+        oldDelegate.labelColor != labelColor;
   }
 }
 
@@ -1002,8 +1025,8 @@ class _StatGroupSection extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               group.title,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: context.colors.textPrimary,
                 fontSize: 12,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.0,
@@ -1020,14 +1043,14 @@ class _StatGroupSection extends StatelessWidget {
                 Expanded(
                   child: Text(
                     item.label,
-                    style: const TextStyle(
-                      color: AppColors.subtle,
+                    style: TextStyle(
+                      color: context.colors.subtle,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                _StatBadge(value: item.value),
+                _StatBadge(value: item.value, color: item.valueColor),
               ],
             ),
           ),
@@ -1038,8 +1061,9 @@ class _StatGroupSection extends StatelessWidget {
 
 class _StatBadge extends StatelessWidget {
   final int value;
+  final Color color;
 
-  const _StatBadge({required this.value});
+  const _StatBadge({required this.value, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -1048,7 +1072,7 @@ class _StatBadge extends StatelessWidget {
       height: 24,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: _statColor(value),
+        color: color,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -1063,17 +1087,17 @@ class _StatBadge extends StatelessWidget {
   }
 }
 
-/// Cor de fundo do badge de acordo com a faixa do valor.
-Color _statColor(int value) {
-  if (value >= 75) return const Color(0xFF1FE35B); // Verde
-  if (value >= 60) return const Color(0xFF5E6F5C); // Verde acinzentado
-  return const Color(0xFFDB7A85); // Vermelho rosado
-}
+// /// Cor de fundo do badge de acordo com a faixa do valor.
+// Color _statColor(int value) {
+//   if (value >= 75) return const Color(0xFF1FE35B); // Verde
+//   if (value >= 60) return const Color(0xFF5E6F5C); // Verde acinzentado
+//   return const Color(0xFFDB7A85); // Vermelho rosado
+// }
 
 /// Cor do texto do badge de acordo com a faixa do valor.
 Color _statTextColor(int value) {
   if (value >= 75) return Colors.black;
-  return Colors.white;
+  return Colors.black;
 }
 
 // ─── PERFIL (PERNA BOA / FINTAS / PERNA RUIM) ──────────────────────────────
@@ -1103,7 +1127,7 @@ class _ProfileCard extends StatelessWidget {
               Text(
                 'PERFIL',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 13,
                   letterSpacing: 1.0,
@@ -1118,8 +1142,8 @@ class _ProfileCard extends StatelessWidget {
                 label: 'Perna boa',
                 child: Text(
                   info.pernaBoa,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.colors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
                   ),
@@ -1164,8 +1188,8 @@ class _ProfileItem extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: context.colors.muted,
               fontSize: 10,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.6,
@@ -1196,7 +1220,7 @@ class _StarRow extends StatelessWidget {
           child: Icon(
             filled ? Icons.star : Icons.star_border,
             size: 14,
-            color: filled ? const Color(0xFFF5C518) : AppColors.muted,
+            color: filled ? const Color(0xFFF5C518) : context.colors.muted,
           ),
         );
       }),
@@ -1235,7 +1259,7 @@ class _SpecialtiesCard extends StatelessWidget {
               Text(
                 'ESPECIALIDADES',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 13,
                   letterSpacing: 1.0,
@@ -1277,8 +1301,8 @@ class _SpecialtyRow extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             specialty.name,
-            style: const TextStyle(
-              color: AppColors.light,
+            style: TextStyle(
+              color: context.colors.textPrimary,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -1320,7 +1344,7 @@ class _RoleFunctionsCard extends StatelessWidget {
               Text(
                 'FUNÇÕES',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 13,
                   letterSpacing: 1.0,
@@ -1363,14 +1387,14 @@ class _RoleFunctionColumn extends StatelessWidget {
     }
   }
 
-  Color get _levelColor {
+  Color _levelColor(BuildContext context) {
     switch (role.level) {
       case FunctionLevel.plusPlus:
-        return Colors.white;
+        return context.colors.textPrimary;
       case FunctionLevel.plus:
-        return Colors.white;
+        return context.colors.textPrimary;
       case FunctionLevel.normal:
-        return AppColors.subtle;
+        return context.colors.subtle;
     }
   }
 
@@ -1390,7 +1414,7 @@ class _RoleFunctionColumn extends StatelessWidget {
     final suffixColor = switch (role.level) {
       FunctionLevel.plusPlus => context.colors.accent,
       FunctionLevel.plus => context.colors.accent,
-      FunctionLevel.normal => AppColors.muted,
+      FunctionLevel.normal => context.colors.muted,
     };
 
     return Padding(
@@ -1407,7 +1431,7 @@ class _RoleFunctionColumn extends StatelessWidget {
                   TextSpan(
                     text: role.functionName,
                     style: TextStyle(
-                      color: _levelColor,
+                      color: _levelColor(context),
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.2,
@@ -1432,7 +1456,7 @@ class _RoleFunctionColumn extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: const Color(0xFF1F6B3A),
+                color: context.colors.accentBg,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
@@ -1456,8 +1480,8 @@ class _RoleFunctionColumn extends StatelessWidget {
                 child: Text(
                   sub,
                   softWrap: false,
-                  style: const TextStyle(
-                    color: AppColors.subtle,
+                  style: TextStyle(
+                    color: context.colors.subtle,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1490,12 +1514,12 @@ class _PlaystyleChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(playstyle.icon, size: 14, color: AppColors.subtle),
+          Icon(playstyle.icon, size: 14, color: context.colors.subtle),
           const SizedBox(width: 8),
           Text(
             playstyle.name,
-            style: const TextStyle(
-              color: AppColors.light,
+            style: TextStyle(
+              color: context.colors.textPrimary,
               fontSize: 12,
               fontWeight: FontWeight.w800,
             ),

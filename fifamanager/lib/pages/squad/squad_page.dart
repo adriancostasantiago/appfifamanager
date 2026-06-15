@@ -1,3 +1,5 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
+import 'package:fifamanager/pages/squad/tactical_board_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
@@ -362,17 +364,19 @@ class _SquadPageState extends State<SquadPage> {
         filteredMidfielders.isNotEmpty ||
         filteredForwards.isNotEmpty;
 
+    final colors = context.colors;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF101314),
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF101314),
+        backgroundColor: colors.background,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        iconTheme: IconThemeData(color: colors.textPrimary),
+        title: Text(
           'FC MANAGER',
           style: TextStyle(
-            color: Color(0xFF00FF41),
+            color: colors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -389,7 +393,11 @@ class _SquadPageState extends State<SquadPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _SquadStats(squad: squad),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
+
+                    _TacticalBoardButton(),
+
+                    const SizedBox(height: 16),
 
                     _SquadSearchField(
                       controller: _searchController,
@@ -473,7 +481,7 @@ class _SquadStats extends StatelessWidget {
               child: _StatCard(
                 title: 'MÉDIA OVR',
                 value: squad.averageOvr.toStringAsFixed(1),
-                valueColor: const Color(0xFF00FF41),
+                valueColor: context.colors.accent,
               ),
             ),
             const SizedBox(width: 10),
@@ -508,30 +516,28 @@ class _SquadStats extends StatelessWidget {
 class _StatCard extends StatelessWidget {
   final String title;
   final String value;
-  final Color valueColor;
+  final Color? valueColor;
 
-  const _StatCard({
-    required this.title,
-    required this.value,
-    this.valueColor = Colors.white,
-  });
+  const _StatCard({required this.title, required this.value, this.valueColor});
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Color(0xFF7C8579),
+            style: TextStyle(
+              color: colors.muted,
               fontSize: 11,
               fontWeight: FontWeight.w700,
             ),
@@ -542,12 +548,84 @@ class _StatCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: valueColor,
+              color: valueColor ?? colors.textPrimary,
               fontSize: 18,
               fontWeight: FontWeight.w900,
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ─── BOTÃO PRANCHETA TÁTICA ──────────────────────────────────────────────────
+
+class _TacticalBoardButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const TacticalBoardPage())),
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          decoration: BoxDecoration(
+            color: colors.accentBg,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: colors.accent.withValues(alpha: 0.35)),
+            boxShadow: colors.cardShadow,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: colors.accentSubtle,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.sports_soccer,
+                  color: colors.accent,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'PRANCHETA TÁTICA',
+                      style: TextStyle(
+                        color: colors.accent,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Arraste jogadores e monte sua formação',
+                      style: TextStyle(
+                        color: colors.muted,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios, color: colors.accent, size: 14),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -564,29 +642,31 @@ class _SquadSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: TextField(
         controller: controller,
         onChanged: onChanged,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: TextStyle(color: colors.textPrimary, fontSize: 14),
         decoration: InputDecoration(
           isDense: true,
           filled: false,
           hintText: 'Buscar jogador...',
-          hintStyle: const TextStyle(
-            color: Color(0xFF7C8579),
+          hintStyle: TextStyle(
+            color: colors.muted,
             fontWeight: FontWeight.w600,
           ),
-          prefixIcon: const Icon(Icons.search, color: Color(0xFF7C8579)),
+          prefixIcon: Icon(Icons.search, color: colors.muted),
           suffixIcon: controller.text.isEmpty
               ? null
               : IconButton(
-                  icon: const Icon(Icons.close, color: Color(0xFF7C8579)),
+                  icon: Icon(Icons.close, color: colors.muted),
                   onPressed: () {
                     controller.clear();
                     onChanged('');
@@ -610,25 +690,24 @@ class _NoResultsMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 32),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.search_off, color: Color(0xFF7C8579), size: 32),
-          SizedBox(height: 10),
+          Icon(Icons.search_off, color: colors.muted, size: 32),
+          const SizedBox(height: 10),
           Text(
             'Nenhum jogador encontrado',
-            style: TextStyle(
-              color: Color(0xFF9AA39C),
-              fontWeight: FontWeight.w700,
-            ),
+            style: TextStyle(color: colors.subtle, fontWeight: FontWeight.w700),
           ),
         ],
       ),
@@ -683,6 +762,7 @@ class _SquadViewModeTabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -692,9 +772,7 @@ class _SquadViewModeTabButton extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: selected
-                  ? const Color(0xFF00FF41)
-                  : const Color(0xFF7C8579),
+              color: selected ? colors.accent : colors.muted,
               fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
               fontSize: 12,
               letterSpacing: 1.8,
@@ -705,7 +783,7 @@ class _SquadViewModeTabButton extends StatelessWidget {
             height: 2,
             width: 80,
             decoration: BoxDecoration(
-              color: selected ? const Color(0xFF00FF41) : Colors.transparent,
+              color: selected ? colors.accent : Colors.transparent,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -732,6 +810,7 @@ class _PositionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Padding(
       padding: const EdgeInsets.only(bottom: 28),
       child: Column(
@@ -739,13 +818,13 @@ class _PositionSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(width: 4, height: 28, color: const Color(0xFF00FF41)),
+              Container(width: 4, height: 28, color: colors.accent),
               const SizedBox(width: 12),
 
               Text(
                 title,
-                style: const TextStyle(
-                  color: Color(0xFFD7E2D1),
+                style: TextStyle(
+                  color: colors.light,
                   fontWeight: FontWeight.w900,
                   fontSize: 18,
                   fontStyle: FontStyle.italic,
@@ -757,12 +836,12 @@ class _PositionSection extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1E22),
+                  color: colors.cardAlt,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   count.toString(),
-                  style: const TextStyle(color: Colors.white70, fontSize: 11),
+                  style: TextStyle(color: colors.subtle, fontSize: 11),
                 ),
               ),
             ],
@@ -794,7 +873,8 @@ class _PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ovrColor = _getOvrColor(player.ovr);
+    final ovrColor = player.ovrColor;
+    final colors = context.colors;
 
     return Material(
       color: Colors.transparent,
@@ -804,7 +884,7 @@ class _PlayerCard extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => PlayerDetailPage(
-                player: samplePlayerProfile,
+                player: _buildProfile(player),
               ), //_buildProfile(player)
             ),
           );
@@ -812,9 +892,10 @@ class _PlayerCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFF16191D),
+            color: colors.card,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFF1F2327)),
+            border: Border.all(color: colors.border),
+            boxShadow: colors.cardShadow,
           ),
           child: Row(
             children: [
@@ -823,12 +904,8 @@ class _PlayerCard extends StatelessWidget {
                 child: Container(
                   width: 56,
                   height: 56,
-                  color: const Color(0xFF1F2327),
-                  child: const Icon(
-                    Icons.person,
-                    size: 32,
-                    color: Color(0xFF7C8579),
-                  ),
+                  color: colors.border,
+                  child: Icon(Icons.person, size: 32, color: colors.muted),
                 ),
               ),
 
@@ -840,8 +917,8 @@ class _PlayerCard extends StatelessWidget {
                   children: [
                     Text(
                       player.name,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: colors.textPrimary,
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
                       ),
@@ -851,8 +928,8 @@ class _PlayerCard extends StatelessWidget {
 
                     Text(
                       '${player.position} • ${player.country}',
-                      style: const TextStyle(
-                        color: Color(0xFF9AA39C),
+                      style: TextStyle(
+                        color: colors.subtle,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -862,8 +939,8 @@ class _PlayerCard extends StatelessWidget {
                     Text(
                       'CONTRATO: ${player.contractUntil} '
                       '${player.contractUntil == 1 ? 'ANO' : 'ANOS'}',
-                      style: const TextStyle(
-                        color: Color(0xFF7C8579),
+                      style: TextStyle(
+                        color: colors.muted,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
@@ -918,11 +995,13 @@ class _PlayerTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -930,18 +1009,18 @@ class _PlayerTable extends StatelessWidget {
           // Cabeçalho
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            color: const Color(0xFF1A1E22),
-            child: const Row(
+            color: colors.cardAlt,
+            child: Row(
               children: [
                 Expanded(
                   flex: 5,
                   child: Row(
                     children: [
-                      SizedBox(width: 24),
+                      const SizedBox(width: 24),
                       Text(
                         'NOME',
                         style: TextStyle(
-                          color: Color(0xFF7C8579),
+                          color: colors.muted,
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.0,
@@ -950,26 +1029,13 @@ class _PlayerTable extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Expanded(
-                //   flex: 1,
-                //   child: Text(
-                //     'OVR',
-                //     textAlign: TextAlign.center,
-                //     style: TextStyle(
-                //       color: Color(0xFF7C8579),
-                //       fontSize: 11,
-                //       fontWeight: FontWeight.w800,
-                //       letterSpacing: 1.0,
-                //     ),
-                //   ),
-                // ),
                 Expanded(
                   flex: 2,
                   child: Text(
                     'VALOR',
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      color: Color(0xFF7C8579),
+                      color: colors.muted,
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.0,
@@ -982,7 +1048,7 @@ class _PlayerTable extends StatelessWidget {
                     'SALÁRIO',
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      color: Color(0xFF7C8579),
+                      color: colors.muted,
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.0,
@@ -997,7 +1063,7 @@ class _PlayerTable extends StatelessWidget {
           for (int i = 0; i < players.length; i++)
             Column(
               children: [
-                if (i > 0) const Divider(height: 1, color: Color(0xFF1F2327)),
+                if (i > 0) Divider(height: 1, color: colors.border),
                 _PlayerTableRow(player: players[i]),
               ],
             ),
@@ -1022,7 +1088,8 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
   @override
   Widget build(BuildContext context) {
     final player = widget.player;
-    final ovrColor = _getOvrColor(player.ovr);
+    final ovrColor = player.ovrColor;
+    final colors = context.colors;
 
     return Material(
       color: Colors.transparent,
@@ -1051,7 +1118,7 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                                 ? Icons.keyboard_arrow_down
                                 : Icons.keyboard_arrow_right,
                             size: 18,
-                            color: const Color(0xFF7C8579),
+                            color: colors.muted,
                           ),
                           const SizedBox(width: 4),
                           Center(
@@ -1083,8 +1150,8 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                                   player.name,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: colors.textPrimary,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w800,
                                   ),
@@ -1094,8 +1161,8 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                                   '${player.position} • ${player.country}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Color(0xFF7C8579),
+                                  style: TextStyle(
+                                    color: colors.muted,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -1136,8 +1203,8 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                         textAlign: TextAlign.right,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Color(0xFF00FF41),
+                        style: TextStyle(
+                          color: colors.green,
                           fontSize: 12,
                           fontWeight: FontWeight.w800,
                         ),
@@ -1150,8 +1217,8 @@ class _PlayerTableRowState extends State<_PlayerTableRow> {
                         textAlign: TextAlign.right,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Color(0xFF9AA39C),
+                        style: TextStyle(
+                          color: colors.subtle,
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                         ),
@@ -1189,21 +1256,22 @@ class _ContractChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1E22),
+        color: colors.cardAlt,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.event_note, size: 14, color: Color(0xFF7C8579)),
+          Icon(Icons.event_note, size: 14, color: colors.muted),
           const SizedBox(width: 6),
           Text(
             'CONTRATO: $contractUntil ${contractUntil == 1 ? 'ANO' : 'ANOS'}',
-            style: const TextStyle(
-              color: Color(0xFF9AA39C),
+            style: TextStyle(
+              color: colors.subtle,
               fontSize: 11,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.6,
@@ -1223,13 +1291,15 @@ class _PlayerActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Row(
       children: [
         Expanded(
           child: _PlayerActionButton(
             icon: Icons.autorenew,
             label: 'RENOVAR',
-            color: const Color(0xFF4FC3F7),
+            color: colors.blue,
+            bgColor: colors.blueBg,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -1250,7 +1320,8 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.sell_outlined,
             label: 'VENDER',
-            color: const Color(0xFF00FF41),
+            color: colors.green,
+            bgColor: colors.greenBg,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -1266,7 +1337,8 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.swap_horiz,
             label: 'EMPRESTAR',
-            color: const Color(0xFFFFB74D),
+            color: colors.orange,
+            bgColor: colors.orangeBg,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -1282,7 +1354,8 @@ class _PlayerActionButtons extends StatelessWidget {
           child: _PlayerActionButton(
             icon: Icons.person_remove_outlined,
             label: 'DISPENSAR',
-            color: const Color(0xFFE53935),
+            color: colors.red,
+            bgColor: colors.redBg,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -1302,12 +1375,14 @@ class _PlayerActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
+  final Color bgColor;
   final VoidCallback onTap;
 
   const _PlayerActionButton({
     required this.icon,
     required this.label,
     required this.color,
+    required this.bgColor,
     required this.onTap,
   });
 
@@ -1321,7 +1396,7 @@ class _PlayerActionButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFF1A1E22),
+            color: bgColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: color.withValues(alpha: 0.4)),
           ),
@@ -1371,59 +1446,61 @@ PlayerProfile _buildProfile(PlayerData player) {
   );
 }
 
-Color _getOvrColor(int ovr) {
-  if (ovr <= 50) {
-    return const Color(0xFFE53935); // Vermelho
-  } else if (ovr <= 60) {
-    return const Color(0xFFFF9800); // Laranja
-  } else if (ovr <= 70) {
-    return const Color.fromARGB(255, 255, 232, 29); // Amarelo
-  } else if (ovr <= 80) {
-    return const Color.fromARGB(255, 107, 168, 37); // Verde Claro
-  } else {
-    return const Color.fromARGB(255, 5, 104, 46); // Verde Escuro
-  }
-}
+// Color _getOvrColor(int ovr) {
+//   if (ovr <= 50) {
+//     return const Color(0xFFE53935); // Vermelho
+//   } else if (ovr <= 60) {
+//     return const Color(0xFFFF9800); // Laranja
+//   } else if (ovr <= 70) {
+//     return const Color.fromARGB(255, 255, 232, 29); // Amarelo
+//   } else if (ovr <= 80) {
+//     return const Color.fromARGB(255, 107, 168, 37); // Verde Claro
+//   } else {
+//     return const Color.fromARGB(255, 5, 104, 46); // Verde Escuro
+//   }
+// }
 
 // ─── MODELOS ────────────────────────────────────────────────────────────────
 
 /// Estatísticas gerais do elenco e a lista completa de jogadores.
-class SquadData {
-  final double averageOvr;
-  final int playerCount;
-  final String totalValue;
-  final String totalSalary;
-  final List<PlayerData> players;
+// class SquadData {
+//   final double averageOvr;
+//   final int playerCount;
+//   final String totalValue;
+//   final String totalSalary;
+//   final List<PlayerData> players;
 
-  SquadData({
-    required this.averageOvr,
-    required this.playerCount,
-    required this.totalValue,
-    required this.totalSalary,
-    required this.players,
-  });
-}
+//   SquadData({
+//     required this.averageOvr,
+//     required this.playerCount,
+//     required this.totalValue,
+//     required this.totalSalary,
+//     required this.players,
+//   });
+// }
 
-class PlayerData {
-  final String name;
-  final String country;
-  final String position;
-  final String photo;
-  final int ovr;
-  final String? marketValue;
-  final String? salary;
+// class PlayerData {
+//   final String name;
+//   final String country;
+//   final String position;
+//   final String photo;
+//   final int ovr;
+//   final String? marketValue;
+//   final String? salary;
+//   final Color? ovrColor;
 
-  /// Quantos anos de contrato o jogador ainda possui (1 a 5).
-  final int contractUntil;
+//   /// Quantos anos de contrato o jogador ainda possui (1 a 5).
+//   final int contractUntil;
 
-  PlayerData({
-    required this.name,
-    required this.country,
-    required this.position,
-    required this.photo,
-    required this.ovr,
-    this.marketValue,
-    this.salary,
-    this.contractUntil = 1,
-  });
-}
+//   PlayerData({
+//     required this.name,
+//     required this.country,
+//     required this.position,
+//     required this.photo,
+//     required this.ovr,
+//     this.ovrColor,
+//     this.marketValue,
+//     this.salary,
+//     this.contractUntil = 1,
+//   });
+// }

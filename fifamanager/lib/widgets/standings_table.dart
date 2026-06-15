@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fifamanager/core/theme/app_theme.dart';
 
 // ─── COLUMN SIZING ───────────────────────────────────────────────────────────
 // Usamos flex em vez de larguras fixas para evitar overflow por arredondamento.
@@ -69,12 +70,14 @@ class FullStandingsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
       // LayoutBuilder: se a tela for maior que o mínimo, ocupa tudo.
@@ -121,8 +124,8 @@ class _FullStandingsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const style = TextStyle(
-      color: Color(0xFF7C8579),
+    final style = TextStyle(
+      color: context.colors.muted,
       fontSize: 12,
       fontWeight: FontWeight.w700,
       letterSpacing: 1,
@@ -133,7 +136,7 @@ class _FullStandingsHeader extends StatelessWidget {
         Expanded(flex: _posFlex, child: const SizedBox()),
         Expanded(
           flex: _clubFlex,
-          child: const Text('CLUBE', style: style),
+          child: Text('CLUBE', style: style),
         ),
         for (final label in ['P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'SG', '%'])
           Expanded(
@@ -152,8 +155,9 @@ class _FullStandingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final isHighlight = data.highlight;
-    final textColor = isHighlight ? const Color(0xFF00FF41) : Colors.white;
+    final textColor = isHighlight ? colors.accent : colors.textPrimary;
     final statStyle = TextStyle(
       color: textColor,
       fontWeight: isHighlight ? FontWeight.w700 : FontWeight.w500,
@@ -163,10 +167,10 @@ class _FullStandingRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: isHighlight ? const Color(0xFF0B1C10) : const Color(0xFF131619),
+        color: isHighlight ? colors.accentBg : colors.cardDark,
         borderRadius: BorderRadius.circular(18),
         border: isHighlight
-            ? const Border(left: BorderSide(color: Color(0xFF00FF41), width: 4))
+            ? Border(left: BorderSide(color: colors.accent, width: 4))
             : null,
       ),
       child: Row(
@@ -180,7 +184,7 @@ class _FullStandingRow extends StatelessWidget {
                 height: 18,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF16191D),
+                  color: colors.card,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
@@ -238,12 +242,14 @@ class StandingsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       padding: const EdgeInsets.all(18),
       child: Column(
@@ -270,55 +276,26 @@ class _StandingsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final headerStyle = TextStyle(
+      color: context.colors.muted,
+      fontSize: 11,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 1.2,
+    );
     return Row(
-      children: const [
+      children: [
         Expanded(
           flex: 4,
-          child: Text(
-            'CLUBE',
-            style: TextStyle(
-              color: Color(0xFF7C8579),
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-            ),
-          ),
+          child: Text('CLUBE', style: headerStyle),
         ),
         Expanded(
-          child: Text(
-            'J',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF7C8579),
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-            ),
-          ),
+          child: Text('J', textAlign: TextAlign.center, style: headerStyle),
         ),
         Expanded(
-          child: Text(
-            'SG',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF7C8579),
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-            ),
-          ),
+          child: Text('SG', textAlign: TextAlign.center, style: headerStyle),
         ),
         Expanded(
-          child: Text(
-            'PTS',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFF7C8579),
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-            ),
-          ),
+          child: Text('PTS', textAlign: TextAlign.center, style: headerStyle),
         ),
       ],
     );
@@ -332,15 +309,16 @@ class _StandingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textColor = data.highlight ? colors.accent : colors.textPrimary;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
       decoration: BoxDecoration(
-        color: data.highlight
-            ? const Color(0xFF0B1C10)
-            : const Color(0xFF131619),
+        color: data.highlight ? colors.accentBg : colors.cardDark,
         borderRadius: BorderRadius.circular(18),
         border: data.highlight
-            ? const Border(left: BorderSide(color: Color(0xFF00FF41), width: 4))
+            ? Border(left: BorderSide(color: colors.accent, width: 4))
             : null,
         boxShadow: data.highlight
             ? [
@@ -363,15 +341,13 @@ class _StandingRow extends StatelessWidget {
                   height: 28,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF16191D),
+                    color: colors.card,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     data.position,
                     style: TextStyle(
-                      color: data.highlight
-                          ? const Color(0xFF00FF41)
-                          : Colors.white,
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -381,9 +357,7 @@ class _StandingRow extends StatelessWidget {
                   child: Text(
                     data.club,
                     style: TextStyle(
-                      color: data.highlight
-                          ? const Color(0xFF00FF41)
-                          : Colors.white,
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                       letterSpacing: data.highlight ? 0.8 : 0,
                     ),
@@ -398,7 +372,7 @@ class _StandingRow extends StatelessWidget {
               data.played,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
+                color: textColor,
                 fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
@@ -408,7 +382,7 @@ class _StandingRow extends StatelessWidget {
               data.diff,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
+                color: textColor,
                 fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
@@ -418,7 +392,7 @@ class _StandingRow extends StatelessWidget {
               data.points,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
+                color: textColor,
                 fontWeight: FontWeight.w900,
               ),
             ),

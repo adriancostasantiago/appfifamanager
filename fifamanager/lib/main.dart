@@ -12,13 +12,32 @@ import 'pages/match/register_match_page.dart';
 import 'pages/squad/squad_page.dart';
 import 'pages/trophy/trophy_room_page.dart';
 import 'routes/app_routes.dart';
+import 'core/theme/theme_controller.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await themeController.loadTheme();
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    themeController.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +46,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+
+      themeMode: themeController.themeMode,
+      // themeMode: ThemeMode.system,
+      // themeMode: ThemeMode.light,
       initialRoute: AppRoutes.splash,
       onGenerateRoute: (settings) {
         final Widget page;

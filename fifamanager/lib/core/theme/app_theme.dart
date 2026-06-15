@@ -27,6 +27,8 @@ class FCColors extends ThemeExtension<FCColors> {
   // Text hierarchy
   final Color textPrimary; // headings, values
   final Color textSecondary; // labels, subtitles
+  final Color textReceita; // receita values
+  final Color textDespesas; // despesas values
   final Color muted; // placeholders, captions
   final Color subtle; // very secondary text
   final Color light; // lightest text (for dark bg only)
@@ -62,6 +64,8 @@ class FCColors extends ThemeExtension<FCColors> {
     required this.accentBg,
     required this.textPrimary,
     required this.textSecondary,
+    required this.textReceita,
+    required this.textDespesas,
     required this.muted,
     required this.subtle,
     required this.light,
@@ -95,6 +99,8 @@ class FCColors extends ThemeExtension<FCColors> {
     Color? accentBg,
     Color? textPrimary,
     Color? textSecondary,
+    Color? textReceita,
+    Color? textDespesas,
     Color? muted,
     Color? subtle,
     Color? light,
@@ -126,6 +132,8 @@ class FCColors extends ThemeExtension<FCColors> {
       accentBg: accentBg ?? this.accentBg,
       textPrimary: textPrimary ?? this.textPrimary,
       textSecondary: textSecondary ?? this.textSecondary,
+      textReceita: textReceita ?? this.textReceita,
+      textDespesas: textDespesas ?? this.textDespesas,
       muted: muted ?? this.muted,
       subtle: subtle ?? this.subtle,
       light: light ?? this.light,
@@ -162,6 +170,8 @@ class FCColors extends ThemeExtension<FCColors> {
       accentBg: Color.lerp(accentBg, other.accentBg, t)!,
       textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
+      textReceita: Color.lerp(textReceita, other.textReceita, t)!,
+      textDespesas: Color.lerp(textDespesas, other.textDespesas, t)!,
       muted: Color.lerp(muted, other.muted, t)!,
       subtle: Color.lerp(subtle, other.subtle, t)!,
       light: Color.lerp(light, other.light, t)!,
@@ -202,6 +212,8 @@ class AppTheme {
 
     textPrimary: Color(0xFFFFFFFF),
     textSecondary: Color(0xFFB0B6A7),
+    textReceita: Color(0xFFFFFFFF),
+    textDespesas: Color(0xFFFFFFFF),
     muted: Color(0xFF7C8579),
     subtle: Color(0xFF9AA39C),
     light: Color(0xFFD7E2D1),
@@ -221,46 +233,53 @@ class AppTheme {
   );
 
   // ── LIGHT ─────────────────────────────────────────────────────────────────
-  // Conceito: fundo cinza-azulado suave (#F0F2F5), cards brancos com sombra
-  // sutil, accent verde vibrante (#00A650), texto quase-preto para contraste
-  // total. Hierarquia clara: primary #111827 / secondary #374151 / muted #6B7280
+  // Conceito: inspirado no tema "Deep Green" da imagem FC Manager.
+  // Fundo verde-acinzentado suave (#EEF2EE), cards brancos com leve tom esverdeado,
+  // accent verde floresta (#1A7A30) — mesmo verde dos botões principais da UI.
+  // Hierarquia: primary #0D1F10 / secondary #2A3D2C / muted #5C7060
   static const FCColors _light = FCColors(
-    background: Color(0xFFF0F2F5), // cinza-azulado, não branco puro
-    backgroundDark: Color(0xFFE4E8ED), // seções mais profundas (drawer, appbar)
-    card: Color(0xFFFFFFFF), // cards brancos com sombra
-    cardAlt: Color(0xFFF7F9FC), // card interno / sub-card
-    cardDark: Color(0xFFEDF0F4), // linha zebra / header de tabela
+    background: Color(0xFFEEF2EE), // verde-acinzentado suave, tom do tema
+    backgroundDark: Color(0xFFE0E8E1), // seções mais profundas (drawer, appbar)
+    card: Color(0xFFFFFFFF), // cards brancos puros
+    cardAlt: Color(0xFFF4F8F4), // card interno / sub-card com leve toque verde
+    cardDark: Color(0xFFE8EEE9), // linha zebra / header de tabela
 
-    border: Color(0xFFDDE1E8), // borda visível mas suave
-    divider: Color(0xFFE8EBF0), // divisor dentro de cards
+    border: Color(0xFFCDD8CE), // borda verde-acinzentada suave
+    divider: Color(0xFFDAE4DB), // divisor dentro de cards
 
-    accent: Color(0xFF00A650), // verde mais escuro — legível no claro
-    accentLight: Color(0xFF34C472), // verde médio
-    accentStrong: Color(0xFF008040), // verde intenso para hover/press
-    accentDark: Color(0xFF005C2E), // texto sobre accent
-    accentSubtle: Color(0xFFE8F8EF), // fundo pill/chip verde
-    accentBg: Color(0xFFF0FAF4), // fundo seção accent
+    accent: Color(
+      0xFF0D1F10,
+    ), // verde floresta — botão "COPA" / "REGISTRAR PARTIDA"
+    accentLight: Color(0xFF2ECC5A), // verde médio vibrante
+    accentStrong: Color(0xFF135E24), // verde escuro para press/hover
+    accentDark: Color(0xFF0A3D18), // texto sobre accent
+    accentSubtle: Color(0xFFE3F5E8), // fundo pill/chip verde claro
+    accentBg: Color(0xFFEDF8F0), // fundo seção accent
 
-    textPrimary: Color(0xFF111827), // quase-preto — máximo contraste
-    textSecondary: Color(0xFF374151), // títulos secundários
-    muted: Color(0xFF6B7280), // labels, captions
-    subtle: Color(0xFF9CA3AF), // placeholders
-    light: Color(0xFF111827), // no light theme = igual textPrimary
+    textPrimary: Color(0xFF0D1F10), // quase-preto esverdeado — máximo contraste
+    textSecondary: Color(0xFF2A3D2C), // títulos secundários com tom verde
+
+    textReceita: Color(0xFFFFFFFF),
+    textDespesas: Color(0xFFFFFFFF),
+    muted: Color(0xFF5C7060), // labels, captions — verde médio acinzentado
+    // subtle: Color.fromARGB(255, 58, 75, 60),
+    subtle: Color(0xFF3a4b3c), // placeholders
+    light: Color(0xFF0D1F10), // no light theme = igual textPrimary
     onAccent: Color(0xFFFFFFFF), // texto SOBRE botões verdes
 
-    green: Color(0xFF00A650),
-    greenBg: Color(0xFFE8F8EF),
-    red: Color(0xFFDC2626), // vermelho mais saturado no claro
-    redBg: Color(0xFFFEF2F2),
-    blue: Color(0xFF2563EB), // azul legível
-    blueBg: Color(0xFFEFF6FF),
-    orange: Color(0xFFD97706), // âmbar escuro — legível
-    orangeBg: Color(0xFFFFFBEB),
-    amber: Color(0xFFD97706),
+    green: Color(0xFF1A7A30), // mesmo verde do accent
+    greenBg: Color(0xFFE3F5E8),
+    red: Color(0xFFCC2222), // vermelho saturado, visível no fundo claro
+    redBg: Color(0xFFFDF0F0),
+    blue: Color(0xFF1A5FAD), // azul legível no fundo esverdeado
+    blueBg: Color(0xFFEEF4FC),
+    orange: Color(0xFFBF6A00), // laranja escuro — legível
+    orangeBg: Color(0xFFFFF7E8),
+    amber: Color(0xFFB8860B), // âmbar dourado escuro
 
     cardShadow: [
-      BoxShadow(color: Color(0x0F000000), blurRadius: 8, offset: Offset(0, 2)),
-      BoxShadow(color: Color(0x08000000), blurRadius: 1, offset: Offset(0, 0)),
+      BoxShadow(color: Color(0x10163020), blurRadius: 10, offset: Offset(0, 2)),
+      BoxShadow(color: Color(0x08000000), blurRadius: 2, offset: Offset(0, 0)),
     ],
   );
 

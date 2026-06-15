@@ -1,7 +1,6 @@
 import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 
 class ReleasePlayerPage extends StatefulWidget {
   final PlayerProfile player;
@@ -77,19 +76,16 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFFE53935), width: 1),
+                side: BorderSide(color: context.colors.red, width: 1),
               ),
               content: Row(
                 children: [
-                  const Icon(
-                    Icons.person_remove_outlined,
-                    color: Color(0xFFE53935),
-                  ),
+                  Icon(Icons.person_remove_outlined, color: context.colors.red),
                   const SizedBox(width: 12),
                   Text(
                     '${widget.player.name} foi dispensado.',
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -166,12 +162,12 @@ class _ReleasePlayerPageState extends State<ReleasePlayerPage> {
                     ),
 
                     const SizedBox(height: 12),
-                    const Center(
+                    Center(
                       child: Text(
                         'ESTA AÇÃO É PERMANENTE E NÃO PODE SER DESFEITA.\nO JOGADOR SERÁ REMOVIDO DO ELENCO IMEDIATAMENTE.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: AppColors.muted,
+                          color: context.colors.muted,
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.5,
@@ -210,17 +206,13 @@ class _ReleaseAppBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: const Icon(
-              Icons.arrow_back,
-              color: Color(0xFFE53935),
-              size: 22,
-            ),
+            child: Icon(Icons.arrow_back, color: context.colors.red, size: 22),
           ),
           const SizedBox(width: 16),
-          const Text(
+          Text(
             'DISPENSAR JOGADOR',
             style: TextStyle(
-              color: Color(0xFFE53935),
+              color: context.colors.red,
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -228,7 +220,7 @@ class _ReleaseAppBar extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Icon(Icons.info_outline, color: AppColors.muted, size: 20),
+          Icon(Icons.info_outline, color: context.colors.muted, size: 20),
         ],
       ),
     );
@@ -249,12 +241,10 @@ class _PlayerMiniCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFFE53935).withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: context.colors.red.withValues(alpha: 0.3)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFE53935).withValues(alpha: 0.04),
+            color: context.colors.red.withValues(alpha: 0.04),
             blurRadius: 24,
             spreadRadius: 2,
           ),
@@ -272,14 +262,14 @@ class _PlayerMiniCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: context.colors.cardAlt,
                   border: Border.all(
-                    color: const Color(0xFFE53935).withValues(alpha: 0.3),
+                    color: context.colors.red.withValues(alpha: 0.3),
                     width: 2,
                   ),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   size: 44,
-                  color: Color(0xFF2A2F33),
+                  color: context.colors.border,
                 ),
               ),
               Positioned(
@@ -305,7 +295,7 @@ class _PlayerMiniCard extends StatelessWidget {
                       const Text(
                         'OVR',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 5,
                           fontWeight: FontWeight.w900,
                         ),
@@ -313,7 +303,7 @@ class _PlayerMiniCard extends StatelessWidget {
                       Text(
                         player.ovr.toString(),
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
                         ),
@@ -331,8 +321,8 @@ class _PlayerMiniCard extends StatelessWidget {
               children: [
                 Text(
                   player.name.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.colors.textPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.8,
@@ -356,11 +346,11 @@ class _PlayerMiniCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text(
+              Text(
                 'VALOR\nMERCADO',
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 8,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.6,
@@ -370,8 +360,8 @@ class _PlayerMiniCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 player.marketValue,
-                style: const TextStyle(
-                  color: AppColors.light,
+                style: TextStyle(
+                  color: context.colors.light,
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
                 ),
@@ -402,12 +392,12 @@ class _MiniChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 11, color: AppColors.subtle),
+          Icon(icon, size: 11, color: context.colors.subtle),
           const SizedBox(width: 5),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.subtle,
+            style: TextStyle(
+              color: context.colors.subtle,
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.4,
@@ -428,11 +418,9 @@ class _WarningBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFE53935).withValues(alpha: 0.08),
+        color: context.colors.red.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFFE53935).withValues(alpha: 0.4),
-        ),
+        border: Border.all(color: context.colors.red.withValues(alpha: 0.4)),
       ),
       child: Row(
         children: [
@@ -440,34 +428,34 @@ class _WarningBanner extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFE53935).withValues(alpha: 0.15),
+              color: context.colors.red.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.warning_amber_rounded,
-              color: Color(0xFFE53935),
+              color: context.colors.red,
               size: 22,
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'AÇÃO IRREVERSÍVEL',
                   style: TextStyle(
-                    color: Color(0xFFE53935),
+                    color: context.colors.red,
                     fontSize: 11,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.8,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'Ao dispensar o jogador, ele será removido permanentemente do elenco e não poderá ser recuperado.',
                   style: TextStyle(
-                    color: AppColors.light,
+                    color: context.colors.light,
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     height: 1.5,
@@ -509,18 +497,18 @@ class _FinancialImpactCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Icon(
                 Icons.account_balance_outlined,
-                color: Color(0xFFE53935),
+                color: context.colors.red,
                 size: 16,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 'IMPACTO FINANCEIRO',
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -536,6 +524,7 @@ class _FinancialImpactCard extends StatelessWidget {
                   label: 'SALÁRIO SEMANAL',
                   value: salary,
                   icon: Icons.payments_outlined,
+                  valueColor: context.colors.muted,
                 ),
               ),
               const SizedBox(width: 12),
@@ -545,6 +534,7 @@ class _FinancialImpactCard extends StatelessWidget {
                   value:
                       '$contractUntil ${contractUntil == 1 ? 'ANO' : 'ANOS'}',
                   icon: Icons.event_outlined,
+                  valueColor: context.colors.muted,
                 ),
               ),
             ],
@@ -557,6 +547,7 @@ class _FinancialImpactCard extends StatelessWidget {
                   label: 'VALOR DE MERCADO',
                   value: marketValue,
                   icon: Icons.trending_up,
+                  valueColor: context.colors.muted,
                 ),
               ),
               const SizedBox(width: 12),
@@ -565,7 +556,7 @@ class _FinancialImpactCard extends StatelessWidget {
                   label: 'CUSTO RESCISÃO EST.',
                   value: custoRescisao,
                   icon: Icons.money_off_outlined,
-                  valueColor: const Color(0xFFE53935),
+                  valueColor: context.colors.muted,
                 ),
               ),
             ],
@@ -586,7 +577,7 @@ class _ImpactTile extends StatelessWidget {
     required this.label,
     required this.value,
     required this.icon,
-    this.valueColor = AppColors.light,
+    required this.valueColor,
   });
 
   @override
@@ -603,12 +594,12 @@ class _ImpactTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: AppColors.muted, size: 11),
+              Icon(icon, color: context.colors.muted, size: 11),
               const SizedBox(width: 5),
               Text(
                 label,
-                style: const TextStyle(
-                  color: AppColors.muted,
+                style: TextStyle(
+                  color: context.colors.muted,
                   fontSize: 8,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.5,
@@ -662,14 +653,18 @@ class _MotivoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.list_alt_outlined, color: Color(0xFFE53935), size: 16),
-              SizedBox(width: 8),
+              Icon(
+                Icons.list_alt_outlined,
+                color: context.colors.red,
+                size: 16,
+              ),
+              const SizedBox(width: 8),
               Text(
                 'MOTIVO DA DISPENSA',
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -690,12 +685,12 @@ class _MotivoCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: selected == m.label
-                      ? const Color(0xFFE53935).withValues(alpha: 0.1)
+                      ? context.colors.red.withValues(alpha: 0.1)
                       : context.colors.cardAlt,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: selected == m.label
-                        ? const Color(0xFFE53935).withValues(alpha: 0.6)
+                        ? context.colors.red.withValues(alpha: 0.6)
                         : context.colors.border,
                     width: selected == m.label ? 1.5 : 1,
                   ),
@@ -706,16 +701,16 @@ class _MotivoCard extends StatelessWidget {
                       m.icon,
                       size: 16,
                       color: selected == m.label
-                          ? const Color(0xFFE53935)
-                          : AppColors.subtle,
+                          ? context.colors.red
+                          : context.colors.subtle,
                     ),
                     const SizedBox(width: 12),
                     Text(
                       m.label,
                       style: TextStyle(
                         color: selected == m.label
-                            ? const Color(0xFFE53935)
-                            : AppColors.subtle,
+                            ? context.colors.red
+                            : context.colors.subtle,
                         fontSize: 13,
                         fontWeight: selected == m.label
                             ? FontWeight.w800
@@ -724,9 +719,9 @@ class _MotivoCard extends StatelessWidget {
                     ),
                     const Spacer(),
                     if (selected == m.label)
-                      const Icon(
+                      Icon(
                         Icons.check_circle,
-                        color: Color(0xFFE53935),
+                        color: context.colors.red,
                         size: 16,
                       ),
                   ],
@@ -767,19 +762,21 @@ class _ReleaseSummary extends StatelessWidget {
           _SummaryRow(
             label: 'Jogador',
             value: player.name,
-            valueColor: AppColors.light,
+            valueColor: context.colors.light,
           ),
           const SizedBox(height: 10),
           _SummaryRow(
             label: 'Posição',
             value: player.position,
-            valueColor: AppColors.subtle,
+            valueColor: context.colors.subtle,
           ),
           const SizedBox(height: 10),
           _SummaryRow(
             label: 'Motivo',
             value: motivo.isEmpty ? '—' : motivo,
-            valueColor: motivo.isEmpty ? AppColors.muted : AppColors.subtle,
+            valueColor: motivo.isEmpty
+                ? context.colors.muted
+                : context.colors.subtle,
           ),
           const SizedBox(height: 10),
           Divider(color: context.colors.border, height: 1),
@@ -788,7 +785,7 @@ class _ReleaseSummary extends StatelessWidget {
             label: 'CUSTO ESTIMADO',
             value: custoRescisao,
             labelBold: true,
-            valueColor: const Color(0xFFE53935),
+            valueColor: context.colors.red,
             valueLarge: true,
           ),
         ],
@@ -820,7 +817,9 @@ class _SummaryRow extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: labelBold ? Colors.white : AppColors.subtle,
+            color: labelBold
+                ? context.colors.textPrimary
+                : context.colors.subtle,
             fontSize: 11,
             fontWeight: labelBold ? FontWeight.w900 : FontWeight.w600,
             letterSpacing: labelBold ? 0.6 : 0,
@@ -864,12 +863,12 @@ class _ConfirmCheckbox extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: checked
-              ? const Color(0xFFE53935).withValues(alpha: 0.08)
+              ? context.colors.red.withValues(alpha: 0.08)
               : context.colors.card,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: checked
-                ? const Color(0xFFE53935).withValues(alpha: 0.5)
+                ? context.colors.red.withValues(alpha: 0.5)
                 : context.colors.border,
             width: checked ? 1.5 : 1,
           ),
@@ -881,14 +880,10 @@ class _ConfirmCheckbox extends StatelessWidget {
               width: 22,
               height: 22,
               decoration: BoxDecoration(
-                color: checked
-                    ? const Color(0xFFE53935)
-                    : context.colors.cardAlt,
+                color: checked ? context.colors.red : context.colors.cardAlt,
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(
-                  color: checked
-                      ? const Color(0xFFE53935)
-                      : context.colors.border,
+                  color: checked ? context.colors.red : context.colors.border,
                   width: 1.5,
                 ),
               ),
@@ -901,7 +896,7 @@ class _ConfirmCheckbox extends StatelessWidget {
               child: Text(
                 'Confirmo que desejo dispensar $playerName permanentemente do elenco.',
                 style: TextStyle(
-                  color: checked ? AppColors.light : AppColors.subtle,
+                  color: checked ? context.colors.light : context.colors.subtle,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   height: 1.4,
@@ -932,12 +927,12 @@ class _ConfirmButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: enabled ? const Color(0xFFE53935) : context.colors.cardAlt,
+          color: enabled ? context.colors.red : context.colors.cardAlt,
           borderRadius: BorderRadius.circular(18),
           boxShadow: enabled
               ? [
                   BoxShadow(
-                    color: const Color(0xFFE53935).withValues(alpha: 0.3),
+                    color: context.colors.red.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 6),
                   ),
@@ -949,14 +944,18 @@ class _ConfirmButton extends StatelessWidget {
           children: [
             Icon(
               Icons.person_remove_outlined,
-              color: enabled ? Colors.white : AppColors.muted,
+              color: enabled
+                  ? context.colors.textPrimary
+                  : context.colors.muted,
               size: 22,
             ),
             const SizedBox(width: 12),
             Text(
               'DISPENSAR JOGADOR',
               style: TextStyle(
-                color: enabled ? Colors.white : AppColors.muted,
+                color: enabled
+                    ? context.colors.textPrimary
+                    : context.colors.muted,
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.0,
@@ -1002,24 +1001,24 @@ class _ConfirmReleaseDialog extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: const Color(0xFFE53935).withValues(alpha: 0.1),
+                color: context.colors.red.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color(0xFFE53935).withValues(alpha: 0.4),
+                  color: context.colors.red.withValues(alpha: 0.4),
                   width: 1.5,
                 ),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.person_remove_outlined,
-                color: Color(0xFFE53935),
+                color: context.colors.red,
                 size: 28,
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'DISPENSAR JOGADOR?',
               style: TextStyle(
-                color: Colors.white,
+                color: context.colors.textPrimary,
                 fontSize: 16,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.8,
@@ -1029,8 +1028,8 @@ class _ConfirmReleaseDialog extends StatelessWidget {
             Text(
               '${player.name} será removido permanentemente do elenco.',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.subtle,
+              style: TextStyle(
+                color: context.colors.subtle,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 height: 1.5,
@@ -1052,7 +1051,7 @@ class _ConfirmReleaseDialog extends StatelessWidget {
                   _DialogRow(
                     label: 'Custo estimado',
                     value: custoRescisao,
-                    valueColor: const Color(0xFFE53935),
+                    valueColor: context.colors.red,
                   ),
                 ],
               ),
@@ -1070,11 +1069,11 @@ class _ConfirmReleaseDialog extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: context.colors.border),
                       ),
-                      child: const Text(
+                      child: Text(
                         'CANCELAR',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: AppColors.subtle,
+                          color: context.colors.subtle,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
@@ -1090,22 +1089,20 @@ class _ConfirmReleaseDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE53935),
+                        color: context.colors.red,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(
-                              0xFFE53935,
-                            ).withValues(alpha: 0.4),
+                            color: context.colors.red.withValues(alpha: 0.4),
                             blurRadius: 12,
                           ),
                         ],
                       ),
-                      child: const Text(
+                      child: Text(
                         'CONFIRMAR',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: context.colors.textPrimary,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
@@ -1131,7 +1128,7 @@ class _DialogRow extends StatelessWidget {
   const _DialogRow({
     required this.label,
     required this.value,
-    this.valueColor = AppColors.light,
+    this.valueColor = Colors.white,
   });
 
   @override
@@ -1141,8 +1138,8 @@ class _DialogRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: AppColors.muted,
+          style: TextStyle(
+            color: context.colors.muted,
             fontSize: 11,
             fontWeight: FontWeight.w600,
           ),

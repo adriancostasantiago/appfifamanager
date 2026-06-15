@@ -1,7 +1,6 @@
 import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 
 class ContractRenewalPage extends StatefulWidget {
   final PlayerProfile player;
@@ -156,17 +155,13 @@ class _RenewalAppBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).maybePop(),
-            child: const Icon(
-              Icons.arrow_back,
-              color: Color(0xFF4FC3F7),
-              size: 22,
-            ),
+            child: Icon(Icons.arrow_back, color: context.colors.blue, size: 22),
           ),
           const SizedBox(width: 16),
-          const Text(
+          Text(
             'RENOVAR CONTRATO',
             style: TextStyle(
-              color: Color(0xFF4FC3F7),
+              color: context.colors.blue,
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -174,7 +169,7 @@ class _RenewalAppBar extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Icon(Icons.info_outline, color: AppColors.muted, size: 20),
+          Icon(Icons.info_outline, color: context.colors.muted, size: 20),
         ],
       ),
     );
@@ -214,17 +209,17 @@ class _DurationCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
+              Icon(
                 Icons.calendar_month_outlined,
-                color: Color(0xFF4FC3F7),
+                color: context.colors.blue,
                 size: 18,
               ),
               const SizedBox(width: 10),
-              const Expanded(
+              Expanded(
                 child: Text(
                   'DURAÇÃO DO CONTRATO',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.w900,
                     fontSize: 13,
                     letterSpacing: 1.0,
@@ -276,7 +271,7 @@ class _DurationCard extends StatelessWidget {
               infoMessage,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.subtle,
+                color: context.colors.subtle,
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 height: 1.4,
@@ -286,11 +281,11 @@ class _DurationCard extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          const Text(
+          Text(
             'CONTRATOS DIMINUEM 1 ANO POR TEMPORADA',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.muted,
+              color: context.colors.muted,
               fontSize: 9,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.4,
@@ -321,11 +316,11 @@ class _YearButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color contentColor;
     if (disabled) {
-      contentColor = AppColors.muted.withValues(alpha: 0.35);
+      contentColor = context.colors.muted.withValues(alpha: 0.35);
     } else if (selected) {
-      contentColor = Color(0xFF4FC3F7);
+      contentColor = context.colors.blue;
     } else {
-      contentColor = Colors.white;
+      contentColor = context.colors.textPrimary;
     }
 
     return Stack(
@@ -343,11 +338,11 @@ class _YearButton extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14),
               decoration: BoxDecoration(
                 color: selected
-                    ? Color(0xFF4FC3F7).withValues(alpha: 0.12)
+                    ? context.colors.blue.withValues(alpha: 0.12)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: selected ? Color(0xFF4FC3F7) : Colors.transparent,
+                  color: selected ? context.colors.blue : Colors.transparent,
                   width: selected ? 1.5 : 1,
                 ),
               ),
@@ -358,7 +353,7 @@ class _YearButton extends StatelessWidget {
                   Text(
                     years.toString(),
                     style: TextStyle(
-                      color: disabled ? contentColor : AppColors.muted,
+                      color: disabled ? contentColor : context.colors.muted,
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                     ),
@@ -367,7 +362,7 @@ class _YearButton extends StatelessWidget {
                   Text(
                     years == 1 ? 'ANO' : 'ANOS',
                     style: TextStyle(
-                      color: disabled ? contentColor : AppColors.muted,
+                      color: disabled ? contentColor : context.colors.muted,
                       fontSize: 8,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6,
@@ -384,13 +379,13 @@ class _YearButton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.colors.muted,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: const Text(
+              child: Text(
                 'VÍNCULO ATUAL',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: context.colors.card,
                   fontSize: 6,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.4,
@@ -436,7 +431,7 @@ class _ProposalCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(width: 4, color: Color(0xFF4FC3F7)),
+              Container(width: 4, color: context.colors.blue),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(18),
@@ -444,17 +439,17 @@ class _ProposalCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        children: const [
+                        children: [
                           Icon(
                             Icons.analytics_outlined,
-                            color: Color(0xFF4FC3F7),
+                            color: context.colors.blue,
                             size: 18,
                           ),
                           SizedBox(width: 10),
                           Text(
                             'PROPOSTA CALCULADA',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: context.colors.textPrimary,
                               fontWeight: FontWeight.w900,
                               fontStyle: FontStyle.italic,
                               fontSize: 13,
@@ -474,7 +469,7 @@ class _ProposalCard extends StatelessWidget {
                               label: 'SALÁRIO ATUAL',
                               value: '${currentSalaryK.toStringAsFixed(0)}K',
                               caption: 'BASE DE CONTRATO',
-                              valueColor: AppColors.subtle,
+                              valueColor: context.colors.subtle,
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -485,8 +480,8 @@ class _ProposalCard extends StatelessWidget {
                               caption:
                                   '+${percentage.toStringAsFixed(0)}% IMPACTO',
                               valueColor: hasImpact
-                                  ? Color(0xFF4FC3F7)
-                                  : AppColors.light,
+                                  ? context.colors.blue
+                                  : context.colors.textPrimary,
                               highlighted: true,
                               showNewBadge: true,
                             ),
@@ -519,8 +514,8 @@ class _ProposalCard extends StatelessWidget {
                                   : '+$addedYears ${addedYears == 1 ? 'Temporada' : 'Temporadas'}',
                               alignEnd: true,
                               valueColor: hasImpact
-                                  ? Color(0xFF4FC3F7)
-                                  : AppColors.light,
+                                  ? context.colors.blue
+                                  : context.colors.textPrimary,
                             ),
                           ),
                         ],
@@ -560,13 +555,13 @@ class _ProposalBox extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: highlighted
-            ? Color(0xFF4FC3F7).withValues(alpha: 0.06)
+            ? context.colors.blue.withValues(alpha: 0.06)
             : context.colors.cardAlt,
 
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: highlighted
-              ? Color(0xFF4FC3F7).withValues(alpha: 0.25)
+              ? context.colors.blue.withValues(alpha: 0.25)
               : context.colors.border,
         ),
       ),
@@ -579,9 +574,9 @@ class _ProposalBox extends StatelessWidget {
               right: -14,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF4FC3F7),
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: context.colors.blue,
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   ),
@@ -603,8 +598,8 @@ class _ProposalBox extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColors.muted,
+                  style: TextStyle(
+                    color: context.colors.muted,
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
@@ -624,7 +619,7 @@ class _ProposalBox extends StatelessWidget {
                 Text(
                   caption,
                   style: TextStyle(
-                    color: AppColors.muted.withValues(alpha: 0.7),
+                    color: context.colors.muted.withValues(alpha: 0.7),
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.4,
@@ -643,13 +638,13 @@ class _SummaryItem extends StatelessWidget {
   final String label;
   final String value;
   final bool alignEnd;
-  final Color valueColor;
+  final Color? valueColor;
 
   const _SummaryItem({
     required this.label,
     required this.value,
     required this.alignEnd,
-    this.valueColor = AppColors.light,
+    this.valueColor,
   });
 
   @override
@@ -666,8 +661,8 @@ class _SummaryItem extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: context.colors.muted,
               fontSize: 9,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.6,
@@ -677,7 +672,7 @@ class _SummaryItem extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-              color: valueColor,
+              color: valueColor ?? context.colors.textPrimary,
               fontSize: 12,
               fontWeight: FontWeight.w800,
             ),
@@ -721,7 +716,7 @@ class _ConfirmButton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 18),
               decoration: BoxDecoration(
-                color: Color(0xFF4FC3F7),
+                color: context.colors.blue,
                 borderRadius: BorderRadius.circular(16),
                 // boxShadow: [
                 //   BoxShadow(
@@ -734,6 +729,8 @@ class _ConfirmButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
+                  Icon(Icons.autorenew, color: Colors.black, size: 20),
+                  SizedBox(width: 10),
                   Text(
                     'CONFIRMAR VÍNCULO',
                     style: TextStyle(
@@ -744,8 +741,6 @@ class _ConfirmButton extends StatelessWidget {
                       letterSpacing: 1.0,
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Icon(Icons.verified_user, color: Colors.black, size: 20),
                 ],
               ),
             ),
@@ -773,7 +768,7 @@ class _PlayerMiniCard extends StatelessWidget {
         border: Border.all(color: context.colors.border),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF4FC3F7).withValues(alpha: 0.04),
+            color: context.colors.blue.withValues(alpha: 0.04),
             blurRadius: 24,
             spreadRadius: 2,
           ),
@@ -792,10 +787,10 @@ class _PlayerMiniCard extends StatelessWidget {
                   color: context.colors.cardAlt,
                   border: Border.all(color: context.colors.border, width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   size: 44,
-                  color: Color(0xFF2A2F33),
+                  color: context.colors.border,
                 ),
               ),
               Positioned(
@@ -850,8 +845,8 @@ class _PlayerMiniCard extends StatelessWidget {
               children: [
                 Text(
                   player.name.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.colors.textPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.8,
@@ -875,11 +870,11 @@ class _PlayerMiniCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text(
+              Text(
                 'VALOR\nMERCADO',
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 8,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.6,
@@ -889,8 +884,8 @@ class _PlayerMiniCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 player.marketValue,
-                style: const TextStyle(
-                  color: AppColors.light,
+                style: TextStyle(
+                  color: context.colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
                 ),
@@ -921,12 +916,12 @@ class _MiniChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 11, color: AppColors.subtle),
+          Icon(icon, size: 11, color: context.colors.subtle),
           const SizedBox(width: 5),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.subtle,
+            style: TextStyle(
+              color: context.colors.subtle,
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.4,

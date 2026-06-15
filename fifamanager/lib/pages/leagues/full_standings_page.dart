@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/widgets/standings_table.dart';
 
@@ -13,17 +14,18 @@ class FullStandingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Scaffold(
-      backgroundColor: const Color(0xFF101314),
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF101314),
+        backgroundColor: colors.background,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: colors.textPrimary),
         title: Text(
           'TABELA COMPLETA - $seriesTitle',
-          style: const TextStyle(
-            color: Color(0xFF00FF41),
+          style: TextStyle(
+            color: colors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -43,7 +45,7 @@ class FullStandingsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          _buildHeader(),
+                          _buildHeader(context),
                           const SizedBox(height: 8),
                           ...standings.map(
                             (standing) => Padding(
@@ -64,145 +66,61 @@ class FullStandingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final colors = context.colors;
+    final headerStyle = TextStyle(
+      color: colors.muted,
+      fontSize: 8,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.6,
+    );
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
       child: Row(
-        children: const [
-          SizedBox(width: 20),
+        children: [
+          const SizedBox(width: 20),
+          SizedBox(width: 100, child: Text('CLUBE', style: headerStyle)),
           SizedBox(
-            width: 100,
-            child: Text(
-              'CLUBE',
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            width: 30,
+            child: Text('P', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'P',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('J', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'J',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('V', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'V',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('E', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'E',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('D', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'D',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('GP', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'GP',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('GC', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'GC',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('SG', textAlign: TextAlign.center, style: headerStyle),
           ),
           SizedBox(
             width: 30,
-            child: Text(
-              'SG',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 30,
-            child: Text(
-              '%',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF7C8579),
-                fontSize: 8,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-              ),
-            ),
+            child: Text('%', textAlign: TextAlign.center, style: headerStyle),
           ),
         ],
       ),
@@ -217,14 +135,15 @@ class _FullStandingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textColor = data.highlight ? colors.accent : colors.textPrimary;
+    final normalWeight = data.highlight ? FontWeight.w700 : FontWeight.w500;
     return Container(
       decoration: BoxDecoration(
-        color: data.highlight
-            ? const Color(0xFF0B1C10)
-            : const Color(0xFF131619),
+        color: data.highlight ? colors.accentBg : colors.cardDark,
         borderRadius: BorderRadius.circular(18),
         border: data.highlight
-            ? Border(left: BorderSide(color: const Color(0xFF00FF41), width: 4))
+            ? Border(left: BorderSide(color: colors.accent, width: 4))
             : null,
       ),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
@@ -235,13 +154,13 @@ class _FullStandingRow extends StatelessWidget {
             height: 15,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: const Color(0xFF16191D),
+              color: colors.card,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               data.position,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
+                color: textColor,
                 fontWeight: FontWeight.w700,
                 fontSize: 10,
               ),
@@ -253,7 +172,7 @@ class _FullStandingRow extends StatelessWidget {
             child: Text(
               data.club,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
+                color: textColor,
                 fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w600,
                 fontSize: 10,
               ),
@@ -266,8 +185,8 @@ class _FullStandingRow extends StatelessWidget {
               data.points,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -278,8 +197,8 @@ class _FullStandingRow extends StatelessWidget {
               data.played,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -290,8 +209,8 @@ class _FullStandingRow extends StatelessWidget {
               data.victories,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -302,8 +221,8 @@ class _FullStandingRow extends StatelessWidget {
               data.draws,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -314,8 +233,8 @@ class _FullStandingRow extends StatelessWidget {
               data.defeats,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -326,8 +245,8 @@ class _FullStandingRow extends StatelessWidget {
               data.goalsFor,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -338,8 +257,8 @@ class _FullStandingRow extends StatelessWidget {
               data.goalsAgainst,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -350,8 +269,8 @@ class _FullStandingRow extends StatelessWidget {
               data.goalDiff,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),
@@ -362,8 +281,8 @@ class _FullStandingRow extends StatelessWidget {
               data.percent,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: data.highlight ? const Color(0xFF00FF41) : Colors.white,
-                fontWeight: data.highlight ? FontWeight.w700 : FontWeight.w500,
+                color: textColor,
+                fontWeight: normalWeight,
                 fontSize: 10,
               ),
             ),

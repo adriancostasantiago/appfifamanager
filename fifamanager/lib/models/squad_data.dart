@@ -1,5 +1,7 @@
 // ─── MODELOS DE ELENCO ──────────────────────────────────────────────────────
 
+import 'dart:ui';
+
 class SquadData {
   final double averageOvr;
   final int playerCount;
@@ -38,6 +40,20 @@ class PlayerData {
     this.salary,
     this.contractUntil = 1,
   });
+
+  Color get ovrColor {
+    if (ovr <= 50) {
+      return const Color(0xFFE53935);
+    } else if (ovr <= 60) {
+      return const Color(0xFFFF9800);
+    } else if (ovr <= 70) {
+      return const Color.fromARGB(255, 255, 232, 29);
+    } else if (ovr <= 80) {
+      return const Color.fromARGB(255, 145, 231, 46);
+    } else {
+      return const Color.fromARGB(255, 9, 161, 72);
+    }
+  }
 }
 
 enum SquadViewMode { resumo, detalhado }

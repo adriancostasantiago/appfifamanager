@@ -1,3 +1,5 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
+import 'package:fifamanager/core/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 
@@ -9,7 +11,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: const Color(0xFF101314),
+      backgroundColor: context.colors.background,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 24),
@@ -25,33 +27,33 @@ class AppDrawer extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0xFF00FF41),
+                          color: context.colors.accent,
                           width: 2,
                         ),
                       ),
-                      child: const CircleAvatar(
-                        backgroundColor: Color(0xFF121414),
+                      child: CircleAvatar(
+                        backgroundColor: context.colors.backgroundDark,
                         child: Icon(
                           Icons.person,
                           size: 42,
-                          color: Color(0xFF00FF41),
+                          color: context.colors.accent,
                         ),
                       ),
                     ),
                     const SizedBox(height: 14),
-                    const Text(
+                    Text(
                       'MARCUS RIVERA',
                       style: TextStyle(
-                        color: Color(0xFF00FF41),
+                        color: context.colors.accent,
                         fontSize: 16,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
+                    Text(
                       'APEX SC',
                       style: TextStyle(
-                        color: Color(0xFF7C8579),
+                        color: context.colors.muted,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -96,13 +98,41 @@ class AppDrawer extends StatelessWidget {
                 route: AppRoutes.trophies,
                 active: activeRoute == AppRoutes.trophies,
               ),
-              const Divider(color: Color(0xFF1F2327), height: 38, thickness: 1),
+              Divider(color: context.colors.border, height: 38, thickness: 1),
               _DrawerLink(icon: Icons.settings, label: 'SETTINGS', route: null),
+              const SizedBox(height: 12),
+
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  themeController.isDark ? Icons.dark_mode : Icons.light_mode,
+                  color: context.colors.accent,
+                ),
+                title: Text(
+                  'TEMA ESCURO',
+                  style: TextStyle(
+                    color: context.colors.accent,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                trailing: Switch(
+                  value: themeController.isDark,
+
+                  onChanged: (_) {
+                    themeController.toggleTheme();
+                  },
+
+                  activeThumbColor: context.colors.accent,
+                  activeTrackColor: context.colors.accent.withValues(
+                    alpha: 0.4,
+                  ),
+                ),
+              ),
               const Spacer(),
-              const Text(
+              Text(
                 'FCMANAGER V2.4',
                 style: TextStyle(
-                  color: Color(0xFF00FF41),
+                  color: context.colors.accent,
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),
@@ -130,9 +160,7 @@ class _DrawerLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemColor = active
-        ? const Color(0xFF00FF41)
-        : const Color(0xFF7C8579);
+    final itemColor = active ? context.colors.accent : context.colors.muted;
 
     return InkWell(
       onTap: () {

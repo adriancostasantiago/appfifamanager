@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 
 class AppBottomNavigation extends StatelessWidget {
@@ -8,10 +9,13 @@ class AppBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = context.colors;
+
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF101314),
-        border: Border(top: BorderSide(color: Color(0xFF1F2327), width: 1)),
+      decoration: BoxDecoration(
+        color: c.card,
+        border: Border(top: BorderSide(color: c.border, width: 1)),
+        boxShadow: c.cardShadow,
       ),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       child: Row(
@@ -50,7 +54,7 @@ class AppBottomNavigation extends StatelessWidget {
           _NavigationLink(
             icon: Icons.attach_money,
             label: 'FINANCEIRO',
-            active: false,
+            active: activeRoute == AppRoutes.finance,
             onTap: () {
               if (activeRoute != AppRoutes.finance) {
                 Navigator.pushReplacementNamed(context, AppRoutes.finance);
@@ -60,7 +64,7 @@ class AppBottomNavigation extends StatelessWidget {
           _NavigationLink(
             icon: Icons.card_giftcard,
             label: 'PATROCÍNIOS',
-            active: false,
+            active: activeRoute == AppRoutes.sponsors,
             onTap: () {
               if (activeRoute != AppRoutes.sponsors) {
                 Navigator.pushReplacementNamed(context, AppRoutes.sponsors);
@@ -88,13 +92,26 @@ class _NavigationLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? const Color(0xFF00FF41) : const Color(0xFF7C8579);
+    final c = context.colors;
+    final color = active ? c.accent : c.muted;
 
     return GestureDetector(
       onTap: onTap,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
+          if (active)
+            Container(
+              width: 4,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 4),
+              decoration: BoxDecoration(
+                color: c.accent,
+                shape: BoxShape.circle,
+              ),
+            )
+          else
+            const SizedBox(height: 8),
           Icon(icon, color: color, size: 20),
           const SizedBox(height: 4),
           Text(

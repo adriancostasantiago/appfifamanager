@@ -388,7 +388,7 @@ class _BalancoCard extends StatelessWidget {
               child: _BalancoItem(
                 label: 'RECEITA TOTAL',
                 value: data.receitaTotal,
-                color: context.colors.accent,
+                color: context.colors.green,
                 icon: Icons.arrow_downward,
               ),
             ),
@@ -407,7 +407,7 @@ class _BalancoCard extends StatelessWidget {
                 label: 'SALDO',
                 value: data.saldo,
                 color: data.saldoPositivo
-                    ? context.colors.accent
+                    ? context.colors.green
                     : context.colors.red,
                 icon: data.saldoPositivo
                     ? Icons.trending_up
@@ -501,14 +501,14 @@ class _ReceitasDespesasCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.arrow_downward,
-                      color: context.colors.accent,
+                      color: context.colors.green,
                       size: 13,
                     ),
                     const SizedBox(width: 5),
                     Text(
                       'RECEITAS',
                       style: TextStyle(
-                        color: context.colors.accent,
+                        color: context.colors.green,
                         fontSize: 10,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.8,
@@ -518,17 +518,15 @@ class _ReceitasDespesasCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 ...data.receitas.map(
-                  (item) => _FinanceLineItem(
-                    item: item,
-                    color: context.colors.accent,
-                  ),
+                  (item) =>
+                      _FinanceLineItem(item: item, color: context.colors.green),
                 ),
               ],
             ),
           ),
           Container(
             width: 1,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             color: context.colors.border,
           ),
           Expanded(
@@ -594,7 +592,7 @@ class _FinanceLineItem extends StatelessWidget {
               item.label,
               style: TextStyle(
                 color: context.colors.subtle,
-                fontSize: 11,
+                fontSize: 9,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -603,7 +601,7 @@ class _FinanceLineItem extends StatelessWidget {
             item.value,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: 10,
               fontWeight: FontWeight.w900,
             ),
           ),
@@ -639,7 +637,7 @@ class _FolhaCard extends StatelessWidget {
               label: 'TOTAL MENSAL',
               value: data.folhaMensal,
               icon: Icons.calendar_month_outlined,
-              color: context.colors.blue,
+              color: context.colors.orange,
             ),
           ),
         ],
@@ -665,7 +663,7 @@ class _ValorMercadoCard extends StatelessWidget {
               label: 'VALOR TOTAL',
               value: data.valorMercadoElenco,
               icon: Icons.account_balance_wallet_outlined,
-              color: context.colors.accent,
+              color: context.colors.blue,
             ),
           ),
           const SizedBox(width: 12),
@@ -674,7 +672,7 @@ class _ValorMercadoCard extends StatelessWidget {
               label: 'MÉDIA POR JOGADOR',
               value: data.valorMercadoMedia,
               icon: Icons.person_outline,
-              color: context.colors.subtle,
+              color: context.colors.blue,
             ),
           ),
         ],
@@ -769,7 +767,7 @@ class _TransferenciasCard extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  flex: 4,
+                  flex: 3,
                   child: Text(
                     'JOGADOR',
                     style: TextStyle(
@@ -794,7 +792,7 @@ class _TransferenciasCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Text(
                     'VALOR',
                     textAlign: TextAlign.right,
@@ -852,7 +850,7 @@ class _TransferRow extends StatelessWidget {
     // final c = context.colors;
     final tipoColor = switch (item.tipo) {
       'COMPRA' => context.colors.red,
-      'VENDA' => context.colors.accent,
+      'VENDA' => context.colors.green,
       _ => context.colors.orange,
     };
 
@@ -863,14 +861,14 @@ class _TransferRow extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 Icon(
                   item.entrada ? Icons.arrow_downward : Icons.arrow_upward,
                   size: 13,
                   color: item.entrada
-                      ? context.colors.accent
+                      ? context.colors.green
                       : context.colors.red,
                 ),
                 const SizedBox(width: 8),
@@ -913,14 +911,12 @@ class _TransferRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Text(
               item.valor,
               textAlign: TextAlign.right,
               style: TextStyle(
-                color: item.entrada
-                    ? context.colors.accent
-                    : context.colors.red,
+                color: item.entrada ? context.colors.green : context.colors.red,
                 fontSize: 12,
                 fontWeight: FontWeight.w900,
               ),
@@ -969,7 +965,7 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'RECEITA ANUAL',
                   value: data.patrocinioReceita,
                   icon: Icons.monetization_on_outlined,
-                  color: context.colors.accent,
+                  color: context.colors.green,
                 ),
               ),
               const SizedBox(width: 12),
@@ -978,7 +974,7 @@ class _PatrocinioCard extends StatelessWidget {
                   label: 'PATROCINADORES',
                   value: data.patrocinioTotal.toString(),
                   icon: Icons.groups_outlined,
-                  color: context.colors.textSecondary,
+                  color: context.colors.green,
                 ),
               ),
               const SizedBox(width: 12),

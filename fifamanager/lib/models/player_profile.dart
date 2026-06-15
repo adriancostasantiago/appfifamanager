@@ -50,9 +50,9 @@ class PlayerProfile {
     } else if (ovr <= 70) {
       return const Color.fromARGB(255, 255, 232, 29);
     } else if (ovr <= 80) {
-      return const Color.fromARGB(255, 107, 168, 37);
+      return const Color.fromARGB(255, 145, 231, 46);
     } else {
-      return const Color.fromARGB(255, 5, 104, 46);
+      return const Color.fromARGB(255, 9, 161, 72);
     }
   }
 }
@@ -69,6 +69,20 @@ class PlayerStatItem {
   final int value;
 
   const PlayerStatItem({required this.label, required this.value});
+
+  Color get valueColor {
+    if (value <= 50) {
+      return const Color(0xFFE53935);
+    } else if (value <= 60) {
+      return const Color(0xFFFF9800);
+    } else if (value <= 70) {
+      return const Color.fromARGB(255, 255, 232, 29);
+    } else if (value <= 80) {
+      return const Color.fromARGB(255, 145, 231, 46);
+    } else {
+      return const Color.fromARGB(255, 9, 161, 72);
+    }
+  }
 }
 
 /// Estilo de jogo (playstyle) do jogador, exibido como chip.

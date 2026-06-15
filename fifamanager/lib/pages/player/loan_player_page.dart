@@ -1,7 +1,6 @@
 import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/models/models.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 
 enum LoanPaymentMethod { avista, parcelado }
 
@@ -66,10 +65,10 @@ class _LoanPlayerPageState extends State<LoanPlayerPage> {
   double get _taxaPct =>
       _marketValueNum > 0 ? _parsedTaxa / (_marketValueNum * 1_000_000) : 0;
 
-  Color get _taxaPctColor {
-    if (_taxaPct >= 0.1) return const Color(0xFFFFB74D);
-    if (_taxaPct >= 0.05) return AppColors.orange;
-    return const Color(0xFFE53935);
+  Color _taxaPctColor(BuildContext context) {
+    if (_taxaPct >= 0.1) return context.colors.orange;
+    if (_taxaPct >= 0.05) return context.colors.orange;
+    return context.colors.red;
   }
 
   String get _taxaPctLabel {
@@ -139,16 +138,16 @@ class _LoanPlayerPageState extends State<LoanPlayerPage> {
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFFFFB74D), width: 1),
+                side: BorderSide(color: context.colors.orange, width: 1),
               ),
               content: Row(
                 children: [
-                  const Icon(Icons.swap_horiz, color: Color(0xFFFFB74D)),
+                  Icon(Icons.swap_horiz, color: context.colors.orange),
                   const SizedBox(width: 12),
                   Text(
                     '${widget.player.name} emprestado com sucesso!',
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -197,7 +196,7 @@ class _LoanPlayerPageState extends State<LoanPlayerPage> {
                     _LoanTaxaCard(
                       controller: _taxaController,
                       pct: _taxaPct,
-                      pctColor: _taxaPctColor,
+                      pctColor: _taxaPctColor(context),
                       pctLabel: _taxaPctLabel,
                       marketValue: player.marketValue,
                       onChanged: (_) => setState(() {}),
@@ -246,12 +245,12 @@ class _LoanPlayerPageState extends State<LoanPlayerPage> {
                     _ConfirmButton(onTap: _confirmLoan),
 
                     const SizedBox(height: 12),
-                    const Center(
+                    Center(
                       child: Text(
                         'AO CONFIRMAR, O JOGADOR SERÁ CEDIDO AO CLUBE\nDE DESTINO PELO PERÍODO ACORDADO.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: AppColors.muted,
+                          color: context.colors.muted,
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.5,
@@ -290,17 +289,17 @@ class _LoanAppBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back,
-              color: Color(0xFFFFB74D),
+              color: context.colors.orange,
               size: 22,
             ),
           ),
           const SizedBox(width: 16),
-          const Text(
+          Text(
             'EMPRESTAR JOGADOR',
             style: TextStyle(
-              color: Color(0xFFFFB74D),
+              color: context.colors.orange,
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
@@ -308,7 +307,7 @@ class _LoanAppBar extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Icon(Icons.info_outline, color: AppColors.muted, size: 20),
+          Icon(Icons.info_outline, color: context.colors.muted, size: 20),
         ],
       ),
     );
@@ -332,7 +331,7 @@ class _PlayerMiniCard extends StatelessWidget {
         border: Border.all(color: context.colors.border),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFFB74D).withValues(alpha: 0.04),
+            color: context.colors.orange.withValues(alpha: 0.04),
             blurRadius: 24,
             spreadRadius: 2,
           ),
@@ -351,10 +350,10 @@ class _PlayerMiniCard extends StatelessWidget {
                   color: context.colors.cardAlt,
                   border: Border.all(color: context.colors.border, width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
                   size: 44,
-                  color: Color(0xFF2A2F33),
+                  color: context.colors.border,
                 ),
               ),
               Positioned(
@@ -409,8 +408,8 @@ class _PlayerMiniCard extends StatelessWidget {
               children: [
                 Text(
                   player.name.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.colors.textPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.8,
@@ -434,22 +433,22 @@ class _PlayerMiniCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text(
+              Text(
                 'VALOR\nMERCADO',
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 8,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.6,
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 player.marketValue,
-                style: const TextStyle(
-                  color: AppColors.light,
+                style: TextStyle(
+                  color: context.colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
                 ),
@@ -480,12 +479,12 @@ class _MiniChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 11, color: AppColors.subtle),
+          Icon(icon, size: 11, color: context.colors.subtle),
           const SizedBox(width: 5),
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.subtle,
+            style: TextStyle(
+              color: context.colors.subtle,
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.4,
@@ -528,17 +527,17 @@ class _LoanNegotiationPanel extends StatelessWidget {
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(color: context.colors.border),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.shield,
-                        color: Color(0xFFFFB74D),
+                        color: context.colors.orange,
                         size: 28,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       'SEU CLUBE',
                       style: TextStyle(
-                        color: AppColors.muted,
+                        color: context.colors.muted,
                         fontSize: 8,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
@@ -559,7 +558,7 @@ class _LoanNegotiationPanel extends StatelessWidget {
                             height: 1.5,
                             margin: const EdgeInsets.symmetric(horizontal: 1),
                             color: i.isEven
-                                ? const Color(0xFFFFB74D).withValues(alpha: 0.5)
+                                ? context.colors.orange.withValues(alpha: 0.5)
                                 : Colors.transparent,
                           ),
                         ),
@@ -576,19 +575,19 @@ class _LoanNegotiationPanel extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: context.colors.border),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.swap_horiz,
-                            color: Color(0xFFFFB74D),
+                            color: context.colors.orange,
                             size: 10,
                           ),
                           SizedBox(width: 4),
                           Text(
                             'EMPRÉSTIMO',
                             style: TextStyle(
-                              color: Color(0xFFFFB74D),
+                              color: context.colors.orange,
                               fontSize: 7,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 0.5,
@@ -611,21 +610,21 @@ class _LoanNegotiationPanel extends StatelessWidget {
                         color: context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: const Color(0xFFFFB74D).withValues(alpha: 0.4),
+                          color: context.colors.orange.withValues(alpha: 0.4),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(
-                              0xFFFFB74D,
-                            ).withValues(alpha: 0.08),
+                            color: context.colors.orange.withValues(
+                              alpha: 0.08,
+                            ),
                             blurRadius: 12,
                           ),
                         ],
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.shield_outlined,
-                        color: Color(0xFFFFB74D),
+                        color: context.colors.orange,
                         size: 28,
                       ),
                     ),
@@ -634,8 +633,8 @@ class _LoanNegotiationPanel extends StatelessWidget {
                       controller.text.trim().isEmpty
                           ? 'DESTINO'
                           : controller.text.trim().toUpperCase(),
-                      style: const TextStyle(
-                        color: Color(0xFFFFB74D),
+                      style: TextStyle(
+                        color: context.colors.orange,
                         fontSize: 8,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.8,
@@ -689,14 +688,18 @@ class _LoanDurationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.calendar_today, color: Color(0xFFFFB74D), size: 18),
+              Icon(
+                Icons.calendar_today,
+                color: context.colors.orange,
+                size: 18,
+              ),
               SizedBox(width: 10),
               Text(
                 'DURAÇÃO DO EMPRÉSTIMO',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 13,
                   letterSpacing: 1.0,
@@ -745,8 +748,8 @@ class _LoanDurationCard extends StatelessWidget {
             child: Text(
               infoMessage,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.subtle,
+              style: TextStyle(
+                color: context.colors.subtle,
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 height: 1.4,
@@ -756,11 +759,11 @@ class _LoanDurationCard extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          const Text(
+          Text(
             'O EMPRÉSTIMO NÃO PODE EXCEDER O CONTRATO ATUAL DO JOGADOR',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.muted,
+              color: context.colors.muted,
               fontSize: 9,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.4,
@@ -791,11 +794,11 @@ class _LoanYearButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color contentColor;
     if (disabled) {
-      contentColor = AppColors.muted.withValues(alpha: 0.35);
+      contentColor = context.colors.muted.withValues(alpha: 0.35);
     } else if (selected) {
-      contentColor = const Color(0xFFFFB74D);
+      contentColor = context.colors.orange;
     } else {
-      contentColor = Colors.white;
+      contentColor = context.colors.textPrimary;
     }
 
     return Stack(
@@ -813,13 +816,11 @@ class _LoanYearButton extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14),
               decoration: BoxDecoration(
                 color: selected
-                    ? const Color(0xFFFFB74D).withValues(alpha: 0.12)
+                    ? context.colors.orange.withValues(alpha: 0.12)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: selected
-                      ? const Color(0xFFFFB74D)
-                      : Colors.transparent,
+                  color: selected ? context.colors.orange : Colors.transparent,
                   width: selected ? 1.5 : 1,
                 ),
               ),
@@ -833,8 +834,8 @@ class _LoanYearButton extends StatelessWidget {
                       color: disabled
                           ? contentColor
                           : (selected
-                                ? const Color(0xFFFFB74D)
-                                : AppColors.muted),
+                                ? context.colors.orange
+                                : context.colors.muted),
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                     ),
@@ -846,8 +847,8 @@ class _LoanYearButton extends StatelessWidget {
                       color: disabled
                           ? contentColor
                           : (selected
-                                ? const Color(0xFFFFB74D)
-                                : AppColors.muted),
+                                ? context.colors.orange
+                                : context.colors.muted),
                       fontSize: 8,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6,
@@ -864,13 +865,13 @@ class _LoanYearButton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFB74D),
+                color: context.colors.orange,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: const Text(
+              child: Text(
                 'MÁX.',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: context.colors.onAccent,
                   fontSize: 6,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.4,
@@ -916,16 +917,16 @@ class _LoanTaxaCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.payments_outlined,
-                color: Color(0xFFFFB74D),
+                color: context.colors.orange,
                 size: 16,
               ),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'TAXA DO EMPRÉSTIMO (€)',
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -960,12 +961,12 @@ class _LoanTaxaCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 16),
                   child: Text(
                     '€',
                     style: TextStyle(
-                      color: Color(0xFFFFB74D),
+                      color: context.colors.orange,
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
                     ),
@@ -976,8 +977,8 @@ class _LoanTaxaCard extends StatelessWidget {
                     controller: controller,
                     onChanged: onChanged,
                     keyboardType: TextInputType.number,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: context.colors.textPrimary,
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
                       fontStyle: FontStyle.italic,
@@ -1002,10 +1003,10 @@ class _LoanTaxaCard extends StatelessWidget {
                         vertical: 16,
                       ),
                       hintText: '0',
-                      hintStyle: const TextStyle(color: AppColors.muted),
+                      hintStyle: TextStyle(color: context.colors.muted),
                       suffixText: 'EUR',
-                      suffixStyle: const TextStyle(
-                        color: AppColors.muted,
+                      suffixStyle: TextStyle(
+                        color: context.colors.muted,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
@@ -1031,8 +1032,8 @@ class _LoanTaxaCard extends StatelessWidget {
             children: [
               Text(
                 'Valor de mercado: $marketValue',
-                style: const TextStyle(
-                  color: AppColors.muted,
+                style: TextStyle(
+                  color: context.colors.muted,
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                 ),
@@ -1084,18 +1085,18 @@ class _LoanPaymentMethodCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Icon(
                 Icons.account_balance_wallet_outlined,
-                color: Color(0xFFFFB74D),
+                color: context.colors.orange,
                 size: 16,
               ),
               SizedBox(width: 8),
               Text(
                 'FORMA DE PAGAMENTO DA TAXA',
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -1133,17 +1134,17 @@ class _LoanPaymentMethodCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: const [
+                  children: [
                     Icon(
                       Icons.arrow_downward,
-                      color: AppColors.orange,
+                      color: context.colors.orange,
                       size: 13,
                     ),
                     SizedBox(width: 6),
                     Text(
                       'VALOR DE ENTRADA',
                       style: TextStyle(
-                        color: AppColors.orange,
+                        color: context.colors.orange,
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
@@ -1157,18 +1158,18 @@ class _LoanPaymentMethodCard extends StatelessWidget {
                     color: context.colors.cardAlt,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: AppColors.orange.withValues(alpha: 0.5),
+                      color: context.colors.orange.withValues(alpha: 0.5),
                       width: 1.5,
                     ),
                   ),
                   child: Row(
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 14),
                         child: Text(
                           '€',
                           style: TextStyle(
-                            color: AppColors.orange,
+                            color: context.colors.orange,
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                           ),
@@ -1179,8 +1180,8 @@ class _LoanPaymentMethodCard extends StatelessWidget {
                           controller: entradaController,
                           onChanged: onEntradaChanged,
                           keyboardType: TextInputType.number,
-                          style: const TextStyle(
-                            color: AppColors.orange,
+                          style: TextStyle(
+                            color: context.colors.orange,
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                           ),
@@ -1204,7 +1205,7 @@ class _LoanPaymentMethodCard extends StatelessWidget {
                               vertical: 14,
                             ),
                             hintText: '0',
-                            hintStyle: const TextStyle(color: AppColors.muted),
+                            hintStyle: TextStyle(color: context.colors.muted),
                           ),
                         ),
                       ),
@@ -1214,10 +1215,10 @@ class _LoanPaymentMethodCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'NÚMERO DE PARCELAS',
               style: TextStyle(
-                color: AppColors.muted,
+                color: context.colors.muted,
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.8,
@@ -1235,12 +1236,12 @@ class _LoanPaymentMethodCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
                         color: sel
-                            ? AppColors.orange.withValues(alpha: 0.12)
+                            ? context.colors.orange.withValues(alpha: 0.12)
                             : context.colors.cardAlt,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: sel
-                              ? AppColors.orange.withValues(alpha: 0.7)
+                              ? context.colors.orange.withValues(alpha: 0.7)
                               : context.colors.border,
                           width: sel ? 1.5 : 1,
                         ),
@@ -1249,7 +1250,9 @@ class _LoanPaymentMethodCard extends StatelessWidget {
                         '${n}x',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: sel ? AppColors.orange : AppColors.subtle,
+                          color: sel
+                              ? context.colors.orange
+                              : context.colors.subtle,
                           fontSize: 13,
                           fontWeight: FontWeight.w900,
                         ),
@@ -1288,12 +1291,12 @@ class _PaymentOption extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 18),
         decoration: BoxDecoration(
           color: selected
-              ? const Color(0xFFFFB74D).withValues(alpha: 0.08)
+              ? context.colors.orange.withValues(alpha: 0.08)
               : context.colors.cardAlt,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: selected
-                ? const Color(0xFFFFB74D).withValues(alpha: 0.6)
+                ? context.colors.orange.withValues(alpha: 0.6)
                 : context.colors.border,
             width: selected ? 1.5 : 1,
           ),
@@ -1303,13 +1306,13 @@ class _PaymentOption extends StatelessWidget {
             Icon(
               icon,
               size: 24,
-              color: selected ? const Color(0xFFFFB74D) : AppColors.subtle,
+              color: selected ? context.colors.orange : context.colors.subtle,
             ),
             const SizedBox(height: 6),
             Text(
               label,
               style: TextStyle(
-                color: selected ? const Color(0xFFFFB74D) : AppColors.subtle,
+                color: selected ? context.colors.orange : context.colors.subtle,
                 fontSize: 10,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.4,
@@ -1352,16 +1355,16 @@ class _OpcaoCompraCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.add_shopping_cart_outlined,
-                color: Color(0xFFFFB74D),
+                color: context.colors.orange,
                 size: 16,
               ),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'OPÇÃO DE COMPRA',
                 style: TextStyle(
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -1371,7 +1374,7 @@ class _OpcaoCompraCard extends StatelessWidget {
               Switch(
                 value: enabled,
                 onChanged: onToggle,
-                activeThumbColor: const Color(0xFFFFB74D),
+                activeThumbColor: context.colors.orange,
                 inactiveTrackColor: context.colors.border,
               ),
             ],
@@ -1388,12 +1391,12 @@ class _OpcaoCompraCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 16),
                     child: Text(
                       '€',
                       style: TextStyle(
-                        color: Color(0xFFFFB74D),
+                        color: context.colors.orange,
                         fontSize: 22,
                         fontWeight: FontWeight.w900,
                       ),
@@ -1404,8 +1407,8 @@ class _OpcaoCompraCard extends StatelessWidget {
                       controller: controller,
                       onChanged: onChanged,
                       keyboardType: TextInputType.number,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: context.colors.textPrimary,
                         fontSize: 22,
                         fontWeight: FontWeight.w900,
                         fontStyle: FontStyle.italic,
@@ -1430,10 +1433,10 @@ class _OpcaoCompraCard extends StatelessWidget {
                           vertical: 16,
                         ),
                         hintText: '0',
-                        hintStyle: const TextStyle(color: AppColors.muted),
+                        hintStyle: TextStyle(color: context.colors.muted),
                         suffixText: 'EUR',
-                        suffixStyle: const TextStyle(
-                          color: AppColors.muted,
+                        suffixStyle: TextStyle(
+                          color: context.colors.muted,
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                         ),
@@ -1444,10 +1447,10 @@ class _OpcaoCompraCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Valor pelo qual o clube poderá adquirir o jogador definitivamente.',
               style: TextStyle(
-                color: AppColors.muted,
+                color: context.colors.muted,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
                 height: 1.5,
@@ -1501,20 +1504,20 @@ class _LoanFinancialSummary extends StatelessWidget {
           _SummaryRow(
             label: 'Duração',
             value: '$duracao ${duracao == 1 ? 'ano' : 'anos'}',
-            valueColor: AppColors.subtle,
+            valueColor: context.colors.subtle,
           ),
           const SizedBox(height: 10),
           if (payment == LoanPaymentMethod.avista) ...[
             _SummaryRow(
               label: 'Taxa do Empréstimo',
               value: display,
-              valueColor: AppColors.light,
+              valueColor: context.colors.textPrimary,
             ),
           ] else ...[
             _SummaryRow(
               label: 'Valor de Entrada',
               value: entrada > 0 ? fmtFn(entrada) : '—',
-              valueColor: AppColors.orange,
+              valueColor: context.colors.orange,
             ),
             const SizedBox(height: 10),
             _SummaryRow(
@@ -1522,7 +1525,7 @@ class _LoanFinancialSummary extends StatelessWidget {
               value: entrada > 0 && valorParcela > 0
                   ? '${installments}x ${fmtFn(valorParcela)}'
                   : '—',
-              valueColor: AppColors.orange,
+              valueColor: context.colors.orange,
             ),
           ],
           if (opcaoCompra && valorOpcao.isNotEmpty) ...[
@@ -1530,7 +1533,7 @@ class _LoanFinancialSummary extends StatelessWidget {
             _SummaryRow(
               label: 'Opção de Compra',
               value: '€$valorOpcao',
-              valueColor: AppColors.subtle,
+              valueColor: context.colors.subtle,
             ),
           ],
           const SizedBox(height: 10),
@@ -1540,7 +1543,7 @@ class _LoanFinancialSummary extends StatelessWidget {
             label: 'TAXA TOTAL DO EMPRÉSTIMO',
             value: display,
             labelBold: true,
-            valueColor: const Color(0xFFFFB74D),
+            valueColor: context.colors.orange,
             valueLarge: true,
           ),
         ],
@@ -1572,7 +1575,9 @@ class _SummaryRow extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: labelBold ? Colors.white : AppColors.subtle,
+            color: labelBold
+                ? context.colors.textPrimary
+                : context.colors.subtle,
             fontSize: 11,
             fontWeight: labelBold ? FontWeight.w900 : FontWeight.w600,
             letterSpacing: labelBold ? 0.6 : 0,
@@ -1599,12 +1604,12 @@ class _LegalNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
         'CONFIRME TODOS OS TERMOS DO EMPRÉSTIMO ANTES DE PROSSEGUIR',
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: AppColors.muted,
+          color: context.colors.muted,
           fontSize: 9,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
@@ -1630,18 +1635,18 @@ class _ConfirmButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFB74D),
+          color: context.colors.orange,
           borderRadius: BorderRadius.circular(18),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.swap_horiz, color: Colors.black, size: 22),
+            Icon(Icons.swap_horiz, color: context.colors.onAccent, size: 22),
             SizedBox(width: 12),
             Text(
               'CONFIRMAR EMPRÉSTIMO',
               style: TextStyle(
-                color: Colors.black,
+                color: context.colors.onAccent,
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.0,
@@ -1697,24 +1702,24 @@ class _ConfirmLoanDialog extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFB74D).withValues(alpha: 0.1),
+                color: context.colors.orange.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color(0xFFFFB74D).withValues(alpha: 0.4),
+                  color: context.colors.orange.withValues(alpha: 0.4),
                   width: 1.5,
                 ),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.swap_horiz,
-                color: Color(0xFFFFB74D),
+                color: context.colors.orange,
                 size: 28,
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'CONFIRMAR EMPRÉSTIMO?',
               style: TextStyle(
-                color: Colors.white,
+                color: context.colors.textPrimary,
                 fontSize: 16,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.8,
@@ -1724,8 +1729,8 @@ class _ConfirmLoanDialog extends StatelessWidget {
             Text(
               '${player.name} será emprestado para $club por $duracao ${duracao == 1 ? 'ano' : 'anos'}.',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.subtle,
+              style: TextStyle(
+                color: context.colors.subtle,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 height: 1.5,
@@ -1736,8 +1741,8 @@ class _ConfirmLoanDialog extends StatelessWidget {
               Text(
                 'Taxa: €$taxa${payment == LoanPaymentMethod.parcelado ? ' em ${installments}x' : ' à vista'}.',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.muted,
+                style: TextStyle(
+                  color: context.colors.muted,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                 ),
@@ -1748,8 +1753,8 @@ class _ConfirmLoanDialog extends StatelessWidget {
               Text(
                 'Opção de compra: €$valorOpcao.',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.muted,
+                style: TextStyle(
+                  color: context.colors.muted,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                 ),
@@ -1768,11 +1773,11 @@ class _ConfirmLoanDialog extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: context.colors.border),
                       ),
-                      child: const Text(
+                      child: Text(
                         'CANCELAR',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: AppColors.subtle,
+                          color: context.colors.subtle,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
@@ -1788,22 +1793,20 @@ class _ConfirmLoanDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFB74D),
+                        color: context.colors.orange,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(
-                              0xFFFFB74D,
-                            ).withValues(alpha: 0.3),
+                            color: context.colors.orange.withValues(alpha: 0.3),
                             blurRadius: 12,
                           ),
                         ],
                       ),
-                      child: const Text(
+                      child: Text(
                         'CONFIRMAR',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.black,
+                          color: context.colors.onAccent,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
@@ -1843,12 +1846,12 @@ class _LoanTextField extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, color: const Color(0xFFFFB74D), size: 14),
+            Icon(icon, color: context.colors.orange, size: 14),
             const SizedBox(width: 6),
             Text(
               label,
-              style: const TextStyle(
-                color: AppColors.muted,
+              style: TextStyle(
+                color: context.colors.muted,
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.8,
@@ -1865,8 +1868,8 @@ class _LoanTextField extends StatelessWidget {
           ),
           child: TextField(
             controller: controller,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.colors.textPrimary,
               fontSize: 14,
               fontWeight: FontWeight.w700,
             ),
@@ -1890,7 +1893,7 @@ class _LoanTextField extends StatelessWidget {
                 vertical: 14,
               ),
               hintText: hint,
-              hintStyle: const TextStyle(color: AppColors.muted, fontSize: 13),
+              hintStyle: TextStyle(color: context.colors.muted, fontSize: 13),
             ),
           ),
         ),

@@ -2,7 +2,6 @@ import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
 import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
 
@@ -109,7 +108,7 @@ class _SponsorsPageState extends State<SponsorsPage> {
         backgroundColor: context.colors.backgroundDark,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: context.colors.textPrimary),
         title: Text(
           'FC MANAGER',
           style: TextStyle(
@@ -219,7 +218,7 @@ class _ReceitaResumo extends StatelessWidget {
                 child: _ResumoBox(
                   label: 'RECEITA MENSAL',
                   value: data.receitaMensal,
-                  color: AppColors.blue,
+                  color: context.colors.blue,
                   icon: Icons.calendar_month_outlined,
                 ),
               ),
@@ -232,7 +231,7 @@ class _ReceitaResumo extends StatelessWidget {
                 child: _ResumoBox(
                   label: 'PATROCINADORES',
                   value: data.totalPatrocinadores.toString(),
-                  color: AppColors.light,
+                  color: context.colors.light,
                   icon: Icons.groups_outlined,
                 ),
               ),
@@ -242,8 +241,8 @@ class _ReceitaResumo extends StatelessWidget {
                   label: 'VENCENDO EM BREVE',
                   value: data.vencendoEm6Meses.toString(),
                   color: data.vencendoEm6Meses > 0
-                      ? AppColors.orange
-                      : AppColors.subtle,
+                      ? context.colors.orange
+                      : context.colors.subtle,
                   icon: Icons.schedule_outlined,
                 ),
               ),
@@ -282,13 +281,13 @@ class _ResumoBox extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: AppColors.muted, size: 12),
+              Icon(icon, color: context.colors.muted, size: 12),
               const SizedBox(width: 5),
               Expanded(
                 child: Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColors.muted,
+                  style: TextStyle(
+                    color: context.colors.muted,
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.6,
@@ -332,8 +331,8 @@ class _SectionTitle extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
-            color: AppColors.light,
+          style: TextStyle(
+            color: context.colors.light,
             fontWeight: FontWeight.w900,
             fontSize: 13,
             letterSpacing: 1.0,
@@ -351,8 +350,8 @@ class _SectionTitle extends StatelessWidget {
             ),
             child: Text(
               badge!,
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: context.colors.subtle,
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
               ),
@@ -377,23 +376,21 @@ class _AlertBanner extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.orange.withValues(alpha: 0.08),
+        color: context.colors.orange.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.orange.withValues(alpha: 0.35)),
+        border: Border.all(
+          color: context.colors.orange.withValues(alpha: 0.35),
+        ),
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.schedule_outlined,
-            color: AppColors.orange,
-            size: 16,
-          ),
+          Icon(Icons.schedule_outlined, color: context.colors.orange, size: 16),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(
-                color: AppColors.orange,
+              style: TextStyle(
+                color: context.colors.orange,
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 height: 1.4,
@@ -469,8 +466,8 @@ class _SponsorCard extends StatelessWidget {
                   children: [
                     Text(
                       sponsor.name,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: context.colors.textPrimary,
                         fontSize: 15,
                         fontWeight: FontWeight.w900,
                       ),
@@ -478,8 +475,8 @@ class _SponsorCard extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       sponsor.categoria,
-                      style: const TextStyle(
-                        color: AppColors.muted,
+                      style: TextStyle(
+                        color: context.colors.muted,
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.5,
@@ -535,13 +532,13 @@ class _SponsorCard extends StatelessWidget {
                 Icon(
                   Icons.event_note_outlined,
                   size: 13,
-                  color: AppColors.muted,
+                  color: context.colors.muted,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   '${sponsor.contratoAnos} ${sponsor.contratoAnos == 1 ? 'ano restante' : 'anos restantes'}',
-                  style: const TextStyle(
-                    color: AppColors.subtle,
+                  style: TextStyle(
+                    color: context.colors.subtle,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -566,13 +563,13 @@ class _SponsorCard extends StatelessWidget {
                 Icon(
                   Icons.warning_amber_outlined,
                   size: 13,
-                  color: AppColors.red,
+                  color: context.colors.red,
                 ),
                 const SizedBox(width: 6),
-                const Text(
+                Text(
                   'Contrato expirado',
                   style: TextStyle(
-                    color: AppColors.red,
+                    color: context.colors.red,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -581,7 +578,7 @@ class _SponsorCard extends StatelessWidget {
                 _ActionButton(
                   label: 'NEGOCIAR',
                   icon: Icons.handshake_outlined,
-                  color: AppColors.blue,
+                  color: context.colors.blue,
                   onTap: () {
                     // TODO: navegar para tela de nova negociação
                   },
@@ -621,7 +618,7 @@ class _OpportunityCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: context.colors.border),
             ),
-            child: Icon(sponsor.icon, color: AppColors.subtle, size: 22),
+            child: Icon(sponsor.icon, color: context.colors.subtle, size: 22),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -630,8 +627,8 @@ class _OpportunityCard extends StatelessWidget {
               children: [
                 Text(
                   sponsor.name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: context.colors.textPrimary,
                     fontSize: 15,
                     fontWeight: FontWeight.w900,
                   ),
@@ -639,8 +636,8 @@ class _OpportunityCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   sponsor.categoria,
-                  style: const TextStyle(
-                    color: AppColors.muted,
+                  style: TextStyle(
+                    color: context.colors.muted,
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.5,
@@ -655,8 +652,8 @@ class _OpportunityCard extends StatelessWidget {
             children: [
               Text(
                 sponsor.valorAnual,
-                style: const TextStyle(
-                  color: AppColors.blue,
+                style: TextStyle(
+                  color: context.colors.blue,
                   fontSize: 13,
                   fontWeight: FontWeight.w900,
                   fontStyle: FontStyle.italic,
@@ -666,7 +663,7 @@ class _OpportunityCard extends StatelessWidget {
               _ActionButton(
                 label: 'CONTATAR',
                 icon: Icons.send_outlined,
-                color: AppColors.blue,
+                color: context.colors.blue,
                 onTap: () {
                   // TODO: navegar para tela de proposta de patrocínio
                 },

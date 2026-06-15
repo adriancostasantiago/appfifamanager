@@ -1,3 +1,4 @@
+import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
@@ -561,17 +562,18 @@ class _LeaguesPageState extends State<LeaguesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Scaffold(
-      backgroundColor: const Color(0xFF101314),
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF101314),
+        backgroundColor: colors.background,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        iconTheme: IconThemeData(color: colors.textPrimary),
+        title: Text(
           'FC MANAGER',
           style: TextStyle(
-            color: Color(0xFF00FF41),
+            color: colors.accent,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
@@ -621,17 +623,14 @@ class _LeaguesPageState extends State<LeaguesPage> {
                         Expanded(
                           child: Text(
                             _seriesTitle,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: colors.textPrimary,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        const Icon(
-                          Icons.emoji_events,
-                          color: Color(0xFF00FF41),
-                        ),
+                        Icon(Icons.emoji_events, color: colors.accent),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -779,6 +778,7 @@ class _MatchFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -786,27 +786,28 @@ class _MatchFilterBar extends StatelessWidget {
           _FilterChip(
             label: 'TODOS',
             selected: selected == MatchStatus.todos,
+            color: colors.subtle,
             onTap: () => onChanged(MatchStatus.todos),
           ),
           const SizedBox(width: 8),
           _FilterChip(
             label: 'FINALIZADO',
             selected: selected == MatchStatus.finalizado,
-            color: const Color(0xFF00FF41),
+            color: colors.green,
             onTap: () => onChanged(MatchStatus.finalizado),
           ),
           const SizedBox(width: 8),
           _FilterChip(
             label: 'PENDENTE',
             selected: selected == MatchStatus.pendente,
-            color: const Color(0xFFE0A86B),
+            color: colors.orange,
             onTap: () => onChanged(MatchStatus.pendente),
           ),
           const SizedBox(width: 8),
           _FilterChip(
             label: 'A INICIAR',
             selected: selected == MatchStatus.aIniciar,
-            color: const Color(0xFF6B9EFF),
+            color: colors.blue,
             onTap: () => onChanged(MatchStatus.aIniciar),
           ),
         ],
@@ -836,12 +837,10 @@ class _FilterChip extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: selected
-              ? color.withValues(alpha: 0.14)
-              : const Color(0xFF16191D),
+          color: selected ? color.withValues(alpha: 0.14) : context.colors.card,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: selected ? color : const Color(0xFF2A2F33),
+            color: selected ? color : context.colors.border,
             width: selected ? 1.5 : 1,
           ),
         ),
@@ -859,7 +858,7 @@ class _FilterChip extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: selected ? color : const Color(0xFF7C8579),
+                color: selected ? color : context.colors.muted,
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.2,
@@ -875,17 +874,18 @@ class _FilterChip extends StatelessWidget {
 class _EmptyMatchList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 40),
       alignment: Alignment.center,
-      child: const Column(
+      child: Column(
         children: [
-          Icon(Icons.sports_soccer, color: Color(0xFF2A2F33), size: 40),
-          SizedBox(height: 12),
+          Icon(Icons.sports_soccer, color: colors.border, size: 40),
+          const SizedBox(height: 12),
           Text(
             'NENHUMA PARTIDA ENCONTRADA',
             style: TextStyle(
-              color: Color(0xFF4A5047),
+              color: colors.muted,
               fontSize: 12,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.2,
@@ -964,8 +964,8 @@ class _KnockoutRoundSelector extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: selected
-                        ? const Color(0xFF00FF41)
-                        : const Color(0xFF7C8579),
+                        ? context.colors.accent
+                        : context.colors.muted,
                     fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
                     fontSize: 11,
                     letterSpacing: 1.4,
@@ -976,7 +976,7 @@ class _KnockoutRoundSelector extends StatelessWidget {
                   height: 2,
                   decoration: BoxDecoration(
                     color: selected
-                        ? const Color(0xFF00FF41)
+                        ? context.colors.accent
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(2),
                   ),
@@ -999,11 +999,13 @@ class _LeagueMatchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Column(
         children: [
@@ -1023,8 +1025,8 @@ class _LeagueMatchCard extends StatelessWidget {
                         match.homeTeam,
                         style: TextStyle(
                           color: match.isHomeWinner
-                              ? const Color(0xFF00FF41)
-                              : Colors.white,
+                              ? colors.accent
+                              : colors.textPrimary,
                           fontWeight: FontWeight.w800,
                           fontSize: 13,
                         ),
@@ -1049,8 +1051,8 @@ class _LeagueMatchCard extends StatelessWidget {
                         textAlign: TextAlign.end,
                         style: TextStyle(
                           color: match.isAwayWinner
-                              ? const Color(0xFF00FF41)
-                              : Colors.white,
+                              ? colors.accent
+                              : colors.textPrimary,
                           fontWeight: FontWeight.w800,
                           fontSize: 13,
                         ),
@@ -1065,7 +1067,7 @@ class _LeagueMatchCard extends StatelessWidget {
           Container(
             height: 1,
             margin: const EdgeInsets.symmetric(horizontal: 18),
-            color: const Color(0xFF1F2327),
+            color: colors.border,
           ),
           // Venue + pending warning
           Padding(
@@ -1074,8 +1076,8 @@ class _LeagueMatchCard extends StatelessWidget {
               children: [
                 Text(
                   match.venue,
-                  style: const TextStyle(
-                    color: Color(0xFF4A5047),
+                  style: TextStyle(
+                    color: colors.muted,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.8,
@@ -1089,25 +1091,21 @@ class _LeagueMatchCard extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE0A86B).withValues(alpha: 0.08),
+                      color: colors.orange.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: const Color(0xFFE0A86B).withValues(alpha: 0.25),
+                        color: colors.orange.withValues(alpha: 0.25),
                       ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.schedule,
-                          color: Color(0xFFE0A86B),
-                          size: 11,
-                        ),
-                        SizedBox(width: 5),
+                      children: [
+                        Icon(Icons.schedule, color: colors.orange, size: 11),
+                        const SizedBox(width: 5),
                         Text(
                           'RESULTADO NÃO REFLETE NA CLASSIFICAÇÃO',
                           style: TextStyle(
-                            color: Color(0xFFE0A86B),
+                            color: colors.orange,
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.8,
@@ -1133,11 +1131,13 @@ class _KnockoutMatchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Column(
         children: [
@@ -1157,8 +1157,8 @@ class _KnockoutMatchCard extends StatelessWidget {
                         match.homeTeam,
                         style: TextStyle(
                           color: match.isHomeWinner
-                              ? const Color(0xFF00FF41)
-                              : Colors.white,
+                              ? colors.accent
+                              : colors.textPrimary,
                           fontWeight: FontWeight.w800,
                           fontSize: 13,
                         ),
@@ -1187,8 +1187,8 @@ class _KnockoutMatchCard extends StatelessWidget {
                         textAlign: TextAlign.end,
                         style: TextStyle(
                           color: match.isAwayWinner
-                              ? const Color(0xFF00FF41)
-                              : Colors.white,
+                              ? colors.accent
+                              : colors.textPrimary,
                           fontWeight: FontWeight.w800,
                           fontSize: 13,
                         ),
@@ -1203,7 +1203,7 @@ class _KnockoutMatchCard extends StatelessWidget {
           Container(
             height: 1,
             margin: const EdgeInsets.symmetric(horizontal: 18),
-            color: const Color(0xFF1F2327),
+            color: colors.border,
           ),
           // Legs + venue
           Padding(
@@ -1219,11 +1219,7 @@ class _KnockoutMatchCard extends StatelessWidget {
                       status: match.leg1Status,
                     ),
                     const SizedBox(width: 12),
-                    Container(
-                      width: 1,
-                      height: 32,
-                      color: const Color(0xFF2A2F33),
-                    ),
+                    Container(width: 1, height: 32, color: colors.divider),
                     const SizedBox(width: 12),
                     _LegChip(
                       label: 'VOLTA',
@@ -1235,8 +1231,8 @@ class _KnockoutMatchCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   match.venue,
-                  style: const TextStyle(
-                    color: Color(0xFF4A5047),
+                  style: TextStyle(
+                    color: colors.muted,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.8,
@@ -1250,25 +1246,21 @@ class _KnockoutMatchCard extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE0A86B).withValues(alpha: 0.08),
+                      color: colors.orange.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: const Color(0xFFE0A86B).withValues(alpha: 0.25),
+                        color: colors.orange.withValues(alpha: 0.25),
                       ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.schedule,
-                          color: Color(0xFFE0A86B),
-                          size: 11,
-                        ),
-                        SizedBox(width: 5),
+                      children: [
+                        Icon(Icons.schedule, color: colors.orange, size: 11),
+                        const SizedBox(width: 5),
                         Text(
                           'RESULTADO NÃO REFLETE NA CLASSIFICAÇÃO',
                           style: TextStyle(
-                            color: Color(0xFFE0A86B),
+                            color: colors.orange,
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.8,
@@ -1305,19 +1297,19 @@ class _LegChip extends StatelessWidget {
 
     switch (status) {
       case MatchStatus.finalizado:
-        accentColor = const Color(0xFF00FF41);
+        accentColor = context.colors.green;
         statusLabel = 'FINALIZADO';
         break;
       case MatchStatus.pendente:
-        accentColor = const Color(0xFFE0A86B);
+        accentColor = context.colors.orange;
         statusLabel = 'PENDENTE';
         break;
       case MatchStatus.aIniciar:
-        accentColor = const Color(0xFF6B9EFF);
+        accentColor = context.colors.blue;
         statusLabel = 'A INICIAR';
         break;
       case MatchStatus.todos:
-        accentColor = const Color(0xFF4A5047);
+        accentColor = context.colors.muted;
         statusLabel = '';
         break;
     }
@@ -1330,8 +1322,8 @@ class _LegChip extends StatelessWidget {
         // Label IDA / VOLTA
         Text(
           label,
-          style: const TextStyle(
-            color: Color(0xFF4A5047),
+          style: TextStyle(
+            color: context.colors.muted,
             fontSize: 10,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.4,
@@ -1342,7 +1334,9 @@ class _LegChip extends StatelessWidget {
         Text(
           hasScore ? score : '-',
           style: TextStyle(
-            color: hasScore ? Colors.white : const Color(0xFF2A2F33),
+            color: hasScore
+                ? context.colors.textPrimary
+                : context.colors.border,
             fontSize: 14,
             fontWeight: FontWeight.w900,
             letterSpacing: 1,
@@ -1379,22 +1373,21 @@ class _TeamShieldIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: const Color(0xFF101314),
+        color: colors.background,
         shape: BoxShape.circle,
         border: Border.all(
-          color: highlighted
-              ? const Color(0xFF00FF41)
-              : const Color(0xFF2A2F33),
+          color: highlighted ? colors.accent : colors.divider,
           width: highlighted ? 2 : 1,
         ),
       ),
       child: Icon(
         Icons.shield,
-        color: highlighted ? const Color(0xFF00FF41) : const Color(0xFF4A5047),
+        color: highlighted ? colors.accent : colors.muted,
         size: 22,
       ),
     );
@@ -1430,21 +1423,22 @@ class _AggregateBadge extends StatelessWidget {
         : noneStarted
         ? ''
         : 'PARCIAL';
+    final colors = context.colors;
     final Color accentColor = bothFinal
-        ? const Color(0xFF00FF41)
+        ? colors.green
         : noneStarted
-        ? const Color(0xFF4A5047)
-        : const Color(0xFFE0A86B);
+        ? colors.muted
+        : colors.orange;
     final Color bgColor = bothFinal
-        ? const Color(0xFF0A1A0E)
+        ? colors.greenBg
         : noneStarted
-        ? const Color(0xFF1A1E22)
-        : const Color(0xFF1E1608);
+        ? colors.cardAlt
+        : colors.orangeBg;
     final Color borderColor = bothFinal
-        ? const Color(0xFF00FF41).withValues(alpha: 0.35)
+        ? colors.green.withValues(alpha: 0.35)
         : noneStarted
-        ? const Color(0xFF2A2F33)
-        : const Color(0xFFE0A86B).withValues(alpha: 0.35);
+        ? colors.divider
+        : colors.orange.withValues(alpha: 0.35);
 
     final hasScore = !noneStarted;
 
@@ -1462,7 +1456,7 @@ class _AggregateBadge extends StatelessWidget {
           Text(
             hasScore ? score : '?',
             style: TextStyle(
-              color: hasScore ? accentColor : const Color(0xFF4A5047),
+              color: hasScore ? accentColor : colors.muted,
               fontSize: 22,
               fontWeight: FontWeight.w900,
               letterSpacing: 1,
@@ -1502,27 +1496,27 @@ class _ScoreBadge extends StatelessWidget {
 
     switch (status) {
       case MatchStatus.finalizado:
-        accentColor = const Color(0xFF00FF41);
-        bgColor = const Color(0xFF0A1A0E);
-        borderColor = const Color(0xFF00FF41).withValues(alpha: 0.35);
+        accentColor = context.colors.green;
+        bgColor = context.colors.greenBg;
+        borderColor = context.colors.green.withValues(alpha: 0.35);
         label = 'FINALIZADA';
         break;
       case MatchStatus.pendente:
-        accentColor = const Color(0xFFE0A86B);
-        bgColor = const Color(0xFF1E1608);
-        borderColor = const Color(0xFFE0A86B).withValues(alpha: 0.35);
+        accentColor = context.colors.orange;
+        bgColor = context.colors.orangeBg;
+        borderColor = context.colors.orange.withValues(alpha: 0.35);
         label = 'PENDENTE';
         break;
       case MatchStatus.aIniciar:
-        accentColor = const Color(0xFF6B9EFF);
-        bgColor = const Color(0xFF0A0F1E);
-        borderColor = const Color(0xFF6B9EFF).withValues(alpha: 0.35);
+        accentColor = context.colors.blue;
+        bgColor = context.colors.blueBg;
+        borderColor = context.colors.blue.withValues(alpha: 0.35);
         label = 'A INICIAR';
         break;
       case MatchStatus.todos:
-        accentColor = const Color(0xFF4A5047);
-        bgColor = const Color(0xFF1A1E22);
-        borderColor = const Color(0xFF2A2F33);
+        accentColor = context.colors.muted;
+        bgColor = context.colors.cardAlt;
+        borderColor = context.colors.divider;
         label = '';
         break;
     }
@@ -1544,7 +1538,7 @@ class _ScoreBadge extends StatelessWidget {
           Text(
             hasScore ? score : '?',
             style: TextStyle(
-              color: hasScore ? accentColor : const Color(0xFF4A5047),
+              color: hasScore ? accentColor : context.colors.muted,
               fontSize: 22,
               fontWeight: FontWeight.w900,
               letterSpacing: 1,
@@ -1651,6 +1645,7 @@ class _LeagueTabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -1660,9 +1655,7 @@ class _LeagueTabButton extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: selected
-                  ? const Color(0xFF00FF41)
-                  : const Color(0xFF7C8579),
+              color: selected ? colors.accent : colors.muted,
               fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
               fontSize: 12,
               letterSpacing: 1.8,
@@ -1673,7 +1666,7 @@ class _LeagueTabButton extends StatelessWidget {
             height: 2,
             width: 80,
             decoration: BoxDecoration(
-              color: selected ? const Color(0xFF00FF41) : Colors.transparent,
+              color: selected ? colors.accent : Colors.transparent,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -1694,28 +1687,33 @@ class _SeriesToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
           _buildSeriesButton(
+            context: context,
             label: 'SÉRIE A',
             selected: activeSeries == LeagueSeries.serieA,
             onTap: () => onSeriesChanged(LeagueSeries.serieA),
           ),
           const SizedBox(width: 8),
           _buildSeriesButton(
+            context: context,
             label: 'SÉRIE B',
             selected: activeSeries == LeagueSeries.serieB,
             onTap: () => onSeriesChanged(LeagueSeries.serieB),
           ),
           const SizedBox(width: 8),
           _buildSeriesButton(
+            context: context,
             label: 'COPA',
             selected: activeSeries == LeagueSeries.copa,
             onTap: () => onSeriesChanged(LeagueSeries.copa),
@@ -1726,6 +1724,7 @@ class _SeriesToggle extends StatelessWidget {
   }
 
   Widget _buildSeriesButton({
+    required BuildContext context,
     required String label,
     required bool selected,
     required VoidCallback onTap,
@@ -1736,14 +1735,16 @@ class _SeriesToggle extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: selected ? const Color(0xFF00FF41) : const Color(0xFF131618),
+            color: selected ? context.colors.accent : context.colors.cardDark,
             borderRadius: BorderRadius.circular(18),
           ),
           child: Text(
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: selected ? Colors.black : Colors.white,
+              color: selected
+                  ? context.colors.onAccent
+                  : context.colors.textPrimary,
               fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
             ),
           ),
@@ -1762,13 +1763,16 @@ class _RegisterMatchButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton.icon(
         onPressed: () => Navigator.of(context).pushNamed('/register-match'),
-        icon: const Icon(Icons.add, color: Colors.black),
-        label: const Text(
+        icon: Icon(Icons.add, color: context.colors.onAccent),
+        label: Text(
           'REGISTRAR PARTIDA',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
+          style: TextStyle(
+            color: context.colors.onAccent,
+            fontWeight: FontWeight.w900,
+          ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00FF41),
+          backgroundColor: context.colors.accent,
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
@@ -1786,10 +1790,11 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Text(
       title,
-      style: const TextStyle(
-        color: Colors.white,
+      style: TextStyle(
+        color: colors.textPrimary,
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
@@ -1823,15 +1828,15 @@ class _ViewCompleteTableButton extends StatelessWidget {
         },
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          backgroundColor: const Color(0xFF0A1A0E),
+          backgroundColor: context.colors.accentBg,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
         ),
-        child: const Text(
+        child: Text(
           'VER TABELA COMPLETA',
           style: TextStyle(
-            color: Color(0xFF00FF41),
+            color: context.colors.accent,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -1855,13 +1860,15 @@ class _TopScorerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Row(
         children: [
@@ -1873,9 +1880,9 @@ class _TopScorerTile extends StatelessWidget {
                 height: 52,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFF00FF41)),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF0C120C), Color(0xFF101314)],
+                  border: Border.all(color: colors.accent),
+                  gradient: LinearGradient(
+                    colors: [colors.accentSubtle, colors.background],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -1883,8 +1890,8 @@ class _TopScorerTile extends StatelessWidget {
               ),
               Text(
                 position,
-                style: const TextStyle(
-                  color: Color(0xFF00FF41),
+                style: TextStyle(
+                  color: colors.accent,
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -1897,8 +1904,8 @@ class _TopScorerTile extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: colors.textPrimary,
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
                   ),
@@ -1906,8 +1913,8 @@ class _TopScorerTile extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   club,
-                  style: const TextStyle(
-                    color: Color(0xFF7C8579),
+                  style: TextStyle(
+                    color: colors.muted,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1917,8 +1924,8 @@ class _TopScorerTile extends StatelessWidget {
           ),
           Text(
             goals,
-            style: const TextStyle(
-              color: Color(0xFF00FF41),
+            style: TextStyle(
+              color: colors.accent,
               fontSize: 28,
               fontWeight: FontWeight.w900,
             ),
