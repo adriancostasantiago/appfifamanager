@@ -50,26 +50,50 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
   }
 
   final List<PlayerPosition> players = [
-    PlayerPosition(id: '1', position: 'GK', x: 150, y: 650),
-    PlayerPosition(id: '2', position: 'LB', x: 40, y: 520),
-    PlayerPosition(id: '3', position: 'CB', x: 120, y: 500),
-    PlayerPosition(id: '4', position: 'CB', x: 220, y: 500),
-    PlayerPosition(id: '5', position: 'RB', x: 300, y: 520),
-    PlayerPosition(id: '6', position: 'MC', x: 90, y: 350),
-    PlayerPosition(id: '7', position: 'MC', x: 180, y: 320),
-    PlayerPosition(id: '8', position: 'MC', x: 270, y: 350),
-    PlayerPosition(id: '9', position: 'LW', x: 60, y: 180),
-    PlayerPosition(id: '10', position: 'ST', x: 180, y: 120),
-    PlayerPosition(id: '11', position: 'RW', x: 300, y: 180),
+    // ATAQUE
+    PlayerPosition(id: '9', position: 'LW', x: 20, y: 140),
+    PlayerPosition(id: '10', position: 'ST', x: 130, y: 90),
+    PlayerPosition(id: '11', position: 'RW', x: 240, y: 140),
+
+    // MEIO
+    PlayerPosition(id: '6', position: 'MC', x: 40, y: 300),
+    PlayerPosition(id: '7', position: 'MC', x: 130, y: 260),
+    PlayerPosition(id: '8', position: 'MC', x: 220, y: 300),
+
+    // DEFESA
+    PlayerPosition(id: '2', position: 'LB', x: 10, y: 460),
+    PlayerPosition(id: '3', position: 'CB', x: 90, y: 440),
+    PlayerPosition(id: '4', position: 'CB', x: 180, y: 440),
+    PlayerPosition(id: '5', position: 'RB', x: 270, y: 460),
+
+    // GOLEIRO
+    PlayerPosition(id: '1', position: 'GK', x: 135, y: 550),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0F7D45),
-      appBar: AppBar(
-        title: const Text('Prancheta Tática'),
-        backgroundColor: const Color(0xFF0F7D45),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Color.fromARGB(255, 4, 31, 17),
+                Color.fromARGB(255, 0, 0, 0),
+              ],
+            ),
+          ),
+          child: AppBar(
+            title: const Text('Prancheta Tática'),
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+        ),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -89,7 +113,15 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
               child: Stack(
                 children: [
                   Positioned.fill(
-                    child: CustomPaint(painter: FootballFieldPainter()),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/TacticalBoard.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    //CustomPaint(painter: FootballFieldPainter()),
                   ),
 
                   ...players.map((player) {
@@ -127,12 +159,12 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                           setState(() {
                             player.x = (player.x + details.delta.dx).clamp(
                               0.0,
-                              fieldWidth - 70,
+                              fieldWidth - 112.0,
                             );
 
                             player.y = (player.y + details.delta.dy).clamp(
                               0.0,
-                              fieldHeight - 90,
+                              fieldHeight - 144.0,
                             );
                           });
                         },
@@ -161,83 +193,163 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
 }
 
 class PlayerWidget extends StatelessWidget {
-  final String position;
   final PlayerData? player;
+  final String position;
   final bool showDelete;
   final VoidCallback onDelete;
 
   const PlayerWidget({
     super.key,
-    required this.position,
     required this.player,
+    required this.position,
     required this.showDelete,
     required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    final hasPlayer = player != null;
-
     return SizedBox(
-      width: 90,
-      child: Column(
+      width: 112, // 140 -> 112
+      height: 144, // 180 -> 144
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: 72,
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.black87,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  hasPlayer ? player!.name : position,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                  ),
+          // POSIÇÃO
+          Positioned(
+            top: 0,
+            left: 48, // 60 -> 48
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: const [
+                  BoxShadow(blurRadius: 3, color: Colors.black26),
+                ],
+              ),
+              child: Text(
+                position,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
                 ),
               ),
-
-              if (showDelete)
-                Positioned(
-                  right: -10,
-                  top: -10,
-                  child: GestureDetector(
-                    onTap: onDelete,
-                    child: Container(
-                      width: 22,
-                      height: 22,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
 
-          const SizedBox(height: 4),
+          // CAMISA
+          Positioned(
+            top: 16,
+            left: 20,
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 14,
+                    color: showDelete
+                        ? Colors.greenAccent.withValues(alpha: 0.5)
+                        : Colors.black45,
+                    spreadRadius: showDelete ? 2 : 0,
+                  ),
+                ],
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset(
+                    'assets/shirt.png',
+                    width: 80, // 100 -> 80
+                  ),
 
-          Text(
-            hasPlayer ? player!.name : 'Selecionar',
-            maxLines: 2,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
+                  Text(
+                    player?.number.toString() ?? '',
+                    style: const TextStyle(
+                      fontSize: 16, // 20 -> 16
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // X
+          if (showDelete)
+            Positioned(
+              right: 6,
+              top: 24,
+              child: GestureDetector(
+                onTap: onDelete,
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1.5),
+                  ),
+                  child: const Icon(Icons.close, color: Colors.white, size: 14),
+                ),
+              ),
+            ),
+
+          // OVR
+          Positioned(
+            left: 20,
+            top: 16,
+            child: Container(
+              width: 24,
+              height: 24,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: const Color(0xFF3C8F28),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: Colors.white, width: 1.5),
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 6,
+                    color: Colors.black38,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                '${player?.ovr ?? 0}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ),
+
+          // NOME
+          Positioned(
+            top: 64, // 80 -> 64
+            left: 8,
+            right: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(6),
+                boxShadow: const [
+                  BoxShadow(blurRadius: 6, color: Colors.black54),
+                ],
+              ),
+              child: Text(
+                player?.name ?? 'Selecionar',
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 7,
+                ),
+              ),
             ),
           ),
         ],

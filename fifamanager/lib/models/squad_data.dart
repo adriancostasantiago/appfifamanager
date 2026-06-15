@@ -26,6 +26,7 @@ class PlayerData {
   final int ovr;
   final String? marketValue;
   final String? salary;
+  final int number;
 
   /// Quantos anos de contrato o jogador ainda possui (1 a 5).
   final int contractUntil;
@@ -39,6 +40,7 @@ class PlayerData {
     this.marketValue,
     this.salary,
     this.contractUntil = 1,
+    this.number = 10,
   });
 
   Color get ovrColor {
