@@ -42,5 +42,17 @@ flutter:
     - assets/trophy-B.png
     - assets/trophy-CUP.png
     - assets/app_icon.png
-    - assets/shirt.png
     - assets/TacticalBoard.png
+    
+    - assets/images/shirt/shirt_1.png
+    - assets/images/shirt/shirt_2.png
+    - assets/images/shirt/shirt_3.png
+    - assets/images/shirt/shirt_4.png
+    - assets/images/shirt/shirt_5.png
+    - assets/images/shirt/shirt_6.png
+    - assets/images/shirt/shirt_7.png
+    - assets/images/shirt/shirt_8.png
+    - assets/images/shirt/shirt_9.png
+    - assets/images/shirt/shirt_10.png
+    - assets/images/shirt/shirt_11.png
+    - assets/images/shirt/shirt_12.png
