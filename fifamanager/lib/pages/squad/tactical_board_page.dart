@@ -23,6 +23,9 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
 
   late List<PlayerPosition> players;
 
+  // IDs dos jogadores envolvidos na última troca (para disparar animação)
+  final Set<String> _swappingIds = {};
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +60,22 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
           .toList();
 
       selectedFormation = formation;
+    });
+  }
+
+  void _triggerSwapAnimation(String idA, String idB) {
+    setState(
+      () => _swappingIds
+        ..add(idA)
+        ..add(idB),
+    );
+    Future.delayed(const Duration(milliseconds: 600), () {
+      if (mounted)
+        setState(
+          () => _swappingIds
+            ..remove(idA)
+            ..remove(idB),
+        );
     });
   }
 
@@ -284,19 +303,25 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                                   // ----------------------------------------
                                   if (player.player != null) {
                                     // troca os dois jogadores de posição
+                                    final idA = player.id;
+                                    final idB = selectedSlot.id;
                                     setState(() {
                                       final temp = player.player;
                                       player.player = selectedSlot.player;
                                       selectedSlot.player = temp;
                                       selectedSlot.showDelete = false;
                                     });
+                                    _triggerSwapAnimation(idA, idB);
                                   } else {
                                     // posição vazia -> move o jogador selecionado para lá
+                                    final idA = player.id;
+                                    final idB = selectedSlot.id;
                                     setState(() {
                                       player.player = selectedSlot.player;
                                       selectedSlot.player = null;
                                       selectedSlot.showDelete = false;
                                     });
+                                    _triggerSwapAnimation(idA, idB);
                                   }
                                 },
 
@@ -325,6 +350,7 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                                   player: player.player,
                                   showDelete: player.showDelete,
                                   scale: scale,
+                                  isSwapping: _swappingIds.contains(player.id),
                                   onDelete: () {
                                     setState(() {
                                       player.player = null;
@@ -352,13 +378,14 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
 }
 
 // --------------------------------------------------------------------------
-// PlayerWidget com suporte a escala
+// PlayerWidget com animações de seleção (pulso) e troca (flash + scale)
 // --------------------------------------------------------------------------
-class PlayerWidget extends StatelessWidget {
+class PlayerWidget extends StatefulWidget {
   final PlayerData? player;
   final String position;
   final bool showDelete;
   final VoidCallback onDelete;
+  final bool isSwapping;
 
   /// Fator de escala calculado pelo pai (fieldWidth / _kRefWidth)
   final double scale;
@@ -369,176 +396,273 @@ class PlayerWidget extends StatelessWidget {
     required this.position,
     required this.showDelete,
     required this.onDelete,
+    this.isSwapping = false,
     this.scale = 1.0,
   });
 
   @override
+  State<PlayerWidget> createState() => _PlayerWidgetState();
+}
+
+class _PlayerWidgetState extends State<PlayerWidget>
+    with TickerProviderStateMixin {
+  // Animação de pulso quando selecionado (showDelete = true)
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnim;
+
+  // Animação de flash/scale quando troca acontece
+  late AnimationController _swapController;
+  late Animation<double> _swapScaleAnim;
+  late Animation<double> _swapOpacityAnim;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _pulseAnim = Tween<double>(begin: 1.0, end: 1.12).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+
+    _swapController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 550),
+    );
+    _swapScaleAnim =
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.25), weight: 30),
+          TweenSequenceItem(tween: Tween(begin: 1.25, end: 0.90), weight: 40),
+          TweenSequenceItem(tween: Tween(begin: 0.90, end: 1.0), weight: 30),
+        ]).animate(
+          CurvedAnimation(parent: _swapController, curve: Curves.easeInOut),
+        );
+
+    _swapOpacityAnim = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 20),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 30),
+      TweenSequenceItem(tween: ConstantTween(1.0), weight: 50),
+    ]).animate(_swapController);
+
+    if (widget.showDelete) {
+      _pulseController.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void didUpdateWidget(PlayerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Pulso: liga/desliga conforme seleção
+    if (widget.showDelete && !oldWidget.showDelete) {
+      _pulseController.repeat(reverse: true);
+    } else if (!widget.showDelete && oldWidget.showDelete) {
+      _pulseController.stop();
+      _pulseController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 150),
+      );
+    }
+
+    // Swap: dispara ao entrar em isSwapping
+    if (widget.isSwapping && !oldWidget.isSwapping) {
+      _swapController.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _swapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Dimensões base (referência 1x)
-    final double w = 112 * scale;
-    final double h = 144 * scale;
-    final double shirtW = 80 * scale;
-    final double ovrSize = 24 * scale;
-    final double xBtnSize = 26 * scale;
+    final double w = 112 * widget.scale;
+    final double h = 144 * widget.scale;
+    final double shirtW = 80 * widget.scale;
+    final double ovrSize = 24 * widget.scale;
+    final double xBtnSize = 26 * widget.scale;
 
-    return SizedBox(
-      width: w,
-      height: h,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // POSIÇÃO
-          Positioned(
-            top: 0,
-            left: 48 * scale,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 6 * scale,
-                vertical: 2 * scale,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4 * scale),
-                boxShadow: const [
-                  BoxShadow(blurRadius: 3, color: Colors.black26),
-                ],
-              ),
-              child: Text(
-                position,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 10 * scale,
-                ),
-              ),
-            ),
-          ),
+    return AnimatedBuilder(
+      animation: Listenable.merge([
+        _pulseAnim,
+        _swapScaleAnim,
+        _swapOpacityAnim,
+      ]),
+      builder: (context, child) {
+        // Escala combinada: pulso (quando selecionado) + swap
+        final double combinedScale = widget.isSwapping
+            ? _swapScaleAnim.value
+            : (widget.showDelete ? _pulseAnim.value : 1.0);
 
-          // 1 - 3 - 5  white
-          // 4  - 6 black
-          // CAMISA
-          Positioned(
-            top: 16 * scale,
-            left: 20 * scale,
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 14,
-                    color: showDelete
-                        ? Colors.greenAccent.withValues(alpha: 0.5)
-                        : Colors.black45,
-                    spreadRadius: showDelete ? 2 : 0,
-                  ),
-                ],
-              ),
+        return Transform.scale(
+          scale: combinedScale,
+          child: Opacity(
+            opacity: widget.isSwapping ? _swapOpacityAnim.value : 1.0,
+            child: SizedBox(
+              width: w,
+              height: h,
               child: Stack(
-                alignment: Alignment.center,
+                clipBehavior: Clip.none,
                 children: [
-                  Image.asset(
-                    'assets/images/shirt/shirt_12.png',
-                    width: shirtW,
+                  // POSIÇÃO
+                  Positioned(
+                    top: 0,
+                    left: 48 * widget.scale,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6 * widget.scale,
+                        vertical: 2 * widget.scale,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4 * widget.scale),
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 3, color: Colors.black26),
+                        ],
+                      ),
+                      child: Text(
+                        widget.position,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10 * widget.scale,
+                        ),
+                      ),
+                    ),
                   ),
-                  Text(
-                    player?.number.toString() ?? '',
-                    style: TextStyle(
-                      fontSize: 16 * scale,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
+
+                  // CAMISA
+                  Positioned(
+                    top: 16 * widget.scale,
+                    left: 20 * widget.scale,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 14,
+                            color: widget.showDelete
+                                ? Colors.greenAccent.withValues(alpha: 0.5)
+                                : Colors.black45,
+                            spreadRadius: widget.showDelete ? 2 : 0,
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/shirt/shirt_12.png',
+                            width: shirtW,
+                          ),
+                          Text(
+                            widget.player?.number.toString() ?? '',
+                            style: TextStyle(
+                              fontSize: 16 * widget.scale,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // X (remover)
+                  if (widget.showDelete)
+                    Positioned(
+                      right: 6 * widget.scale,
+                      top: 24 * widget.scale,
+                      child: GestureDetector(
+                        onTap: widget.onDelete,
+                        child: Container(
+                          width: xBtnSize,
+                          height: xBtnSize,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 1.5),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 14 * widget.scale,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  // OVR
+                  Positioned(
+                    left: 20 * widget.scale,
+                    top: 16 * widget.scale,
+                    child: Container(
+                      width: ovrSize,
+                      height: ovrSize,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: widget.player?.ovrColor ?? Colors.white,
+                        borderRadius: BorderRadius.circular(6 * widget.scale),
+                        border: Border.all(color: Colors.black, width: 1.5),
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 6,
+                            color: Colors.black38,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        '${widget.player?.ovr ?? '?'}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 11 * widget.scale,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // NOME
+                  Positioned(
+                    top: 64 * widget.scale,
+                    left: 8 * widget.scale,
+                    right: 8 * widget.scale,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 6 * widget.scale,
+                        horizontal: 8 * widget.scale,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(6 * widget.scale),
+                        boxShadow: const [
+                          BoxShadow(blurRadius: 6, color: Colors.black54),
+                        ],
+                      ),
+                      child: Text(
+                        widget.player?.name ?? 'Selecionar',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 7 * widget.scale,
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-
-          // X (remover)
-          if (showDelete)
-            Positioned(
-              right: 6 * scale,
-              top: 24 * scale,
-              child: GestureDetector(
-                onTap: onDelete,
-                child: Container(
-                  width: xBtnSize,
-                  height: xBtnSize,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 1.5),
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 14 * scale,
-                  ),
-                ),
-              ),
-            ),
-
-          // OVR
-          Positioned(
-            left: 20 * scale,
-            top: 16 * scale,
-            child: Container(
-              width: ovrSize,
-              height: ovrSize,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: const Color(0xFF3C8F28),
-                borderRadius: BorderRadius.circular(6 * scale),
-                border: Border.all(color: Colors.white, width: 1.5),
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 6,
-                    color: Colors.black38,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Text(
-                '${player?.ovr ?? 0}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 11 * scale,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-          ),
-
-          // NOME
-          Positioned(
-            top: 64 * scale,
-            left: 8 * scale,
-            right: 8 * scale,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 6 * scale,
-                horizontal: 8 * scale,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(6 * scale),
-                boxShadow: const [
-                  BoxShadow(blurRadius: 6, color: Colors.black54),
-                ],
-              ),
-              child: Text(
-                player?.name ?? 'Selecionar',
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 7 * scale,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
