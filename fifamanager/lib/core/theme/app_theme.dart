@@ -44,6 +44,7 @@ class FCColors extends ThemeExtension<FCColors> {
   final Color orange;
   final Color orangeBg;
   final Color amber;
+  final Color white;
 
   // Shadow / elevation feel
   final List<BoxShadow> cardShadow;
@@ -79,6 +80,7 @@ class FCColors extends ThemeExtension<FCColors> {
     required this.orange,
     required this.orangeBg,
     required this.amber,
+    required this.white,
     required this.cardShadow,
   });
 
@@ -114,6 +116,7 @@ class FCColors extends ThemeExtension<FCColors> {
     Color? orange,
     Color? orangeBg,
     Color? amber,
+    Color? white,
     List<BoxShadow>? cardShadow,
   }) {
     return FCColors(
@@ -147,6 +150,7 @@ class FCColors extends ThemeExtension<FCColors> {
       orange: orange ?? this.orange,
       orangeBg: orangeBg ?? this.orangeBg,
       amber: amber ?? this.amber,
+      white: white ?? this.white,
       cardShadow: cardShadow ?? this.cardShadow,
     );
   }
@@ -185,6 +189,7 @@ class FCColors extends ThemeExtension<FCColors> {
       orange: Color.lerp(orange, other.orange, t)!,
       orangeBg: Color.lerp(orangeBg, other.orangeBg, t)!,
       amber: Color.lerp(amber, other.amber, t)!,
+      white: Color.lerp(white, other.white, t)!,
       cardShadow: t < 0.5 ? cardShadow : other.cardShadow,
     );
   }
@@ -228,6 +233,7 @@ class AppTheme {
     orange: Color(0xFFFFB74D),
     orangeBg: Color(0xFF2A1A05),
     amber: Colors.amber,
+    white: Colors.white,
 
     cardShadow: [],
   );
@@ -276,6 +282,8 @@ class AppTheme {
     orange: Color(0xFFBF6A00), // laranja escuro — legível
     orangeBg: Color(0xFFFFF7E8),
     amber: Color(0xFFB8860B), // âmbar dourado escuro
+
+    white: Colors.white,
 
     cardShadow: [
       BoxShadow(color: Color(0x10163020), blurRadius: 10, offset: Offset(0, 2)),

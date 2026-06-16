@@ -2,7 +2,7 @@ import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/widgets/app_brand_logo.dart';
-import 'package:fifamanager/core/theme/app_colors.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Image.asset(
             'assets/splash_bg_new.png',
-            // 'assets/login_bg.png',
             fit: BoxFit.cover,
             color: Colors.black54,
             colorBlendMode: BlendMode.darken,
@@ -91,6 +90,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+// ─── SCROLLABLE BODY ─────────────────────────────────────────────────────────
+
 class _ScrollableBody extends StatelessWidget {
   final Widget child;
 
@@ -112,68 +113,32 @@ class _ScrollableBody extends StatelessWidget {
   }
 }
 
-class _LoginBrandHeader extends StatefulWidget {
-  const _LoginBrandHeader();
-
-  @override
-  State<_LoginBrandHeader> createState() => _LoginBrandHeaderState();
-}
-
-class _LoginBrandHeaderState extends State<_LoginBrandHeader> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.sports_soccer, size: 72, color: context.colors.accent),
-          SizedBox(height: 20),
-          Text(
-            'FC',
-            style: TextStyle(
-              color: context.colors.accent,
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.4,
-            ),
-          ),
-          Text(
-            'MANAGER',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// ─── TÍTULO ──────────────────────────────────────────────────────────────────
 
 class _LoginTitle extends StatelessWidget {
   const _LoginTitle();
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Column(
-      children: const [
+      children: [
         Text(
           'FAÇA LOGIN',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
+            color: colors.white,
             fontSize: 26,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'Entre para gerenciar seu clube',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: AppColors.textSecondary,
+            color: colors.white,
             fontSize: 14,
             letterSpacing: 0.8,
           ),
@@ -183,18 +148,22 @@ class _LoginTitle extends StatelessWidget {
   }
 }
 
+// ─── EMAIL ───────────────────────────────────────────────────────────────────
+
 class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return TextField(
       keyboardType: TextInputType.emailAddress,
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: colors.textPrimary),
       decoration: InputDecoration(
         hintText: 'E-mail ou usuário',
-        hintStyle: const TextStyle(color: AppColors.muted),
+        hintStyle: TextStyle(color: colors.muted),
         filled: true,
-        fillColor: context.colors.card,
-        prefixIcon: const Icon(Icons.person, color: AppColors.muted),
+        fillColor: colors.card,
+        prefixIcon: Icon(Icons.person, color: colors.muted),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
@@ -204,6 +173,8 @@ class _EmailField extends StatelessWidget {
   }
 }
 
+// ─── SENHA ───────────────────────────────────────────────────────────────────
+
 class _PasswordField extends StatelessWidget {
   const _PasswordField({required this.obscureText, required this.onToggle});
 
@@ -212,19 +183,21 @@ class _PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return TextField(
       obscureText: obscureText,
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: colors.textPrimary),
       decoration: InputDecoration(
         hintText: 'Senha',
-        hintStyle: const TextStyle(color: AppColors.muted),
+        hintStyle: TextStyle(color: colors.muted),
         filled: true,
-        fillColor: context.colors.card,
-        prefixIcon: const Icon(Icons.lock, color: AppColors.muted),
+        fillColor: colors.card,
+        prefixIcon: Icon(Icons.lock, color: colors.muted),
         suffixIcon: IconButton(
           icon: Icon(
             obscureText ? Icons.visibility : Icons.visibility_off,
-            color: AppColors.muted,
+            color: colors.muted,
           ),
           onPressed: onToggle,
         ),
@@ -237,6 +210,8 @@ class _PasswordField extends StatelessWidget {
   }
 }
 
+// ─── LEMBRAR / ESQUECEU ───────────────────────────────────────────────────────
+
 class _RememberForgotRow extends StatelessWidget {
   const _RememberForgotRow({
     required this.rememberMe,
@@ -248,6 +223,8 @@ class _RememberForgotRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Row(
       children: [
         GestureDetector(
@@ -258,26 +235,22 @@ class _RememberForgotRow extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: rememberMe
-                      ? context.colors.accent
-                      : Colors.transparent,
+                  color: rememberMe ? colors.accent : Colors.transparent,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: rememberMe
-                        ? context.colors.accent
-                        : context.colors.border,
+                    color: rememberMe ? colors.accent : colors.border,
                     width: 1.8,
                   ),
                 ),
                 child: rememberMe
-                    ? const Icon(Icons.check, size: 16, color: Colors.black)
+                    ? Icon(Icons.check, size: 16, color: colors.onAccent)
                     : null,
               ),
               const SizedBox(width: 10),
-              const Text(
+              Text(
                 'Lembrar meu acesso',
                 style: TextStyle(
-                  color: AppColors.textSecondary,
+                  color: colors.textSecondary,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
@@ -296,7 +269,7 @@ class _RememberForgotRow extends StatelessWidget {
           child: Text(
             'Esqueceu a senha?',
             style: TextStyle(
-              color: context.colors.accent,
+              color: colors.accent,
               fontSize: 13,
               fontWeight: FontWeight.w700,
             ),
@@ -307,6 +280,8 @@ class _RememberForgotRow extends StatelessWidget {
   }
 }
 
+// ─── BOTÃO ENTRAR ─────────────────────────────────────────────────────────────
+
 class _LoginButton extends StatelessWidget {
   const _LoginButton({required this.onPressed});
 
@@ -314,11 +289,13 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: context.colors.accent,
-        foregroundColor: Colors.black,
+        backgroundColor: colors.accent,
+        foregroundColor: colors.onAccent,
         padding: const EdgeInsets.symmetric(vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: const TextStyle(
@@ -332,46 +309,57 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
+// ─── DIVISOR ──────────────────────────────────────────────────────────────────
+
 class _ContinueWithDivider extends StatelessWidget {
   const _ContinueWithDivider();
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Row(
       children: [
-        Expanded(child: Divider(color: context.colors.border, thickness: 1)),
+        Expanded(child: Divider(color: colors.border, thickness: 1)),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
             'OU CONTINUE COM',
             style: TextStyle(
-              color: AppColors.muted,
+              color: colors.muted,
               fontSize: 12,
               letterSpacing: 1.4,
             ),
           ),
         ),
-        Expanded(child: Divider(color: context.colors.border, thickness: 1)),
+        Expanded(child: Divider(color: colors.border, thickness: 1)),
       ],
     );
   }
 }
+
+// ─── BOTÃO GOOGLE ─────────────────────────────────────────────────────────────
 
 class _GoogleButton extends StatelessWidget {
   const _GoogleButton();
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return OutlinedButton.icon(
       onPressed: () {},
-      icon: const Icon(Icons.g_mobiledata, color: Colors.white),
-      label: const Text(
+      icon: SvgPicture.asset('assets/google_logo.svg', width: 20, height: 20),
+      label: Text(
         'Google',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        style: TextStyle(
+          color: colors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
       ),
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: context.colors.border, width: 1.4),
-        backgroundColor: context.colors.card,
+        side: BorderSide(color: colors.border, width: 1.4),
+        backgroundColor: colors.card,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
@@ -379,26 +367,27 @@ class _GoogleButton extends StatelessWidget {
   }
 }
 
+// ─── FOOTER CADASTRO ──────────────────────────────────────────────────────────
+
 class _SignupFooter extends StatelessWidget {
   const _SignupFooter();
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Center(
       child: TextButton(
         onPressed: () {},
         child: Text.rich(
           TextSpan(
             text: 'Não tem uma conta? ',
-            style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 13,
-            ),
+            style: TextStyle(color: colors.textSecondary, fontSize: 13),
             children: [
               TextSpan(
                 text: 'Cadastre-se',
                 style: TextStyle(
-                  color: context.colors.accent,
+                  color: colors.accent,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -12,7 +12,7 @@ import '../player/sell_player_page.dart';
 import '../player/loan_player_page.dart';
 import '../player/release_player_page.dart';
 
-final SquadData squad = SquadData(
+SquadData squad = SquadData(
   averageOvr: 78.0,
   playerCount: 28,
   totalValue: '€982M',
@@ -28,6 +28,7 @@ final SquadData squad = SquadData(
       marketValue: '€12M',
       salary: '€350K',
       contractUntil: 3,
+      number: 1,
     ),
     PlayerData(
       name: 'Iñaki Peña',
@@ -38,6 +39,7 @@ final SquadData squad = SquadData(
       marketValue: '€5M',
       salary: '€80K',
       contractUntil: 1,
+      number: 13,
     ),
     PlayerData(
       name: 'Ander Astralaga',
@@ -48,6 +50,7 @@ final SquadData squad = SquadData(
       marketValue: '€1M',
       salary: '€15K',
       contractUntil: 2,
+      number: 26,
     ),
 
     // DEFENSORES
@@ -60,6 +63,7 @@ final SquadData squad = SquadData(
       marketValue: '€35M',
       salary: '€220K',
       contractUntil: 1,
+      number: 4,
     ),
     PlayerData(
       name: 'Jules Koundé',
@@ -70,6 +74,7 @@ final SquadData squad = SquadData(
       marketValue: '€55M',
       salary: '€260K',
       contractUntil: 4,
+      number: 23,
     ),
     PlayerData(
       name: 'Alejandro Balde',
@@ -80,6 +85,7 @@ final SquadData squad = SquadData(
       marketValue: '€60M',
       salary: '€240K',
       contractUntil: 3,
+      number: 3,
     ),
     PlayerData(
       name: 'Andreas Christensen',
@@ -90,6 +96,7 @@ final SquadData squad = SquadData(
       marketValue: '€18M',
       salary: '€190K',
       contractUntil: 1,
+      number: 15,
     ),
     PlayerData(
       name: 'Eric García',
@@ -100,6 +107,7 @@ final SquadData squad = SquadData(
       marketValue: '€15M',
       salary: '€110K',
       contractUntil: 2,
+      number: 24,
     ),
     PlayerData(
       name: 'Pau Cubarsí',
@@ -110,6 +118,7 @@ final SquadData squad = SquadData(
       marketValue: '€70M',
       salary: '€90K',
       contractUntil: 5,
+      number: 2,
     ),
     PlayerData(
       name: 'Héctor Fort',
@@ -120,6 +129,7 @@ final SquadData squad = SquadData(
       marketValue: '€10M',
       salary: '€40K',
       contractUntil: 4,
+      number: 32,
     ),
     PlayerData(
       name: 'Gerard Martín',
@@ -130,6 +140,7 @@ final SquadData squad = SquadData(
       marketValue: '€8M',
       salary: '€35K',
       contractUntil: 2,
+      number: 35,
     ),
 
     // MEIAS
@@ -142,6 +153,7 @@ final SquadData squad = SquadData(
       marketValue: '€90M',
       salary: '€280K',
       contractUntil: 3,
+      number: 8,
     ),
     PlayerData(
       name: 'Frenkie de Jong',
@@ -152,6 +164,7 @@ final SquadData squad = SquadData(
       marketValue: '€65M',
       salary: '€300K',
       contractUntil: 1,
+      number: 21,
     ),
     PlayerData(
       name: 'Gavi',
@@ -162,6 +175,7 @@ final SquadData squad = SquadData(
       marketValue: '€80M',
       salary: '€220K',
       contractUntil: 5,
+      number: 6,
     ),
     PlayerData(
       name: 'Dani Olmo',
@@ -172,6 +186,7 @@ final SquadData squad = SquadData(
       marketValue: '€50M',
       salary: '€200K',
       contractUntil: 4,
+      number: 20,
     ),
     PlayerData(
       name: 'Fermín López',
@@ -182,6 +197,7 @@ final SquadData squad = SquadData(
       marketValue: '€40M',
       salary: '€95K',
       contractUntil: 4,
+      number: 16,
     ),
     PlayerData(
       name: 'Marc Casadó',
@@ -192,6 +208,7 @@ final SquadData squad = SquadData(
       marketValue: '€25M',
       salary: '€60K',
       contractUntil: 3,
+      number: 17,
     ),
     PlayerData(
       name: 'Pablo Torre',
@@ -202,6 +219,7 @@ final SquadData squad = SquadData(
       marketValue: '€12M',
       salary: '€45K',
       contractUntil: 2,
+      number: 14,
     ),
     PlayerData(
       name: 'Oriol Romeu',
@@ -212,6 +230,7 @@ final SquadData squad = SquadData(
       marketValue: '€4M',
       salary: '€85K',
       contractUntil: 1,
+      number: 18,
     ),
     PlayerData(
       name: 'Noah Darvich',
@@ -222,6 +241,7 @@ final SquadData squad = SquadData(
       marketValue: '€6M',
       salary: '€20K',
       contractUntil: 2,
+      number: 28,
     ),
     PlayerData(
       name: 'Unai Hernández',
@@ -232,6 +252,7 @@ final SquadData squad = SquadData(
       marketValue: '€3M',
       salary: '€12K',
       contractUntil: 1,
+      number: 36,
     ),
 
     // ATACANTES
@@ -244,6 +265,7 @@ final SquadData squad = SquadData(
       marketValue: '€15M',
       salary: '€340K',
       contractUntil: 1,
+      number: 9,
     ),
     PlayerData(
       name: 'Raphinha',
@@ -254,6 +276,7 @@ final SquadData squad = SquadData(
       marketValue: '€70M',
       salary: '€230K',
       contractUntil: 2,
+      number: 11,
     ),
     PlayerData(
       name: 'Lamine Yamal',
@@ -264,6 +287,7 @@ final SquadData squad = SquadData(
       marketValue: '€150M',
       salary: '€150K',
       contractUntil: 5,
+      number: 19,
     ),
     PlayerData(
       name: 'Ferran Torres',
@@ -274,6 +298,7 @@ final SquadData squad = SquadData(
       marketValue: '€30M',
       salary: '€180K',
       contractUntil: 2,
+      number: 7,
     ),
     PlayerData(
       name: 'Ansu Fati',
@@ -284,6 +309,7 @@ final SquadData squad = SquadData(
       marketValue: '€20M',
       salary: '€140K',
       contractUntil: 2,
+      number: 10,
     ),
     PlayerData(
       name: 'Pau Víctor',
@@ -294,6 +320,7 @@ final SquadData squad = SquadData(
       marketValue: '€8M',
       salary: '€30K',
       contractUntil: 3,
+      number: 25,
     ),
     PlayerData(
       name: 'Vitor Roque',
@@ -304,6 +331,7 @@ final SquadData squad = SquadData(
       marketValue: '€25M',
       salary: '€55K',
       contractUntil: 4,
+      number: 27,
     ),
   ],
 );

@@ -241,14 +241,37 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                               top: top,
                               child: GestureDetector(
                                 onTap: () async {
-                                  // posição vazia
-                                  if (player.player == null) {
-                                    await _selectPlayer(player);
+                                  // Existe algum boneco selecionado no momento?
+                                  PlayerPosition? selected;
+                                  for (final p in players) {
+                                    if (p.showDelete) {
+                                      selected = p;
+                                      break;
+                                    }
+                                  }
+
+                                  // ----------------------------------------
+                                  // Nenhum boneco selecionado ainda
+                                  // ----------------------------------------
+                                  if (selected == null) {
+                                    if (player.player == null) {
+                                      // posição vazia -> abre busca de jogador
+                                      await _selectPlayer(player);
+                                    } else {
+                                      // tem jogador -> seleciona e mostra o X
+                                      setState(() {
+                                        player.showDelete = true;
+                                      });
+                                    }
                                     return;
                                   }
 
-                                  // segundo clique = remove
-                                  if (player.showDelete) {
+                                  final PlayerPosition selectedSlot = selected;
+
+                                  // ----------------------------------------
+                                  // Cliquei de novo no boneco já selecionado
+                                  // ----------------------------------------
+                                  if (selectedSlot.id == player.id) {
                                     setState(() {
                                       player.player = null;
                                       player.showDelete = false;
@@ -256,14 +279,25 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
                                     return;
                                   }
 
-                                  // primeiro clique = mostra X
-                                  setState(() {
-                                    for (final p in players) {
-                                      p.showDelete = false;
-                                    }
-
-                                    player.showDelete = true;
-                                  });
+                                  // ----------------------------------------
+                                  // Cliquei em outro boneco com jogador
+                                  // ----------------------------------------
+                                  if (player.player != null) {
+                                    // troca os dois jogadores de posição
+                                    setState(() {
+                                      final temp = player.player;
+                                      player.player = selectedSlot.player;
+                                      selectedSlot.player = temp;
+                                      selectedSlot.showDelete = false;
+                                    });
+                                  } else {
+                                    // posição vazia -> move o jogador selecionado para lá
+                                    setState(() {
+                                      player.player = selectedSlot.player;
+                                      selectedSlot.player = null;
+                                      selectedSlot.showDelete = false;
+                                    });
+                                  }
                                 },
 
                                 onPanUpdate: (details) {
