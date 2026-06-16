@@ -2,12 +2,16 @@ import 'dart:ui';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
+import 'package:fifamanager/core/theme/app_theme.dart';
 
 class ChampionPage extends StatefulWidget {
   final String teamName;
   final int jogos;
   final int vitorias;
   final int gols;
+  final String year;
+  final String competitionLabel;
+  final String imageTrophy;
 
   const ChampionPage({
     super.key,
@@ -15,6 +19,9 @@ class ChampionPage extends StatefulWidget {
     required this.jogos,
     required this.vitorias,
     required this.gols,
+    this.year = '',
+    this.competitionLabel = '',
+    required this.imageTrophy,
   });
 
   @override
@@ -27,7 +34,6 @@ class _ChampionPageState extends State<ChampionPage>
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
-
   late ConfettiController _confettiController;
 
   @override
@@ -71,20 +77,28 @@ class _ChampionPageState extends State<ChampionPage>
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    // O colors.accent da tela usa a cor do grupo de troféu (passada pela TrophyRoomPage).
+    // Fallback para colors.colors.accent (verde do tema) caso não seja informada.
+    // final colors.accent = widget.colors.accentColor;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF121414),
+      backgroundColor: colors.background,
       body: Stack(
         children: [
           //----------------------------------------------------------
-          // Glow de fundo
+          // Glow de fundo — usa colors.accent do troféu
           //----------------------------------------------------------
           Positioned.fill(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: RadialGradient(
                   center: Alignment.center,
                   radius: 0.7,
-                  colors: [Color(0x2200FF41), Colors.transparent],
+                  colors: [
+                    colors.accent.withValues(alpha: 0.13),
+                    Colors.transparent,
+                  ],
                 ),
               ),
             ),
@@ -105,10 +119,13 @@ class _ChampionPageState extends State<ChampionPage>
               maxBlastForce: 10,
               minBlastForce: 5,
               colors: const [
-                Color(0xFF72FF70),
-                Color(0xFF00FF41),
-                Colors.white,
-                Colors.amber,
+                Color.fromARGB(255, 224, 38, 32),
+                Color.fromARGB(255, 48, 59, 216),
+                Color.fromARGB(255, 214, 132, 8),
+                Color.fromARGB(255, 224, 9, 243),
+                Color.fromARGB(255, 16, 209, 41),
+                Color.fromARGB(255, 222, 228, 223),
+                Color.fromARGB(255, 206, 238, 26),
               ],
             ),
           ),
@@ -128,10 +145,13 @@ class _ChampionPageState extends State<ChampionPage>
               maxBlastForce: 10,
               minBlastForce: 5,
               colors: const [
-                Color(0xFF72FF70),
-                Color(0xFF00FF41),
-                Colors.white,
-                Colors.amber,
+                Color.fromARGB(255, 224, 38, 32),
+                Color.fromARGB(255, 48, 59, 216),
+                Color.fromARGB(255, 214, 132, 8),
+                Color.fromARGB(255, 224, 9, 243),
+                Color.fromARGB(255, 16, 209, 41),
+                Color.fromARGB(255, 222, 228, 223),
+                Color.fromARGB(255, 206, 238, 26),
               ],
             ),
           ),
@@ -144,9 +164,9 @@ class _ChampionPageState extends State<ChampionPage>
               padding: const EdgeInsets.all(16),
               child: CircleAvatar(
                 radius: 24,
-                backgroundColor: Colors.white.withValues(alpha: 0.05),
+                backgroundColor: colors.card,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Color(0xFF72FF70)),
+                  icon: Icon(Icons.arrow_back, color: colors.accent),
                   onPressed: () =>
                       Navigator.of(context).pushNamed(AppRoutes.home),
                 ),
@@ -169,22 +189,54 @@ class _ChampionPageState extends State<ChampionPage>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         //--------------------------------------------------
+                        // Badge da competição
+                        //--------------------------------------------------
+                        if (widget.competitionLabel.isNotEmpty ||
+                            widget.year.isNotEmpty) ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: colors.accent.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(99),
+                              border: Border.all(
+                                color: colors.accent.withValues(alpha: 0.4),
+                              ),
+                            ),
+                            child: Text(
+                              [
+                                if (widget.competitionLabel.isNotEmpty)
+                                  widget.competitionLabel,
+                                if (widget.year.isNotEmpty) widget.year,
+                              ].join(' • '),
+                              style: TextStyle(
+                                color: colors.accent,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+
+                        //--------------------------------------------------
                         // TROFÉU
                         //--------------------------------------------------
                         Container(
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(
-                                  0xFF00FF41,
-                                ).withValues(alpha: 0.35),
+                                color: colors.accent.withValues(alpha: 0.35),
                                 blurRadius: 80,
                                 spreadRadius: 10,
                               ),
                             ],
                           ),
                           child: Image.asset(
-                            'assets/trophy-B.png',
+                            widget.imageTrophy,
                             height: MediaQuery.of(context).size.height * 0.38,
                             fit: BoxFit.contain,
                           ),
@@ -195,11 +247,11 @@ class _ChampionPageState extends State<ChampionPage>
                         //--------------------------------------------------
                         // Título
                         //--------------------------------------------------
-                        const Text(
+                        Text(
                           'PARABÉNS AO CAMPEÃO!',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: colors.textPrimary,
                             fontSize: 30,
                             fontWeight: FontWeight.w900,
                             letterSpacing: -1,
@@ -214,14 +266,23 @@ class _ChampionPageState extends State<ChampionPage>
                         Text(
                           widget.teamName.toUpperCase(),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Color(0xFF72FF70),
+                          style: TextStyle(
+                            color: colors.accent,
                             fontSize: 62,
                             fontWeight: FontWeight.w900,
                             shadows: [
-                              Shadow(color: Color(0xAA00FF41), blurRadius: 15),
-                              Shadow(color: Color(0x6600FF41), blurRadius: 35),
-                              Shadow(color: Color(0x3300FF41), blurRadius: 60),
+                              Shadow(
+                                color: colors.accent.withValues(alpha: 0.67),
+                                blurRadius: 15,
+                              ),
+                              Shadow(
+                                color: colors.accent.withValues(alpha: 0.40),
+                                blurRadius: 35,
+                              ),
+                              Shadow(
+                                color: colors.accent.withValues(alpha: 0.20),
+                                blurRadius: 60,
+                              ),
                             ],
                           ),
                         ),
@@ -241,20 +302,17 @@ class _ChampionPageState extends State<ChampionPage>
                               child: Container(
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.05),
+                                  color: colors.card,
                                   borderRadius: BorderRadius.circular(24),
-                                  border: Border.all(
-                                    color: Colors.white.withValues(alpha: 0.08),
-                                  ),
+                                  border: Border.all(color: colors.border),
+                                  boxShadow: colors.cardShadow,
                                 ),
                                 child: Column(
                                   children: [
                                     Text(
                                       'RESUMO DA TEMPORADA',
                                       style: TextStyle(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.7,
-                                        ),
+                                        color: colors.muted,
                                         fontSize: 11,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 2,
@@ -267,19 +325,25 @@ class _ChampionPageState extends State<ChampionPage>
                                           child: _StatItem(
                                             value: widget.jogos.toString(),
                                             label: 'JOGOS',
+                                            valueColor: colors.textPrimary,
+                                            labelColor: colors.muted,
                                           ),
                                         ),
                                         Expanded(
                                           child: _StatItem(
                                             value: widget.vitorias.toString(),
                                             label: 'VITÓRIAS',
-                                            valueColor: const Color(0xFF72FF70),
+                                            // destaque com colors.accent do grupo
+                                            valueColor: colors.accent,
+                                            labelColor: colors.muted,
                                           ),
                                         ),
                                         Expanded(
                                           child: _StatItem(
                                             value: widget.gols.toString(),
                                             label: 'GOLS',
+                                            valueColor: colors.textPrimary,
+                                            labelColor: colors.muted,
                                           ),
                                         ),
                                       ],
@@ -312,18 +376,17 @@ class _ChampionPageState extends State<ChampionPage>
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00FF41),
-                    foregroundColor: const Color(0xFF003907),
+                    backgroundColor: colors.accent,
+                    foregroundColor: colors.onAccent,
                     elevation: 20,
-                    shadowColor: const Color(0xFF00FF41),
+                    shadowColor: colors.accent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.home);
-                  },
-                  child: const Text(
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.home),
+                  child: Text(
                     'VOLTAR AO PAINEL',
                     style: TextStyle(
                       fontSize: 18,
@@ -341,12 +404,20 @@ class _ChampionPageState extends State<ChampionPage>
   }
 }
 
+// ─── STAT ITEM ───────────────────────────────────────────────────────────────
+
 class _StatItem extends StatelessWidget {
   final String value;
   final String label;
-  final Color? valueColor;
+  final Color valueColor;
+  final Color labelColor;
 
-  const _StatItem({required this.value, required this.label, this.valueColor});
+  const _StatItem({
+    required this.value,
+    required this.label,
+    required this.valueColor,
+    required this.labelColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +426,7 @@ class _StatItem extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            color: valueColor ?? Colors.white,
+            color: valueColor,
             fontSize: 28,
             fontWeight: FontWeight.w900,
           ),
@@ -364,7 +435,7 @@ class _StatItem extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.7),
+            color: labelColor,
             fontSize: 11,
             fontWeight: FontWeight.bold,
           ),

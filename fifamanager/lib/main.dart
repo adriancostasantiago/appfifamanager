@@ -66,13 +66,13 @@ class _MyAppState extends State<MyApp> {
             page = const RegisterMatchPage();
           case AppRoutes.squad:
             page = const SquadPage();
-          case AppRoutes.champion:
-            page = const ChampionPage(
-              teamName: 'APEX SC',
-              jogos: 38,
-              vitorias: 29,
-              gols: 84,
-            );
+          // case AppRoutes.champion:
+          //   page = const ChampionPage(
+          //     teamName: 'APEX SC',
+          //     jogos: 38,
+          //     vitorias: 29,
+          //     gols: 84,
+          //   );
           case AppRoutes.trophies:
             page = const TrophyRoomPage();
           case AppRoutes.finance:

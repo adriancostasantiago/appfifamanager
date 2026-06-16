@@ -1,4 +1,9 @@
+import 'package:fifamanager/models/club_data.dart';
+import 'package:fifamanager/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:fifamanager/core/theme/app_theme.dart';
+import 'club_selection_page.dart';
+import 'goal_scorer_selection_page.dart';
 
 class RegisterMatchPage extends StatefulWidget {
   const RegisterMatchPage({super.key});
@@ -10,11 +15,293 @@ class RegisterMatchPage extends StatefulWidget {
 class _RegisterMatchPageState extends State<RegisterMatchPage> {
   int _homeScore = 3;
   int _awayScore = 1;
+  String _awayTeam = 'SELECIONAR';
+  bool _isSwapped = false;
+
+  // Marcadores registrados
+  final List<GoalScorerResult> _homeGoals = [];
+  final List<GoalScorerResult> _awayGoals = [];
+
+  // Jogadores mock — substitua pela fonte real (provider/bloc)
+  final List<PlayerData> _myPlayers = [
+    PlayerData(
+      name: 'Gabriel Jesus',
+      position: 'ATK',
+      country: 'Brasil',
+      ovr: 84,
+      contractUntil: 2026,
+      photo: '',
+    ),
+    PlayerData(
+      name: 'K. De Bruyne',
+      position: 'MID',
+      country: 'Bélgica',
+      ovr: 91,
+      contractUntil: 2025,
+      photo: '',
+    ),
+    PlayerData(
+      name: 'Zagueiro Silva',
+      position: 'DEF',
+      country: 'Brasil',
+      ovr: 78,
+      contractUntil: 2027,
+      photo: '',
+    ),
+    PlayerData(
+      name: 'Goleiro Ramos',
+      position: 'GK',
+      country: 'Brasil',
+      ovr: 80,
+      contractUntil: 2026,
+      photo: '',
+    ),
+  ];
+
+  void _swapTeams() {
+    setState(() {
+      _isSwapped = !_isSwapped;
+      // Também troca os placares
+      final tempScore = _homeScore;
+      _homeScore = _awayScore;
+      _awayScore = tempScore;
+    });
+  }
+
+  // Substitua pela sua fonte de dados real (provider, bloc, etc.)
+  final List<ClubData> _clubs = const [
+    ClubData(
+      name: 'Rio Verde FC',
+      league: 'Série A',
+      country: 'Brasil',
+      ovr: 84,
+    ),
+    ClubData(
+      name: 'Atlético Aurora',
+      league: 'Série A',
+      country: 'Brasil',
+      ovr: 82,
+    ),
+    ClubData(
+      name: 'União Capital',
+      league: 'Série B',
+      country: 'Brasil',
+      ovr: 77,
+    ),
+    ClubData(
+      name: 'Vale do Sol',
+      league: 'Série B',
+      country: 'Brasil',
+      ovr: 75,
+    ),
+    ClubData(
+      name: 'Northchester United',
+      league: 'Premier League',
+      country: 'Inglaterra',
+      ovr: 88,
+    ),
+    ClubData(
+      name: 'Kingsbridge FC',
+      league: 'Premier League',
+      country: 'Inglaterra',
+      ovr: 85,
+    ),
+    ClubData(
+      name: 'London Eagles',
+      league: 'Championship',
+      country: 'Inglaterra',
+      ovr: 79,
+    ),
+    ClubData(
+      name: 'Madrid Stars',
+      league: 'La Liga',
+      country: 'Espanha',
+      ovr: 90,
+    ),
+    ClubData(
+      name: 'Catalonia Athletic',
+      league: 'La Liga',
+      country: 'Espanha',
+      ovr: 87,
+    ),
+    ClubData(
+      name: 'Sevilla Warriors',
+      league: 'La Liga',
+      country: 'Espanha',
+      ovr: 81,
+    ),
+    ClubData(name: 'Milano FC', league: 'Serie A', country: 'Itália', ovr: 89),
+    ClubData(
+      name: 'Torino Legends',
+      league: 'Serie A',
+      country: 'Itália',
+      ovr: 84,
+    ),
+    ClubData(
+      name: 'Roma Imperiale',
+      league: 'Serie A',
+      country: 'Itália',
+      ovr: 83,
+    ),
+    ClubData(
+      name: 'Bayernstadt',
+      league: 'Bundesliga',
+      country: 'Alemanha',
+      ovr: 91,
+    ),
+    ClubData(
+      name: 'Dortheim',
+      league: 'Bundesliga',
+      country: 'Alemanha',
+      ovr: 86,
+    ),
+    ClubData(
+      name: 'Hamburg Lions',
+      league: 'Bundesliga',
+      country: 'Alemanha',
+      ovr: 80,
+    ),
+    ClubData(
+      name: 'Paris Étoile',
+      league: 'Ligue 1',
+      country: 'França',
+      ovr: 92,
+    ),
+    ClubData(
+      name: 'Olympique Riviera',
+      league: 'Ligue 1',
+      country: 'França',
+      ovr: 84,
+    ),
+    ClubData(
+      name: 'Monaco Royals',
+      league: 'Ligue 1',
+      country: 'França',
+      ovr: 82,
+    ),
+    ClubData(
+      name: 'Amsterdam City',
+      league: 'Eredivisie',
+      country: 'Holanda',
+      ovr: 83,
+    ),
+    ClubData(
+      name: 'Rotterdam FC',
+      league: 'Eredivisie',
+      country: 'Holanda',
+      ovr: 80,
+    ),
+    ClubData(
+      name: 'Lisboa United',
+      league: 'Primeira Liga',
+      country: 'Portugal',
+      ovr: 85,
+    ),
+    ClubData(
+      name: 'Porto Azul',
+      league: 'Primeira Liga',
+      country: 'Portugal',
+      ovr: 82,
+    ),
+    ClubData(
+      name: 'Andes FC',
+      league: 'Primera División',
+      country: 'Argentina',
+      ovr: 81,
+    ),
+    ClubData(
+      name: 'Buenos Aires Athletic',
+      league: 'Primera División',
+      country: 'Argentina',
+      ovr: 84,
+    ),
+    ClubData(
+      name: 'Montevideo Stars',
+      league: 'Primera División',
+      country: 'Uruguai',
+      ovr: 78,
+    ),
+    ClubData(
+      name: 'Santiago Warriors',
+      league: 'Primera División',
+      country: 'Chile',
+      ovr: 79,
+    ),
+    ClubData(
+      name: 'Tokyo Dragons',
+      league: 'J1 League',
+      country: 'Japão',
+      ovr: 80,
+    ),
+    ClubData(
+      name: 'Osaka Phoenix',
+      league: 'J1 League',
+      country: 'Japão',
+      ovr: 78,
+    ),
+    ClubData(
+      name: 'Seoul Tigers',
+      league: 'K League 1',
+      country: 'Coreia do Sul',
+      ovr: 81,
+    ),
+  ];
+
+  void _openClubSelection() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ClubSelectionPage(
+          clubs: _clubs,
+          onClubSelected: (club) {
+            setState(() => _awayTeam = club.name);
+          },
+        ),
+      ),
+    );
+  }
+
+  void _openGoalScorerSelection({required bool forHomeSection}) {
+    final homeTeamName = _isSwapped ? _awayTeam : 'APEX WARRIORS';
+    final awayTeamName = _isSwapped ? 'APEX WARRIORS' : _awayTeam;
+
+    const List<PlayerData> awayPlayers = [];
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => GoalScorerSelectionPage(
+          homePlayers: _myPlayers,
+          awayPlayers: awayPlayers,
+          homeTeamName: homeTeamName,
+          awayTeamName: awayTeamName,
+          // Abre já na aba correspondente à seção que chamou
+          initialShowingHome: forHomeSection,
+          onScorerSelected: (result) {
+            setState(() {
+              // Se a seção que chamou é CASA:
+              //   - jogador da casa  → gol normal   → _homeGoals (isOwnGoal=false)
+              //   - jogador visitante → gol contra  → _homeGoals (isOwnGoal=true)
+              // Se a seção que chamou é VISITANTE:
+              //   - jogador visitante → gol normal  → _awayGoals (isOwnGoal=false)
+              //   - jogador da casa   → gol contra  → _awayGoals (isOwnGoal=true)
+              // Em ambos os casos o gol entra na lista da seção que originou a chamada.
+              if (forHomeSection) {
+                _homeGoals.add(result);
+              } else {
+                _awayGoals.add(result);
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF101314),
+      backgroundColor: context.colors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -31,10 +318,12 @@ class _RegisterMatchPageState extends State<RegisterMatchPage> {
                     const _RegisterMatchTitle(),
                     const SizedBox(height: 24),
                     _TeamSelectionCard(
-                      homeTeam: 'APEX WARRIORS',
-                      awayTeam: 'SELECIONAR',
-                      onHomeTap: () {},
-                      onAwayTap: () {},
+                      homeTeam: _isSwapped ? _awayTeam : 'APEX WARRIORS',
+                      awayTeam: _isSwapped ? 'APEX WARRIORS' : _awayTeam,
+                      isSwapped: _isSwapped,
+                      onHomeTap: _isSwapped ? _openClubSelection : () {},
+                      onAwayTap: _isSwapped ? () {} : _openClubSelection,
+                      onSwap: _swapTeams,
                     ),
                     const SizedBox(height: 22),
                     _ScoreControls(
@@ -50,30 +339,56 @@ class _RegisterMatchPageState extends State<RegisterMatchPage> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const _GoalsSection(title: 'MARCADORES (CASA)'),
-                    const _GoalRow(
-                      playerNumber: '10',
-                      playerName: 'GABRIEL JESUS',
-                      playerRole: 'ATACANTE',
-                      goalCount: 2,
-                      isOwnGoal: false,
+                    _GoalsSection(
+                      title: 'MARCADORES (CASA)',
+                      onAddTap: () =>
+                          _openGoalScorerSelection(forHomeSection: true),
                     ),
-                    const _GoalRow(
-                      playerNumber: '08',
-                      playerName: 'K. DE BRUYNE',
-                      playerRole: 'MEIO-CAMPO',
-                      goalCount: 1,
-                      isOwnGoal: false,
-                    ),
+                    ..._homeGoals.asMap().entries.map((entry) {
+                      final i = entry.key;
+                      final g = entry.value;
+                      return _GoalRow(
+                        playerNumber: '${i + 1}',
+                        playerName: g.player.name,
+                        playerRole: g.isOwnGoal
+                            ? '${g.player.position} • GOL CONTRA'
+                            : g.player.position,
+                        goalCount: g.goalCount,
+                        isOwnGoal: g.isOwnGoal,
+                        onDelete: () => setState(() => _homeGoals.removeAt(i)),
+                      );
+                    }),
+                    if (_homeGoals.isEmpty)
+                      _EmptyGoalHint(
+                        onTap: () =>
+                            _openGoalScorerSelection(forHomeSection: true),
+                      ),
                     const SizedBox(height: 22),
-                    const _GoalsSection(title: 'MARCADORES (FORA)'),
-                    const _GoalRow(
-                      playerNumber: '04',
-                      playerName: 'ZAGUEIRO (GOL CONTRA)',
-                      playerRole: 'APEX WARRIORS FC',
-                      goalCount: 1,
-                      isOwnGoal: true,
+                    _GoalsSection(
+                      title: 'MARCADORES (FORA)',
+                      onAddTap: () =>
+                          _openGoalScorerSelection(forHomeSection: false),
                     ),
+                    ..._awayGoals.asMap().entries.map((entry) {
+                      final i = entry.key;
+                      final g = entry.value;
+                      return _GoalRow(
+                        playerNumber: '${i + 1}',
+                        playerName: g.player.name,
+                        playerRole: g.isOwnGoal
+                            ? '${g.player.position} • GOL CONTRA'
+                            : g.player.position,
+                        goalCount: g.goalCount,
+                        isOwnGoal: g.isOwnGoal,
+                        onDelete: () => setState(() => _awayGoals.removeAt(i)),
+                      );
+                    }),
+                    if (_awayGoals.isEmpty)
+                      _EmptyGoalHint(
+                        onTap: () =>
+                            _openGoalScorerSelection(forHomeSection: false),
+                        isOwnGoal: true,
+                      ),
                     const SizedBox(height: 24),
                     _ActionButton(
                       onPressed: () {
@@ -86,10 +401,10 @@ class _RegisterMatchPageState extends State<RegisterMatchPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
+                        child: Text(
                           'DESCARTAR RASCUNHO',
                           style: TextStyle(
-                            color: Color(0xFF7C8579),
+                            color: context.colors.muted,
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.2,
@@ -121,7 +436,7 @@ class _RegisterMatchHeader extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onBack,
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: context.colors.textPrimary),
           ),
         ],
       ),
@@ -136,22 +451,22 @@ class _RegisterMatchTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           'REGISTRAR NOVA PARTIDA',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Color(0xFF00FF41),
+            color: context.colors.accent,
             fontSize: 20,
             fontWeight: FontWeight.w900,
             letterSpacing: 1.2,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'TEMPORADA 2024 • LIGA PRO',
           style: TextStyle(
-            color: Color(0xFF7C8579),
+            color: context.colors.muted,
             fontSize: 13,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.5,
@@ -165,34 +480,40 @@ class _RegisterMatchTitle extends StatelessWidget {
 class _TeamSelectionCard extends StatelessWidget {
   final String homeTeam;
   final String awayTeam;
+  final bool isSwapped;
   final VoidCallback onHomeTap;
   final VoidCallback onAwayTap;
+  final VoidCallback onSwap;
 
   const _TeamSelectionCard({
     required this.homeTeam,
     required this.awayTeam,
+    required this.isSwapped,
     required this.onHomeTap,
     required this.onAwayTap,
+    required this.onSwap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Column(
         children: [
           Row(
-            children: const [
+            children: [
               Expanded(
                 child: Text(
                   'MANDANTE',
                   style: TextStyle(
-                    color: Color(0xFF00FF41),
+                    color: isSwapped ? colors.textPrimary : colors.accent,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -203,7 +524,7 @@ class _TeamSelectionCard extends StatelessWidget {
                   'VISITANTE',
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: isSwapped ? colors.accent : colors.textPrimary,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -211,28 +532,57 @@ class _TeamSelectionCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 10),
+          // Botão de troca acima do VS
+          GestureDetector(
+            onTap: onSwap,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              decoration: BoxDecoration(
+                color: colors.accentBg,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: colors.accent.withValues(alpha: 0.4)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.swap_horiz, color: colors.accent, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    'TROCAR MANDANTE',
+                    style: TextStyle(
+                      color: colors.accent,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _TeamCard(
                 label: homeTeam,
-                icon: Icons.shield,
-                highlight: true,
+                icon: isSwapped ? Icons.search : Icons.shield,
+                highlight: !isSwapped,
                 onTap: onHomeTap,
               ),
-              const Text(
+              Text(
                 'VS',
                 style: TextStyle(
-                  color: Color(0xFF7C8579),
+                  color: colors.muted,
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
               ),
               _TeamCard(
                 label: awayTeam,
-                icon: Icons.search,
-                highlight: false,
+                icon: isSwapped ? Icons.shield : Icons.search,
+                highlight: isSwapped,
                 onTap: onAwayTap,
               ),
             ],
@@ -258,6 +608,7 @@ class _TeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -265,12 +616,10 @@ class _TeamCard extends StatelessWidget {
           height: 120,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFF121417),
+            color: colors.cardDark,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: highlight
-                  ? const Color(0xFF00FF41)
-                  : const Color(0xFF1F2327),
+              color: highlight ? colors.accent : colors.border,
             ),
           ),
           child: Column(
@@ -278,10 +627,10 @@ class _TeamCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: const Color(0xFF101314),
+                backgroundColor: colors.background,
                 child: Icon(
                   icon,
-                  color: highlight ? const Color(0xFF00FF41) : Colors.white,
+                  color: highlight ? colors.accent : colors.textPrimary,
                   size: 28,
                 ),
               ),
@@ -290,7 +639,7 @@ class _TeamCard extends StatelessWidget {
                 label,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: highlight ? Colors.white : const Color(0xFF7C8579),
+                  color: highlight ? colors.textPrimary : colors.muted,
                   fontWeight: FontWeight.w800,
                   fontSize: 12,
                 ),
@@ -322,12 +671,14 @@ class _ScoreControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -336,10 +687,10 @@ class _ScoreControls extends StatelessWidget {
           _ScoreValue(value: homeScore),
           _ScoreButton(icon: Icons.add, onTap: onHomeIncrement),
           const SizedBox(width: 14),
-          const Text(
+          Text(
             '-',
             style: TextStyle(
-              color: Color(0xFF7C8579),
+              color: colors.muted,
               fontSize: 22,
               fontWeight: FontWeight.w900,
             ),
@@ -362,17 +713,18 @@ class _ScoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 38,
         height: 38,
         decoration: BoxDecoration(
-          color: const Color(0xFF101314),
+          color: colors.background,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFF1F2327)),
+          border: Border.all(color: colors.border),
         ),
-        child: Icon(icon, color: const Color(0xFF7C8579), size: 22),
+        child: Icon(icon, color: colors.muted, size: 22),
       ),
     );
   }
@@ -387,8 +739,8 @@ class _ScoreValue extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '$value',
-      style: const TextStyle(
-        color: Colors.white,
+      style: TextStyle(
+        color: context.colors.textPrimary,
         fontSize: 28,
         fontWeight: FontWeight.w900,
       ),
@@ -398,37 +750,42 @@ class _ScoreValue extends StatelessWidget {
 
 class _GoalsSection extends StatelessWidget {
   final String title;
+  final VoidCallback onAddTap;
 
-  const _GoalsSection({required this.title});
+  const _GoalsSection({required this.title, required this.onAddTap});
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Row(
       children: [
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: colors.textPrimary,
               fontSize: 14,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
             ),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
-          decoration: BoxDecoration(
-            color: const Color(0xFF101314),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: const Color(0xFF00FF41)),
-          ),
-          child: const Text(
-            '+ JOGADOR',
-            style: TextStyle(
-              color: Color(0xFF00FF41),
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
+        GestureDetector(
+          onTap: onAddTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+            decoration: BoxDecoration(
+              color: colors.accentBg,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: colors.accent),
+            ),
+            child: Text(
+              '+ JOGADOR',
+              style: TextStyle(
+                color: colors.accent,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -443,6 +800,7 @@ class _GoalRow extends StatelessWidget {
   final String playerRole;
   final int goalCount;
   final bool isOwnGoal;
+  final VoidCallback onDelete;
 
   const _GoalRow({
     required this.playerNumber,
@@ -450,17 +808,20 @@ class _GoalRow extends StatelessWidget {
     required this.playerRole,
     required this.goalCount,
     required this.isOwnGoal,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF16191D),
+        color: colors.card,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2327)),
+        border: Border.all(color: colors.border),
+        boxShadow: colors.cardShadow,
       ),
       child: Row(
         children: [
@@ -469,13 +830,13 @@ class _GoalRow extends StatelessWidget {
             height: 38,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: const Color(0xFF101314),
+              color: colors.background,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               playerNumber,
-              style: const TextStyle(
-                color: Color(0xFF00FF41),
+              style: TextStyle(
+                color: colors.accent,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -487,8 +848,8 @@ class _GoalRow extends StatelessWidget {
               children: [
                 Text(
                   playerName,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: colors.textPrimary,
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
                   ),
@@ -496,8 +857,8 @@ class _GoalRow extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   playerRole,
-                  style: const TextStyle(
-                    color: Color(0xFF7C8579),
+                  style: TextStyle(
+                    color: colors.muted,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -514,26 +875,73 @@ class _GoalRow extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: isOwnGoal
-                      ? const Color(0xFF321B1B)
-                      : const Color(0xFF0A1A0E),
+                  color: isOwnGoal ? colors.redBg : colors.accentBg,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   'x$goalCount',
                   style: TextStyle(
-                    color: isOwnGoal
-                        ? const Color(0xFFFF6B6B)
-                        : const Color(0xFF00FF41),
+                    color: isOwnGoal ? colors.red : colors.accent,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
               const SizedBox(width: 10),
-              Icon(Icons.delete_outline, color: const Color(0xFF7C8579)),
+              GestureDetector(
+                onTap: onDelete,
+                child: Icon(Icons.delete_outline, color: colors.muted),
+              ),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _EmptyGoalHint extends StatelessWidget {
+  final VoidCallback onTap;
+  final bool isOwnGoal;
+
+  const _EmptyGoalHint({required this.onTap, this.isOwnGoal = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: colors.card,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: (isOwnGoal ? colors.red : colors.accent).withValues(
+              alpha: 0.25,
+            ),
+            style: BorderStyle.solid,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.add_circle_outline,
+              size: 16,
+              color: isOwnGoal ? colors.red : colors.accent,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              isOwnGoal ? 'Adicionar gol contra' : 'Adicionar marcador',
+              style: TextStyle(
+                color: isOwnGoal ? colors.red : colors.accent,
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -546,21 +954,22 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00FF41),
+          backgroundColor: colors.accent,
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
         ),
-        child: const Text(
+        child: Text(
           'FINALIZAR REGISTRO',
           style: TextStyle(
-            color: Colors.black,
+            color: colors.onAccent,
             fontWeight: FontWeight.w900,
             fontSize: 16,
             letterSpacing: 1.2,

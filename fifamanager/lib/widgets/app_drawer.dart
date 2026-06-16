@@ -1,5 +1,5 @@
 import 'package:fifamanager/core/theme/app_theme.dart';
-import 'package:fifamanager/core/theme/theme_controller.dart';
+import 'package:fifamanager/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 
@@ -79,7 +79,7 @@ class AppDrawer extends StatelessWidget {
                 label: 'ELENCO',
                 route: AppRoutes.squad,
                 active: activeRoute == AppRoutes.squad,
-              ), //TR
+              ),
               _DrawerLink(
                 icon: Icons.attach_money,
                 label: 'FINANCEIRO',
@@ -99,34 +99,17 @@ class AppDrawer extends StatelessWidget {
                 active: activeRoute == AppRoutes.trophies,
               ),
               Divider(color: context.colors.border, height: 38, thickness: 1),
-              _DrawerLink(icon: Icons.settings, label: 'SETTINGS', route: null),
-              const SizedBox(height: 12),
-
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(
-                  themeController.isDark ? Icons.dark_mode : Icons.light_mode,
-                  color: context.colors.accent,
-                ),
-                title: Text(
-                  'TEMA ESCURO',
-                  style: TextStyle(
-                    color: context.colors.accent,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                trailing: Switch(
-                  value: themeController.isDark,
-
-                  onChanged: (_) {
-                    themeController.toggleTheme();
-                  },
-
-                  activeThumbColor: context.colors.accent,
-                  activeTrackColor: context.colors.accent.withValues(
-                    alpha: 0.4,
-                  ),
-                ),
+              _DrawerLink(
+                icon: Icons.settings,
+                label: 'CONFIGURAÇÕES',
+                route: null,
+                onTapOverride: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsPage()),
+                  );
+                },
               ),
               const Spacer(),
               Text(
@@ -150,12 +133,14 @@ class _DrawerLink extends StatelessWidget {
   final String label;
   final String? route;
   final bool active;
+  final VoidCallback? onTapOverride;
 
   const _DrawerLink({
     required this.icon,
     required this.label,
     required this.route,
     this.active = false,
+    this.onTapOverride,
   });
 
   @override
@@ -163,12 +148,15 @@ class _DrawerLink extends StatelessWidget {
     final itemColor = active ? context.colors.accent : context.colors.muted;
 
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-        if (route != null && route != ModalRoute.of(context)?.settings.name) {
-          Navigator.pushReplacementNamed(context, route!);
-        }
-      },
+      onTap:
+          onTapOverride ??
+          () {
+            Navigator.pop(context);
+            if (route != null &&
+                route != ModalRoute.of(context)?.settings.name) {
+              Navigator.pushReplacementNamed(context, route!);
+            }
+          },
       borderRadius: BorderRadius.circular(12),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 18),
