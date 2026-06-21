@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'pages/auth/login_page.dart';
 import 'pages/auth/splash_page.dart';
-import 'pages/champion/champion_page.dart';
 import 'pages/finance/finance_page.dart';
 import 'pages/finance/sponsors_page.dart';
 import 'pages/home/home_page.dart';

@@ -1,10 +1,10 @@
-import 'package:fifamanager/models/club_data.dart';
+import 'package:fifamanager/models/club.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/core/theme/app_theme.dart';
 
 class ClubSelectionPage extends StatefulWidget {
-  final List<ClubData> clubs;
-  final Function(ClubData) onClubSelected;
+  final List<Club> clubs;
+  final Function(Club) onClubSelected;
 
   const ClubSelectionPage({
     super.key,
@@ -21,7 +21,7 @@ class _ClubSelectionPageState extends State<ClubSelectionPage> {
 
   String _search = '';
 
-  List<ClubData> get _filteredClubs {
+  List<Club> get _filteredClubs {
     final clubs = widget.clubs.where((c) {
       return c.name.toLowerCase().contains(_search.toLowerCase()) ||
           c.league.toLowerCase().contains(_search.toLowerCase());
@@ -131,7 +131,7 @@ class _ClubSelectionPageState extends State<ClubSelectionPage> {
 }
 
 class _SelectableClubCard extends StatelessWidget {
-  final ClubData club;
+  final Club club;
   final VoidCallback onTap;
 
   const _SelectableClubCard({required this.club, required this.onTap});

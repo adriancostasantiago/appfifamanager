@@ -1,4 +1,4 @@
-export 'finance_data.dart';
+export 'finance.dart';
 export 'league_data.dart';
 export 'player_profile.dart';
 export 'sponsor_data.dart';

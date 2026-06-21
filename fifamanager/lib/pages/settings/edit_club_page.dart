@@ -1,11 +1,11 @@
-import 'package:fifamanager/models/club_data.dart';
-import 'package:fifamanager/models/formation_data.dart';
+import 'package:fifamanager/models/club.dart';
+import 'package:fifamanager/models/formation.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/core/theme/app_theme.dart';
 import 'package:fifamanager/models/models.dart';
 
 class EditClubPage extends StatefulWidget {
-  final ClubData? club; // null = criando novo
+  final Club? club; // null = criando novo
 
   const EditClubPage({super.key, this.club});
 
@@ -18,7 +18,7 @@ class _EditClubPageState extends State<EditClubPage> {
   late final TextEditingController _stadiumController;
 
   int _selectedShirt = 1; // 1–12
-  FormationData? _selectedFormation;
+  Formation? _selectedFormation;
   String? _logoPath; // futuramente: path da imagem selecionada
 
   @override
@@ -261,8 +261,8 @@ class _ShirtSelector extends StatelessWidget {
 // ── FORMAÇÃO ──────────────────────────────────────────────────────────────────
 
 class _FormationSelector extends StatelessWidget {
-  final FormationData? selected;
-  final ValueChanged<FormationData> onSelect;
+  final Formation? selected;
+  final ValueChanged<Formation> onSelect;
 
   const _FormationSelector({required this.selected, required this.onSelect});
 

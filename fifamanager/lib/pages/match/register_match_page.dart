@@ -1,4 +1,4 @@
-import 'package:fifamanager/models/club_data.dart';
+import 'package:fifamanager/models/club.dart';
 import 'package:fifamanager/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/core/theme/app_theme.dart';
@@ -69,177 +69,122 @@ class _RegisterMatchPageState extends State<RegisterMatchPage> {
   }
 
   // Substitua pela sua fonte de dados real (provider, bloc, etc.)
-  final List<ClubData> _clubs = const [
-    ClubData(
-      name: 'Rio Verde FC',
-      league: 'Série A',
-      country: 'Brasil',
-      ovr: 84,
-    ),
-    ClubData(
+  final List<Club> _clubs = const [
+    Club(name: 'Rio Verde FC', league: 'Série A', country: 'Brasil', ovr: 84),
+    Club(
       name: 'Atlético Aurora',
       league: 'Série A',
       country: 'Brasil',
       ovr: 82,
     ),
-    ClubData(
-      name: 'União Capital',
-      league: 'Série B',
-      country: 'Brasil',
-      ovr: 77,
-    ),
-    ClubData(
-      name: 'Vale do Sol',
-      league: 'Série B',
-      country: 'Brasil',
-      ovr: 75,
-    ),
-    ClubData(
+    Club(name: 'União Capital', league: 'Série B', country: 'Brasil', ovr: 77),
+    Club(name: 'Vale do Sol', league: 'Série B', country: 'Brasil', ovr: 75),
+    Club(
       name: 'Northchester United',
       league: 'Premier League',
       country: 'Inglaterra',
       ovr: 88,
     ),
-    ClubData(
+    Club(
       name: 'Kingsbridge FC',
       league: 'Premier League',
       country: 'Inglaterra',
       ovr: 85,
     ),
-    ClubData(
+    Club(
       name: 'London Eagles',
       league: 'Championship',
       country: 'Inglaterra',
       ovr: 79,
     ),
-    ClubData(
-      name: 'Madrid Stars',
-      league: 'La Liga',
-      country: 'Espanha',
-      ovr: 90,
-    ),
-    ClubData(
+    Club(name: 'Madrid Stars', league: 'La Liga', country: 'Espanha', ovr: 90),
+    Club(
       name: 'Catalonia Athletic',
       league: 'La Liga',
       country: 'Espanha',
       ovr: 87,
     ),
-    ClubData(
+    Club(
       name: 'Sevilla Warriors',
       league: 'La Liga',
       country: 'Espanha',
       ovr: 81,
     ),
-    ClubData(name: 'Milano FC', league: 'Serie A', country: 'Itália', ovr: 89),
-    ClubData(
-      name: 'Torino Legends',
-      league: 'Serie A',
-      country: 'Itália',
-      ovr: 84,
-    ),
-    ClubData(
-      name: 'Roma Imperiale',
-      league: 'Serie A',
-      country: 'Itália',
-      ovr: 83,
-    ),
-    ClubData(
+    Club(name: 'Milano FC', league: 'Serie A', country: 'Itália', ovr: 89),
+    Club(name: 'Torino Legends', league: 'Serie A', country: 'Itália', ovr: 84),
+    Club(name: 'Roma Imperiale', league: 'Serie A', country: 'Itália', ovr: 83),
+    Club(
       name: 'Bayernstadt',
       league: 'Bundesliga',
       country: 'Alemanha',
       ovr: 91,
     ),
-    ClubData(
-      name: 'Dortheim',
-      league: 'Bundesliga',
-      country: 'Alemanha',
-      ovr: 86,
-    ),
-    ClubData(
+    Club(name: 'Dortheim', league: 'Bundesliga', country: 'Alemanha', ovr: 86),
+    Club(
       name: 'Hamburg Lions',
       league: 'Bundesliga',
       country: 'Alemanha',
       ovr: 80,
     ),
-    ClubData(
-      name: 'Paris Étoile',
-      league: 'Ligue 1',
-      country: 'França',
-      ovr: 92,
-    ),
-    ClubData(
+    Club(name: 'Paris Étoile', league: 'Ligue 1', country: 'França', ovr: 92),
+    Club(
       name: 'Olympique Riviera',
       league: 'Ligue 1',
       country: 'França',
       ovr: 84,
     ),
-    ClubData(
-      name: 'Monaco Royals',
-      league: 'Ligue 1',
-      country: 'França',
-      ovr: 82,
-    ),
-    ClubData(
+    Club(name: 'Monaco Royals', league: 'Ligue 1', country: 'França', ovr: 82),
+    Club(
       name: 'Amsterdam City',
       league: 'Eredivisie',
       country: 'Holanda',
       ovr: 83,
     ),
-    ClubData(
+    Club(
       name: 'Rotterdam FC',
       league: 'Eredivisie',
       country: 'Holanda',
       ovr: 80,
     ),
-    ClubData(
+    Club(
       name: 'Lisboa United',
       league: 'Primeira Liga',
       country: 'Portugal',
       ovr: 85,
     ),
-    ClubData(
+    Club(
       name: 'Porto Azul',
       league: 'Primeira Liga',
       country: 'Portugal',
       ovr: 82,
     ),
-    ClubData(
+    Club(
       name: 'Andes FC',
       league: 'Primera División',
       country: 'Argentina',
       ovr: 81,
     ),
-    ClubData(
+    Club(
       name: 'Buenos Aires Athletic',
       league: 'Primera División',
       country: 'Argentina',
       ovr: 84,
     ),
-    ClubData(
+    Club(
       name: 'Montevideo Stars',
       league: 'Primera División',
       country: 'Uruguai',
       ovr: 78,
     ),
-    ClubData(
+    Club(
       name: 'Santiago Warriors',
       league: 'Primera División',
       country: 'Chile',
       ovr: 79,
     ),
-    ClubData(
-      name: 'Tokyo Dragons',
-      league: 'J1 League',
-      country: 'Japão',
-      ovr: 80,
-    ),
-    ClubData(
-      name: 'Osaka Phoenix',
-      league: 'J1 League',
-      country: 'Japão',
-      ovr: 78,
-    ),
-    ClubData(
+    Club(name: 'Tokyo Dragons', league: 'J1 League', country: 'Japão', ovr: 80),
+    Club(name: 'Osaka Phoenix', league: 'J1 League', country: 'Japão', ovr: 78),
+    Club(
       name: 'Seoul Tigers',
       league: 'K League 1',
       country: 'Coreia do Sul',

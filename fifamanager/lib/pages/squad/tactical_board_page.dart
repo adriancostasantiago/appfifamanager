@@ -1,5 +1,5 @@
 import 'package:fifamanager/core/theme/app_theme.dart';
-import 'package:fifamanager/models/formation_data.dart';
+import 'package:fifamanager/models/formation.dart';
 import 'package:fifamanager/models/player_position.dart';
 import 'package:fifamanager/models/squad_data.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class TacticalBoardPage extends StatefulWidget {
 }
 
 class _TacticalBoardPageState extends State<TacticalBoardPage> {
-  FormationData selectedFormation = Formations.fourThreeThree;
+  Formation selectedFormation = Formations.fourThreeThree;
 
   late List<PlayerPosition> players;
 
@@ -37,7 +37,7 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
         .toList();
   }
 
-  void _changeFormation(FormationData formation) {
+  void _changeFormation(Formation formation) {
     setState(() {
       final oldPlayers = <String, PlayerData?>{};
 
@@ -70,12 +70,13 @@ class _TacticalBoardPageState extends State<TacticalBoardPage> {
         ..add(idB),
     );
     Future.delayed(const Duration(milliseconds: 600), () {
-      if (mounted)
+      if (mounted) {
         setState(
           () => _swappingIds
             ..remove(idA)
             ..remove(idB),
         );
+      }
     });
   }
 

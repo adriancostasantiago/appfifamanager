@@ -1,0 +1,3 @@
+GET https://ultimate-football-data-api.p.rapidapi.com/ufd/free/players
+x-rapidapi-host: ultimate-football-data-api.p.rapidapi.com
+x-rapidapi-key: 21d60c8105msh14fc925905c086ep11cdb4jsnb67ba7cecffb

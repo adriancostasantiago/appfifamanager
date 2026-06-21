@@ -1,4 +1,6 @@
 import 'package:fifamanager/core/theme/app_theme.dart';
+import 'package:fifamanager/models/finance_item.dart';
+import 'package:fifamanager/models/transfer_item.dart';
 import 'package:flutter/material.dart';
 import 'package:fifamanager/routes/app_routes.dart';
 import 'package:fifamanager/models/models.dart';
@@ -6,7 +8,7 @@ import 'package:fifamanager/widgets/app_bottom_navigation.dart';
 import 'package:fifamanager/widgets/app_drawer.dart';
 import 'sponsors_page.dart';
 
-final FinanceData sampleFinanceData = FinanceData(
+final Finance sampleFinance = Finance(
   orcamentoTotal: '€250M',
   orcamentoGasto: '€163M',
   orcamentoPercent: 0.65,
@@ -117,7 +119,7 @@ class FinancePage extends StatefulWidget {
 }
 
 class _FinancePageState extends State<FinancePage> {
-  final FinanceData data = sampleFinanceData;
+  final Finance data = sampleFinance;
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +266,7 @@ class _SectionTitle extends StatelessWidget {
 // ─── ORÇAMENTO ────────────────────────────────────────────────────────────────
 
 class _OrcamentoCard extends StatelessWidget {
-  final FinanceData data;
+  final Finance data;
   const _OrcamentoCard({required this.data});
 
   @override
@@ -373,7 +375,7 @@ class _OrcamentoCard extends StatelessWidget {
 // FIX: overflow corrigido — Row com Flexible ao invés de Expanded + largura rígida
 
 class _BalancoCard extends StatelessWidget {
-  final FinanceData data;
+  final Finance data;
   const _BalancoCard({required this.data});
 
   @override
@@ -483,7 +485,7 @@ class _BalancoItem extends StatelessWidget {
 // ─── RECEITAS & DESPESAS ──────────────────────────────────────────────────────
 
 class _ReceitasDespesasCard extends StatelessWidget {
-  final FinanceData data;
+  final Finance data;
   const _ReceitasDespesasCard({required this.data});
 
   @override
@@ -614,7 +616,7 @@ class _FinanceLineItem extends StatelessWidget {
 // ─── FOLHA SALARIAL ───────────────────────────────────────────────────────────
 
 class _FolhaCard extends StatelessWidget {
-  final FinanceData data;
+  final Finance data;
   const _FolhaCard({required this.data});
 
   @override
@@ -649,7 +651,7 @@ class _FolhaCard extends StatelessWidget {
 // ─── VALOR DE MERCADO ─────────────────────────────────────────────────────────
 
 class _ValorMercadoCard extends StatelessWidget {
-  final FinanceData data;
+  final Finance data;
   const _ValorMercadoCard({required this.data});
 
   @override
@@ -943,7 +945,7 @@ class _TransferRow extends StatelessWidget {
 // ─── CARD DE PATROCÍNIOS (ATALHO) ────────────────────────────────────────────
 
 class _PatrocinioCard extends StatelessWidget {
-  final FinanceData data;
+  final Finance data;
   const _PatrocinioCard({required this.data});
 
   @override
